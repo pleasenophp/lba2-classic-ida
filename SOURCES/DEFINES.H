@@ -48,30 +48,31 @@
 
 //=======================================================================
 // tous fichiers dans même dir
-#define	ONE_GAME_DIRECTORY	1
+// TODO - use it before release !!
+// #define	ONE_GAME_DIRECTORY	1
 //=======================================================================
 
 //path des ressources
 #ifdef	ONE_GAME_DIRECTORY
-#define	PATH_RESSOURCE		""
+#define	PATH_RESSOURCE		"c:\\Games\\tlba2-classic\\Common\\" 
 #define	PATH_SAVE		PATH_RESSOURCE"SAVE\\"
 #else
 #ifdef	DEMO
 #define	PATH_RESSOURCE		"f:\\projet\\lba2\\demo\\"
 #else
-#define	PATH_RESSOURCE		"f:\\projet\\lba2\\game\\"
+#define	PATH_RESSOURCE		"c:\\Games\\tlba2-classic\\Common\\"
 #endif
-#define	PATH_SAVE		"c:\\adeline\\"
+#define	PATH_SAVE		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\"
 #endif
 
 #ifdef	ONE_GAME_DIRECTORY
 #define	PATH_PCX_SAVE		PATH_SAVE"shoot\\"
 #else
-#define	PATH_PCX_SAVE		"f:\\projet\\lba2\\graph\\shoot\\"
+#define	PATH_PCX_SAVE		"c:\\Projects\\lba2-classic-community\\GameRun\\shoot\\"
 #endif
 
 // repertoire ou sauver les bugs
-#define	PATH_SAVE_BUGS		"f:\\panier\\lba2\\save\\bugs\\"
+#define	PATH_SAVE_BUGS		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\bugs\\"
 
 //#define	PATH_ACF	PATH_RESSOURCE"ACF\\"
 #define	PATH_ACF	PATH_RESSOURCE"VIDEO\\VIDEO.HQR"
@@ -80,7 +81,8 @@
 #ifdef	ONE_GAME_DIRECTORY
 #define	PATH_JINGLE	"MUSIC\\"
 #else
-#define	PATH_JINGLE	"F:\\PROJET\\LBA2\\MUSIC\\WAV_LBA2\\"
+#define	PATH_JINGLE	"C:\\Games\\tlba2-classic\\Common\\Music\\"
+
 #endif
 
 /*──────────────────────────────────────────────────────────────────────────*/

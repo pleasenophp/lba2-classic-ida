@@ -3,4 +3,8 @@ Debug/
 *.vcxproj.user
 Win32
 
+SOURCES/ADELINE.LOG
+GameRun/
+
+
 
