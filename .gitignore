@@ -1,4 +1,6 @@
 .vs/
 Debug/
 *.vcxproj.user
+Win32
+
 
