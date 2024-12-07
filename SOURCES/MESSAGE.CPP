@@ -378,7 +378,7 @@ void    InitLanguage()
 
         // Attention: Textes toujours Valides ???
         strcpy( string, DefFileBufferReadStringDefault( "Language", TabLanguage[1] ) ) ;
-
+                
         for( n=0; n<NB_LANGUAGES; n++ )
         {
                 if( !stricmp( string, TabLanguage[n] ) )
@@ -391,6 +391,10 @@ void    InitLanguage()
 #ifdef  CDROM
         // Attention: Voix toujours Valides !!!
         strcpy( string, DefFileBufferReadStringDefault( "LanguageCD", TabLanguage[1] ) ) ;
+        
+        // TODO - temp hack
+        strcpy(string, TabLanguage[1]);
+
 
         FlagSpeak = FALSE       ;
 
