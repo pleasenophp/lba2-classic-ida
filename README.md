@@ -1,3 +1,15 @@
+# Current issues
+
+
+- The audio doesn't work without hardcoded language
+- The config file is read/written to the sources in the build version
+
+- The music doesn't work
+- Full screen / higher res doesn't work
+- Voice audio has clicks after every dialog in the end
+
+
+
 # Little Big Adventure 2 - Engine source code - Community
 
 Little Big Adventure 2 (aka Twinsen's Odyssey) is the sequel of Little Big Adventure (aka Relentless : Twinsen's Adventure) in 1997.
