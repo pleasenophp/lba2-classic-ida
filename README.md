@@ -1,8 +1,31 @@
+# Prepare to Debug
+
+1. VS 2019 build tools with C++ dev enabled should be installed, if you use VS 2022 or later
+
+1. Edit DEFINES.H to provide path to local game data files. Only edit those 2:
+
+  #define	PATH_RESSOURCE		"c:\\Games\\tlba2-classic\\Common\\"
+  #define	PATH_JINGLE	        "C:\\Games\\tlba2-classic\\Common\\Music\\"
+
+1. Create GameRun directory in the root of this project and create the following empty directories structure inside:
+- GameRun
+  - save
+    - bugs
+  - shoot
+
+  This will be derictory for the save files, logs and configuration file for the development
+
+1. copy SOURCES\LBA2.CFG GameRun\LBA2.CFG
+
+1. In Visual studio LBA2 project properties go to Debugger settings and add environment variable in Environment section:
+  ADELINE=<PathToThisProject>\GameRun\LBA2.CFG
+  
+  For example: 
+    ADELINE=C:\Projects\lba2-classic-community\GameRun\LBA2.CFG
+
+1. Build and run using Win32 configuration
+
 # Current issues
-
-
-- The audio doesn't work without hardcoded language
-- The config file is read/written to the sources in the build version
 
 - The music doesn't work
 - Full screen / higher res doesn't work
