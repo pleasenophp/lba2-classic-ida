@@ -115,7 +115,9 @@ void	InitJingle( void )
 #ifdef	CDROM
 		if( CDDrive )
 		{
-			sprintf( PathJingle, "%c:\\LBA2\\MUSIC\\", CDDrive ) ;
+			// TODO - see if this hack needs to be defined in
+			// sprintf( PathJingle, "%c:\\LBA2\\MUSIC\\", CDDrive ) ;
+			strcpy( PathJingle, PATH_JINGLE ) ;
 		}
 		else
 #endif
