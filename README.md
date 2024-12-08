@@ -2,18 +2,26 @@
 
 1. VS 2019 build tools with C++ dev enabled should be installed, if you use VS 2022 or later
 
-1. Edit DEFINES.H to provide path to local game data files. Only edit those 2:
+1. Edit DEFINES.H to provide path to local game data files (where the HQR files are):
+  For example:
 
   #define	PATH_RESSOURCE		"c:\\Games\\tlba2-classic\\Common\\"
   #define	PATH_JINGLE	        "C:\\Games\\tlba2-classic\\Common\\Music\\"
+
+1. Edit DEFINES.H to provide path to the save files folders in the debug mode. Replace c:\\Projects\\lba2-classic-community with your local path to this source code.
+
+#define	PATH_SAVE		    "c:\\Projects\\lba2-classic-community\\GameRun\\save\\"
+#define	PATH_PCX_SAVE		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\shoot\\"
+#define	PATH_SAVE_BUGS		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\bugs\\"
+
 
 1. Create GameRun directory in the root of this project and create the following empty directories structure inside:
 - GameRun
   - save
     - bugs
-  - shoot
+    - shoot
 
-  This will be derictory for the save files, logs and configuration file for the development
+  This will be derictory for the save files, logs and configuration file for the development. 
 
 1. copy SOURCES\LBA2.CFG GameRun\LBA2.CFG
 
@@ -31,6 +39,8 @@
 
 - The music doesn't work
 - Full screen / higher res doesn't work
+
+## Minor issues
 - Voice audio has clicks after every dialog in the end
 
 

@@ -48,13 +48,13 @@
 
 //=======================================================================
 // tous fichiers dans même dir
-// TODO - use it before release !!
+// TODO - use it for the release ??
 // #define	ONE_GAME_DIRECTORY	1
 //=======================================================================
 
 //path des ressources
 #ifdef	ONE_GAME_DIRECTORY
-#define	PATH_RESSOURCE		"c:\\Games\\tlba2-classic\\Common\\" 
+#define	PATH_RESSOURCE		"" 
 #define	PATH_SAVE		PATH_RESSOURCE"SAVE\\"
 #else
 #ifdef	DEMO
@@ -68,7 +68,7 @@
 #ifdef	ONE_GAME_DIRECTORY
 #define	PATH_PCX_SAVE		PATH_SAVE"shoot\\"
 #else
-#define	PATH_PCX_SAVE		"c:\\Projects\\lba2-classic-community\\GameRun\\shoot\\"
+#define	PATH_PCX_SAVE		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\shoot\\"
 #endif
 
 // repertoire ou sauver les bugs
