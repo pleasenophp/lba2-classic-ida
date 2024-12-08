@@ -39,6 +39,8 @@
 
 - The music doesn't work
 - Full screen / higher res doesn't work
+- The videos don't work
+- The volume and other options seem to be ignored when changing them in the options menu, even though they saved and loaded to/from config
 
 ## Minor issues
 - Voice audio has clicks after every dialog in the end
