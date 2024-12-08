@@ -25,6 +25,8 @@
 
 1. Build and run using Win32 configuration
 
+1. If when running the LBA2.exe it is complaining about SDL dll not found, copy all the files from Win32\Debug to Debug\
+
 # Current issues
 
 - The music doesn't work
