@@ -8,7 +8,7 @@
 /*──────────────────────────────────────────────────────────────────────────*/
 
 #ifdef	CDROM
-char		CDDrive = 'Z'	;// Z by default
+char		CDDrive = 'D'	;// Z by default
 U32		CDVolume     = DEF_CD_VOLUME	;
 
 #ifndef	LBA_EDITOR
@@ -51,7 +51,6 @@ U32	JingleVolume = DEF_JINGLE_VOLUME ;
 
 #define	NB_JINGLE	26
 
-// TODO - check dosbox version for all the names compatibility here
 char	ListJingle[NB_JINGLE][9] = {
 	"",		// pour interfacer avec la music CD (car Track 0 == NO_TRACK)
 	"TADPCM1",
@@ -60,7 +59,7 @@ char	ListJingle[NB_JINGLE][9] = {
 	"TADPCM4",
 	"TADPCM5",
 	"JADPCM01",
-	"",	// Track6.wav  // TODO - check if we play Track6.wav as it's present in DosBox version (log if it's not found)
+	"TADPCM6",	//xesf Track6.wav
 	"JADPCM02",
 	"JADPCM03",
 	"JADPCM04",
@@ -106,18 +105,21 @@ void	InitJingle( void )
 		{
 			case UNKNOWN_VERSION:
 			case EA_VERSION:
-				sprintf( PathJingle, "%c:\\LBA2\\MUSIC\\", CDDrive ) ;
+				//xesf sprintf( PathJingle, "%c:\\LBA2\\MUSIC\\", CDDrive ) ;
+				sprintf(PathJingle, "%sMUSIC\\", PATH_RESSOURCE); // local read instead of CD
 				break ;
 
 			default:
-				sprintf( PathJingle, "%c:\\TWINSEN\\MUSIC\\", CDDrive ) ;
+				// xesf sprintf( PathJingle, "%c:\\TWINSEN\\MUSIC\\", CDDrive ) ;
+				sprintf(PathJingle, "%sMUSIC\\", PATH_RESSOURCE); // local read instead of CD
 		}
 #else
 #ifdef	CDROM
 		if( CDDrive )
 		{
-			// TODO - see if this hack needs to be defined in
-			// sprintf( PathJingle, "%c:\\LBA2\\MUSIC\\", CDDrive ) ;
+			sprintf( PathJingle, "%c:\\LBA2\\MUSIC\\", CDDrive ) ;
+
+			// TODO
 			strcpy( PathJingle, PATH_JINGLE ) ;
 		}
 		else
@@ -128,7 +130,6 @@ void	InitJingle( void )
 #endif
 	}
 
-	// TODO - call
 	SetVolumeJingle( JingleVolume ) ;
 }
 
@@ -182,13 +183,12 @@ void	PlayJingle( S32 num )
 		{
 			strcpy( name_jingle, PathJingle ) ;
 			strcat( name_jingle, ListJingle[num] ) ;
-			AddExt( name_jingle, ".WAV" ) ;
+			AddExt( name_jingle, ".OGG" ) ;
 		}
 
 		// a remplacer par GetNumJingle() ?
 		if( stricmp(name_jingle,StreamName()) )
 		{
-			// TODO - call
 			PlayStream( name_jingle ) ;
 		}
 
@@ -222,7 +222,7 @@ JINGLE| 4,	// Track03.wav
 JINGLE| 5,	// Track04.wav
 JINGLE| 6,	// Track05.wav
 JINGLE| 7,	// Jingle01.wav
-	8,	// Track06.wav
+JINGLE| 8,	// Track06.wav // xesf
 JINGLE| 9,	// Jingle02.wav
 JINGLE|10,	// Jingle03.wav
 JINGLE|11,	// Jingle04.wav
@@ -280,8 +280,6 @@ S32	StopLastMusic = FALSE ;
 S32	NextMusicTimer ;
 
 /*──────────────────────────────────────────────────────────────────────────*/
-
-// TODO - get rid of CDRom and select correct tracks version (US ? )
 #if defined(CDROM)&&!defined(LBA_EDITOR)
 void	InitTabTracks( void )
 {
@@ -363,26 +361,27 @@ void	PlayMusic( S32 num, S32 playit )
 
 S32	GetMusic( void )
 {
-	S32	num ;
+	return GetNumJingle(StreamName());
+	//xesf
+//	S32	num ;
+//
+//#ifdef	CDROM
+//	num = IsCDPlaying() ;
+//#else
+//	num = 0 ;
+//#endif
 
-#ifdef	CDROM
-	num = IsCDPlaying() ;
-#else
-	num = 0 ;
-#endif
+	//if( !num )	// pas de music CD
+	//{
+	//	num = GetNumJingle( StreamName() ) ;
+	//}
+	//else	num += FirstCDTrack ;
 
-	if( !num )	// pas de music CD
-	{
-		num = GetNumJingle( StreamName() ) ;
-	}
-	else	num += FirstCDTrack ;
-
-	return num ;
+	// return num ;
 }
 
 /*──────────────────────────────────────────────────────────────────────────*/
 
-// TODO - call
 void	StopMusic( void )
 {
 #ifdef	CDROM
@@ -399,7 +398,6 @@ void	PauseMusic( S32 fade )
 
 	if( fade )	FadeOutVolumeMusic() ;
 
-// TODO - call
 #ifdef	CDROM
 	PauseCD() ;
 #endif
@@ -474,8 +472,6 @@ void	FadeOutVolumeMusic( void )
 	jvolume>0 )
 	{
 		ManageTime();
-
-		// TODO - simplify, use jingle only
 #ifdef	CDROM
 		// volume du CD
 		cdvolume = BoundRegleTrois( startcdvol, 0, FADE_MUSIC_TIME, TimerRefHR-timer ) ;
@@ -491,13 +487,11 @@ void	FadeOutVolumeMusic( void )
 
 		if( jvolume!=oldjvol )
 		{
-			// TODO - call
 			SetVolumeJingle( jvolume ) ;
 			oldjvol = jvolume ;
 		}
 	}
 
-// TODO  - only jingle and call
 #ifdef	CDROM
 	SetVolumeCD( 0 ) ;
 #endif
@@ -508,7 +502,6 @@ void	FadeOutVolumeMusic( void )
 
 /*──────────────────────────────────────────────────────────────────────────*/
 
-// TODO - same as with FadeOut - cleanup from CD and hook real calls
 void	FadeInVolumeMusic( void )
 {
 	S32	timer ;
