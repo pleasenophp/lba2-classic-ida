@@ -37,14 +37,12 @@
 
 # Current issues
 
-- The music doesn't work
-- Full screen / higher res doesn't work
 - The videos don't work
-- The volume and other options seem to be ignored when changing them in the options menu, even though they saved and loaded to/from config
+- Full screen / higher res doesn't work
+- The volume options for sfx and voices seem to be ignored when changing them in the options menu, even though they saved and loaded to/from config
 
 ## Minor issues
-- Voice audio has clicks after every dialog in the end
-
+- Voice audio and sfx have clicks after every play in the end
 
 
 # Little Big Adventure 2 - Engine source code - Community

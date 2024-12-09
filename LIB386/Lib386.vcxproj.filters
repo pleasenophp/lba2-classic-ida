@@ -272,9 +272,6 @@
     <ClCompile Include="adpcm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SoloudWaveCache.cpp">
-      <Filter>Source Files\AIL</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="H\SYSTEM.H">
@@ -708,9 +705,6 @@
     </ClInclude>
     <ClInclude Include="FILEIO\PCXHEAD.H">
       <Filter>Source Files\fileIO</Filter>
-    </ClInclude>
-    <ClInclude Include="SoloudWaveCache.h">
-      <Filter>Source Files\AIL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

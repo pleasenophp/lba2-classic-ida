@@ -10,11 +10,8 @@
 #include	<ail\sample.h>
 #include	<ail\stream.h>
 
-#include    "SoloudWaveCache.h"
-
 #pragma pack(8)
 #include	"soloud.h"
-#include	"soloud_wav.h"
 #include    "soloud_wavstream.h"
 #pragma pack(1)
 
@@ -47,7 +44,6 @@ static	VOID_FUNC	ManageStream;
 U32 soloudHandle = 0;
 SoLoud::WavStream* soloudWave = nullptr;
 SoLoud::Soloud* soloudStream = nullptr;
-SoloudWaveCache* soloudWaveCache = nullptr;
 
 
 static void	ManageStream()
@@ -93,8 +89,6 @@ void OpenStream()
 		S32 chans = 2;
 		soloudStream = new SoLoud::Soloud();
 		soloudStream->init(SoLoud::Soloud::CLIP_ROUNDOFF, SoLoud::Soloud::BACKENDS::AUTO, rate, 0, chans);
-
-		soloudWaveCache = new SoloudWaveCache();
 	}
 }
 
