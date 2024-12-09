@@ -272,6 +272,9 @@
     <ClCompile Include="adpcm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SoloudWaveCache.cpp">
+      <Filter>Source Files\AIL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="H\SYSTEM.H">
@@ -706,6 +709,9 @@
     <ClInclude Include="FILEIO\PCXHEAD.H">
       <Filter>Source Files\fileIO</Filter>
     </ClInclude>
+    <ClInclude Include="SoloudWaveCache.h">
+      <Filter>Source Files\AIL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="3D\ARCSIN.ASM">
@@ -771,7 +777,7 @@
     <MASM Include="3D\ROTMATI.ASM">
       <Filter>Source Files\3D</Filter>
     </MASM>
-	<MASM Include="3D\REGLE3.ASM">
+    <MASM Include="3D\REGLE3.ASM">
       <Filter>Source Files\3D</Filter>
     </MASM>
     <MASM Include="3D\ROTMAT.ASM">

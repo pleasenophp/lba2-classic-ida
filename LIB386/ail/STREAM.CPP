@@ -10,9 +10,12 @@
 #include	<ail\sample.h>
 #include	<ail\stream.h>
 
+#include    "SoloudWaveCache.h"
+
 #pragma pack(8)
 #include	"soloud.h"
 #include	"soloud_wav.h"
+#include    "soloud_wavstream.h"
 #pragma pack(1)
 
 #include	<assert.h>
@@ -42,8 +45,9 @@ static	VOID_FUNC	ManageStream;
 //████████████████████████████████████████████████████████████████████████████
 
 U32 soloudHandle = 0;
-SoLoud::Wav* soloudWave = nullptr;
-SoLoud::Soloud* soloudStream = NULL;
+SoLoud::WavStream* soloudWave = nullptr;
+SoLoud::Soloud* soloudStream = nullptr;
+SoloudWaveCache* soloudWaveCache = nullptr;
 
 
 static void	ManageStream()
@@ -60,17 +64,18 @@ static void PlayThisStream(char *name, S32 pos)
 {
 	if (!Sample_Driver_Enabled) return;
 
-	StopStream()	;
+	StopStream();
 
-	strcpy(StreamPathName, name)		;
+	strcpy(StreamPathName, name);
 
-	soloudWave = new SoLoud::Wav();
+	soloudWave = new SoLoud::WavStream();
 	soloudWave->load(StreamPathName);
+
 	soloudHandle = soloudStream->play(*soloudWave, StreamVolume / 127.0f, 0, true, 0);
 	soloudStream->setAutoStop(soloudHandle, true);
 	soloudStream->setPause(soloudHandle, false);
 
-	ManageStream()				;
+	ManageStream();
 }
 
 //████████████████████████████████████████████████████████████████████████████
@@ -88,6 +93,8 @@ void OpenStream()
 		S32 chans = 2;
 		soloudStream = new SoLoud::Soloud();
 		soloudStream->init(SoLoud::Soloud::CLIP_ROUNDOFF, SoLoud::Soloud::BACKENDS::AUTO, rate, 0, chans);
+
+		soloudWaveCache = new SoloudWaveCache();
 	}
 }
 
@@ -167,11 +174,11 @@ void ResumeStream()
 
 S32	IsStreamPlaying()
 {
-	S32	playing = false	;
+	S32	playing = false;
 
 	if (!Sample_Driver_Enabled || !soloudWave || !soloudStream) return FALSE;
 
-	ManageStream()			;
+	ManageStream();
 
 	playing = soloudStream->isValidVoiceHandle(soloudHandle);
 
@@ -182,11 +189,12 @@ S32	IsStreamPlaying()
 
 //████████████████████████████████████████████████████████████████████████████
 
-char	*StreamName()
+char *StreamName()
 {
-	IsStreamPlaying()	;
+	IsStreamPlaying();
 
-	return	StreamPathName	;
+	return StreamPathName;
 }
 
 //████████████████████████████████████████████████████████████████████████████
+
