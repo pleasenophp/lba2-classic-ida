@@ -9,29 +9,17 @@
   ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀*/
 
 #define	DEF_JINGLE_VOLUME	127
+#define DEF_CD_VOLUME       66
+#define	MUSIC_LOGO 24
 
-#ifdef	CDROM
+// This is used for initialization of the track list, still needed
+extern S32 InitCD(char *name);
 
-#define	DEF_CD_VOLUME		66
-
-extern	char	CDDrive		;
-extern	U32	CDVolume	;
-
-//▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
-extern	S32  	InitCD( char *name ) ;
-
-//▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
-#ifdef	LBA_EDITOR
-#define	SetVolumeCD(vol)	ChangeVolumeCD(vol)
-#else
-#define	SetVolumeCD(vol)	ChangeVolumeCD(RegleTrois(0, MasterVolume, 127, vol))
-#endif
-
-#else	// CDROM
-#define	InitCD(init)
-#endif	// CDROM
-
-#define	MUSIC_LOGO	24
+// Stubs *******************
+#define SetVolumeCD(vol)
+static U32 CDVolume = 0;
+static char CDDrive = 0;
+// *************************
 
 /*▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 			  █  █    ██▄ █ █▀▀▀▀ █     █▀▀▀▀

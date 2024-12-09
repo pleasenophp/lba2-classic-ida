@@ -1,15 +1,5 @@
 #include	"c_extern.h"
 
-/*══════════════════════════════════════════════════════════════════════════*
-				  █▀▀▀▀ █▀▀▀▄
-				  ██    ██  █
-				  ▀▀▀▀▀ ▀▀▀▀
- *══════════════════════════════════════════════════════════════════════════*/
-/*──────────────────────────────────────────────────────────────────────────*/
-
-#ifdef	CDROM
-char		CDDrive = 'D'	;// Z by default
-U32		CDVolume     = DEF_CD_VOLUME	;
 
 #ifndef	LBA_EDITOR
 void	InitTabTracks( void ) ;// voir plus bas...
@@ -17,23 +7,14 @@ void	InitTabTracks( void ) ;// voir plus bas...
 
 /*──────────────────────────────────────────────────────────────────────────*/
 
-S32	InitCD( char *name )
+S32	InitCD(char *name)
 {
 #ifndef	LBA_EDITOR
-	InitTabTracks() ;
+	InitTabTracks();
 #endif
-	CDDrive = OpenCD( name ) ;
 
-	if( CDDrive )
-	{
-		SetVolumeCD( CDVolume ) ;
-
-		return TRUE ;
-	}
-
-	return FALSE ;
+	return TRUE;
 }
-#endif	// CDROM
 
  /*══════════════════════════════════════════════════════════════════════════*
 			  █  █    ██▄ █ █▀▀▀▀ █     █▀▀▀▀
@@ -46,12 +27,12 @@ char	PathJingle[ADELINE_MAX_PATH] ;
 
 U32	JingleVolume = DEF_JINGLE_VOLUME ;
 
-#define	FIRST_JINGLE	2
-#define	LAST_JINGLE	26
+#define	FIRST_JINGLE 2
+#define	LAST_JINGLE	 26
 
-#define	NB_JINGLE	26
+#define	NB_JINGLE	 26
 
-/* This can be useful for non-GOG data version
+/* This can be useful for non-GOG data version // TODO
 char	ListJingle[NB_JINGLE][9] = {
 	"",		// pour interfacer avec la music CD (car Track 0 == NO_TRACK)
 	"TADPCM1",
@@ -113,55 +94,27 @@ char	ListJingle[NB_JINGLE][9] = {
 
 /*──────────────────────────────────────────────────────────────────────────*/
 
-void	InitJingle( void )
+void InitJingle(void)
 {
-	char    *path ;
+	char *path;
 
-	OpenStream() ;// init Stream System
+	OpenStream(); // init Stream System
 
 	// fix path jingles
-	path = DefFileBufferReadString( "PathJingle" ) ;
+	path = DefFileBufferReadString("PathJingle");
 
-	if( path AND strcmp(path,"") )
+	if (path AND strcmp(path, ""))
 	{
-		strcpy( PathJingle, path ) ;
-		if( PathJingle[strlen(PathJingle)-1]!='\\'
-		AND PathJingle[strlen(PathJingle)-1]!=':' )
-			strcat( PathJingle, "\\" ) ;
+		strcpy(PathJingle, path);
+		if (PathJingle[strlen(PathJingle)-1] != '\\' AND PathJingle[strlen(PathJingle)-1] != ':')
+			strcat(PathJingle, "\\");
 	}
 	else
 	{
-#if defined(ONE_GAME_DIRECTORY)&&defined(CDROM)
-		switch( DistribVersion )
-		{
-			case UNKNOWN_VERSION:
-			case EA_VERSION:
-				//xesf sprintf( PathJingle, "%c:\\LBA2\\MUSIC\\", CDDrive ) ;
-				sprintf(PathJingle, "%sMUSIC\\", PATH_RESSOURCE); // local read instead of CD
-				break ;
-
-			default:
-				// xesf sprintf( PathJingle, "%c:\\TWINSEN\\MUSIC\\", CDDrive ) ;
-				sprintf(PathJingle, "%sMUSIC\\", PATH_RESSOURCE); // local read instead of CD
-		}
-#else
-#ifdef	CDROM
-		if( CDDrive )
-		{
-			sprintf( PathJingle, "%c:\\LBA2\\MUSIC\\", CDDrive ) ;
-
-			// TODO
-			strcpy( PathJingle, PATH_JINGLE ) ;
-		}
-		else
-#endif
-		{	// default path Acf
-			strcpy( PathJingle, PATH_JINGLE ) ;
-		}
-#endif
+		strcpy(PathJingle, PATH_JINGLE);
 	}
 
-	SetVolumeJingle( JingleVolume ) ;
+	SetVolumeJingle(JingleVolume);
 }
 
 /*──────────────────────────────────────────────────────────────────────────*/
@@ -311,20 +264,20 @@ S32	StopLastMusic = FALSE ;
 S32	NextMusicTimer ;
 
 /*──────────────────────────────────────────────────────────────────────────*/
-#if defined(CDROM)&&!defined(LBA_EDITOR)
+#if !defined(LBA_EDITOR)
 void	InitTabTracks( void )
 {
 	switch( DistribVersion )
 	{
 		case UNKNOWN_VERSION:
 		case EA_VERSION:
-			PtrTrackCD = TrackCD ;
-			FirstCDTrack = FIRST_CD_TRACK ;
+			PtrTrackCD = TrackCD;
+			FirstCDTrack = FIRST_CD_TRACK;
 			break ;
 
 		default:
-			PtrTrackCD = TrackCDUS ;
-			FirstCDTrack = FIRST_CD_TRACK_US ;
+			PtrTrackCD = TrackCDUS;
+			FirstCDTrack = FIRST_CD_TRACK_US;
 	}
 }
 #endif
@@ -345,12 +298,12 @@ void	PlayMusic( S32 num, S32 playit )
 
 		LockTimer() ;
 
-		if( playit OR StopLastMusic )	cur = 0 ;
-		else				cur = GetMusic() ;
+		if (playit OR StopLastMusic) cur = 0;
+		else cur = GetMusic();
 
-		StopLastMusic = playit ;
+		StopLastMusic = playit;
 
-		if( cur==0 )
+		if ( cur==0 )
 		{
 			if( !playit
 			OR  GetMusic()!=(PtrTrackCD[num]&MUSIC) )
@@ -361,24 +314,13 @@ void	PlayMusic( S32 num, S32 playit )
 				{
 					PlayJingle( PtrTrackCD[num]&MUSIC ) ;
 				}
-#ifdef	CDROM
-				else
-				{
-					if( CDVolume>0 )
-					{
-						PlayCD( (PtrTrackCD[num]&MUSIC)-FirstCDTrack ) ;
-					}
-				}
-#endif
 			}
 		}
 		else
 		{
-//			if( PtrTrackCD[cur-1]&JINGLE )// on n'empile pas sur une track
 			if( cur!=(PtrTrackCD[num]&MUSIC) )// on n'empile pas sur la meme
 			{
 				NextMusic = num ;// empile musique à jouer +tard
-//				NextMusicTimer = TimerRefHR+TEST_MUSIC_TEMPO ;
 			}
 		}
 
@@ -390,56 +332,33 @@ void	PlayMusic( S32 num, S32 playit )
 
 /*──────────────────────────────────────────────────────────────────────────*/
 
-S32	GetMusic( void )
+S32	GetMusic(void)
 {
 	return GetNumJingle(StreamName());
-	//xesf
-//	S32	num ;
-//
-//#ifdef	CDROM
-//	num = IsCDPlaying() ;
-//#else
-//	num = 0 ;
-//#endif
-
-	//if( !num )	// pas de music CD
-	//{
-	//	num = GetNumJingle( StreamName() ) ;
-	//}
-	//else	num += FirstCDTrack ;
-
-	// return num ;
 }
 
 /*──────────────────────────────────────────────────────────────────────────*/
 
-void	StopMusic( void )
+void StopMusic(void)
 {
-#ifdef	CDROM
-	StopCD() ;
-#endif
-	StopStream()  ;
+	StopStream();
 }
 
 /*──────────────────────────────────────────────────────────────────────────*/
 
-void	PauseMusic( S32 fade )
+void PauseMusic(S32 fade)
 {
 	SaveTimer() ;
 
-	if( fade )	FadeOutVolumeMusic() ;
+	if (fade) {
+		FadeOutVolumeMusic();
+	}
 
-#ifdef	CDROM
-	PauseCD() ;
-#endif
 	PauseStream() ;
 
-	if( fade )
+	if (fade)
 	{
-#ifdef	CDROM
-		SetVolumeCD( CDVolume ) ;
-#endif
-		SetVolumeJingle( JingleVolume ) ;
+		SetVolumeJingle(JingleVolume);
 	}
 
 	RestoreTimer() ;
@@ -447,43 +366,33 @@ void	PauseMusic( S32 fade )
 
 /*──────────────────────────────────────────────────────────────────────────*/
 
-void	ResumeMusic( S32 fade )
+void ResumeMusic(S32 fade)
 {
 	SaveTimer() ;
 
-	if( fade )
+	if (fade)
 	{
-#ifdef	CDROM
-		SetVolumeCD(0) ;
-#endif
 		SetVolumeJingle( 0 ) ;
 	}
 
 	StopMusic() ;
-
-#ifdef	CDROM
-	ResumeCD() ;
-#endif
 	ResumeStream()  ;
 
-	if( fade )	FadeInVolumeMusic() ;
+	if (fade)	FadeInVolumeMusic();
 
-	StopLastMusic = FALSE ;
+	StopLastMusic = FALSE;
 
-	RestoreTimer() ;
+	RestoreTimer();
 }
 
 /*──────────────────────────────────────────────────────────────────────────*/
 
 #define	FADE_MUSIC_TIME		100	// 1/5s
 
-void	FadeOutVolumeMusic( void )
+void FadeOutVolumeMusic(void)
 {
 	S32	timer ;
 	U32	startjvol, jvolume, oldjvol ;
-#ifdef	CDROM
-	U32	startcdvol, cdvolume, oldcdvol ;
-#endif
 
 	ManageTime();
 	SaveTimer() ;
@@ -492,27 +401,10 @@ void	FadeOutVolumeMusic( void )
 
 	startjvol = oldjvol = jvolume = GetVolumeStream() ;
 
-#ifdef	CDROM
-	startcdvol  = oldcdvol = cdvolume = GetVolumeCD() ;
-#endif
-
-	while(
-#ifdef	CDROM
-	cdvolume>0 OR
-#endif
-	jvolume>0 )
+	while(jvolume > 0)
 	{
 		ManageTime();
-#ifdef	CDROM
-		// volume du CD
-		cdvolume = BoundRegleTrois( startcdvol, 0, FADE_MUSIC_TIME, TimerRefHR-timer ) ;
 
-		if( cdvolume!=oldcdvol )
-		{
-			SetVolumeCD( cdvolume ) ;
-			oldcdvol = cdvolume ;
-		}
-#endif
 		// volume des Jingles
 		jvolume = BoundRegleTrois( startjvol, 0, FADE_MUSIC_TIME, TimerRefHR-timer ) ;
 
@@ -523,52 +415,30 @@ void	FadeOutVolumeMusic( void )
 		}
 	}
 
-#ifdef	CDROM
-	SetVolumeCD( 0 ) ;
-#endif
-	SetVolumeJingle( 0 ) ;
+	SetVolumeJingle(0) ;
 
 	RestoreTimer() ;
 }
 
 /*──────────────────────────────────────────────────────────────────────────*/
 
-void	FadeInVolumeMusic( void )
+void FadeInVolumeMusic(void)
 {
 	S32	timer ;
 	U32	startjvol, jvolume, oldjvol ;
-#ifdef	CDROM
-	U32	startcdvol, cdvolume, oldcdvol ;
-#endif
 
 	ManageTime();
 	SaveTimer() ;
 
 	timer = TimerRefHR ;
 
-#ifdef	CDROM
-	startcdvol = oldcdvol = cdvolume = GetVolumeCD() ;
-#endif
 
 	startjvol = oldjvol = jvolume = GetVolumeStream() ;
 
-	while(
-#ifdef	CDROM
-	cdvolume<CDVolume OR
-#endif
-	jvolume<JingleVolume )
+	while(jvolume < JingleVolume)
 	{
 		ManageTime();
-#ifdef	CDROM
-		// volume du CD
-		cdvolume = BoundRegleTrois( startcdvol, CDVolume, FADE_MUSIC_TIME, TimerRefHR-timer ) ;
 
-		if( cdvolume!=oldcdvol )
-		{
-			SetVolumeCD( cdvolume ) ;
-			oldcdvol = cdvolume ;
-		}
-#endif
 		// volume des Jingles
 		jvolume = BoundRegleTrois( startjvol, JingleVolume, FADE_MUSIC_TIME, TimerRefHR-timer ) ;
 
@@ -579,22 +449,20 @@ void	FadeInVolumeMusic( void )
 		}
 	}
 
-#ifdef	CDROM
-	SetVolumeCD( CDVolume ) ;
-#endif
 	SetVolumeJingle( JingleVolume ) ;
 
 	RestoreTimer() ;
 }
 /*──────────────────────────────────────────────────────────────────────────*/
 
-void	CheckNextMusic( void )
+void CheckNextMusic(void)
 {
-	if( NextMusic!=-1 )
+	if (NextMusic != -1)
 	{
-		if( TimerRefHR>NextMusicTimer )
+		if (TimerRefHR > NextMusicTimer)
 		{
-			PlayMusic( NextMusic, FALSE ) ;
+			PlayMusic(NextMusic, FALSE);
 		}
 	}
 }
+
