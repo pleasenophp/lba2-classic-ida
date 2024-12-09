@@ -51,6 +51,7 @@ U32	JingleVolume = DEF_JINGLE_VOLUME ;
 
 #define	NB_JINGLE	26
 
+/* This can be useful for non-GOG data version
 char	ListJingle[NB_JINGLE][9] = {
 	"",		// pour interfacer avec la music CD (car Track 0 == NO_TRACK)
 	"TADPCM1",
@@ -60,6 +61,36 @@ char	ListJingle[NB_JINGLE][9] = {
 	"TADPCM5",
 	"JADPCM01",
 	"TADPCM6",	//xesf Track6.wav
+	"JADPCM02",
+	"JADPCM03",
+	"JADPCM04",
+	"JADPCM05",
+	"JADPCM06",
+	"JADPCM07",
+	"JADPCM08",
+	"JADPCM09",
+	"JADPCM10",
+	"JADPCM11",
+	"JADPCM12",
+	"JADPCM13",
+	"JADPCM14",
+	"JADPCM15",
+	"JADPCM16",
+	"JADPCM17",
+	"JADPCM18",
+	"LOGADPCM",
+	} ;
+*/
+
+char	ListJingle[NB_JINGLE][9] = {
+	"",		// pour interfacer avec la music CD (car Track 0 == NO_TRACK)
+	"track1",
+	"track2",
+	"track3",
+	"track4",
+	"track5",
+	"JADPCM01",
+	"track6",	//xesf Track6.wav
 	"JADPCM02",
 	"JADPCM03",
 	"JADPCM04",
