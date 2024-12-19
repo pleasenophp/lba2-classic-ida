@@ -372,6 +372,7 @@ S32	PlayAcf( char *name )
 		PaletteSync(pal);
 
 		// play audio
+		// TODO - looks like SoLoud doesn't suit good for playing stream like this, or we are using it wrong. After every chunk there is a click, also replay of video causes crash
 		for (i = 0; i < SMACKER_TRACK_SIZE; i++)
 		{
 			if (a_t & (1 << i) && (1 << i) & smackflags)
@@ -414,6 +415,7 @@ fin_play:
 
 	smk_close(s);
 	free(dest);
+	Free(decompbuf);
 
 	for (i = 0; i < SMACKER_TRACK_SIZE; i++)
 	{

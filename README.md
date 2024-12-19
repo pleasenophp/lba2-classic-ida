@@ -37,14 +37,14 @@
 
 # Current issues
 
-- The videos don't work
+- Audio of the video does not play correctly using soloud and crashes
 - Full screen / higher res doesn't work
 - Make it work with the data files from Steam version as well
 - The volume options for sfx and voices seem to be ignored when changing them in the options menu, even though they saved and loaded to/from config
 - Create an easy way to deploy
 
 ## Minor issues
-- Voice audio and sfx have clicks after every play in the end
+- Voice audio and sfx have clicks after every play in the end (general soloud issue?)
 
 
 # Little Big Adventure 2 - Engine source code - Community
