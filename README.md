@@ -38,9 +38,10 @@
 # Current issues
 
 - The videos don't work
-- Make it work with the data files from Steam version as well
 - Full screen / higher res doesn't work
+- Make it work with the data files from Steam version as well
 - The volume options for sfx and voices seem to be ignored when changing them in the options menu, even though they saved and loaded to/from config
+- Create an easy way to deploy
 
 ## Minor issues
 - Voice audio and sfx have clicks after every play in the end
