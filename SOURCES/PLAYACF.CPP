@@ -427,6 +427,7 @@ fin_play:
 		}
 		soundHandleMapping[i].soloudHandle = 0;
 	}
+	soloudStream->deinit();
 	delete soloudStream;
 
 	ret = MyKey;
