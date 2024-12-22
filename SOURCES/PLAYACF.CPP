@@ -342,6 +342,9 @@ S32	PlayAcf( char *name )
 	
 	dest = (U8*)malloc(640 * 480);
 
+
+	// TODO - implement custom audio source in soloud to play streamed SMK audio here, and start play
+
 	timer = TimerRefHR + (1000/fps);
 	for (c = 0; c < f; c++)
 	{
@@ -382,6 +385,7 @@ S32	PlayAcf( char *name )
 				}
 				if (a_d[i] == 16) {
 					soundHandleMapping[i].soloudWave->loadRawWave16((short*)smk_get_audio(s, i), smk_get_audio_size(s, i), a_r[i], 1);
+
 				}
 				else if (a_d[i] == 8) {
 					soundHandleMapping[i].soloudWave->loadRawWave8((U8*)smk_get_audio(s, i), smk_get_audio_size(s, i), a_r[i], 1);
