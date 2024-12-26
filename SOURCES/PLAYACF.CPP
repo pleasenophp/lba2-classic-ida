@@ -9,7 +9,6 @@
 
 using namespace Ida;
 
-
 char		PathAcf[ADELINE_MAX_PATH] ;
 
 char		*ListAcf ;
@@ -390,6 +389,8 @@ S32	PlayAcf( char *name )
 	timer = TimerRefHR + (1000/fps);
 	for (c = 0; c < f; c++)
 	{
+		ReadNextAudioChunk(smkObject, a_t, smackflags);
+
 		U32 offset = 0;
 		frame = (U8 *)smk_get_video(smkObject);
 		pal = (U8*)smk_get_palette(smkObject);
@@ -416,8 +417,6 @@ S32	PlayAcf( char *name )
 		CopyBlock(0, 0, 640, 480, dest, 0, 40, Log);
 		PaletteSync(pal);
 
-		ReadNextAudioChunk(smkObject, a_t, smackflags);
-
 		do
 		{
 			MyGetInput();
@@ -440,16 +439,16 @@ fin_play:
 	BoxStaticFullflip();
 	SetBlackPal();
 
-	smk_close(smkObject);
-	free(dest);
-
-	// TODO - this frees to much, causing access violation next time
-	Free(decompbuf);
-
 	StopAudio(soloud);
-
 	soloud->deinit();
 	delete soloud;
+
+	smk_close(smkObject);
+	free(dest);
+	
+	// TODO - this frees to much, causing access violation next time
+	Free(decompbuf);
+	// HQF_Close();
 
 	ret = MyKey;
 
