@@ -12,7 +12,7 @@ namespace Ida
 {
 	class SmackerStream : public AudioSource
 	{
-		unsigned int mBitRate;
+		unsigned char mBitDepth;
 
 		float *mCurrentChunk = nullptr;
 		unsigned int mCurrentChunkSize = 0;
@@ -21,7 +21,7 @@ namespace Ida
 		std::mutex mMutex;
 
 	public:
-		SmackerStream(unsigned int bitRate);
+		SmackerStream(unsigned char bitDepth, float sampleRate);
 		virtual ~SmackerStream() = default;
 		void addNextChunk(const unsigned char *buffer, unsigned int sampleCount);
 		result readNext(float *buffer, unsigned int numberOfSamples);

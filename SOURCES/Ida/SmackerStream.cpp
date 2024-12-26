@@ -6,12 +6,14 @@ using namespace std;
 
 namespace Ida {
 
-	SmackerStream::SmackerStream(unsigned int bitRate) : mBitRate(bitRate)
+	SmackerStream::SmackerStream(unsigned char bitDepth, float sampleRate) : mBitDepth(bitDepth)
 	{
-		if (bitRate != 16 && bitRate != 8)
+		if (bitDepth != 16 && bitDepth != 8)
 		{
-			throw invalid_argument("Unsupported bit rate: "+to_string(bitRate));
+			throw invalid_argument("Unsupported bit rate: "+to_string(bitDepth));
 		}
+
+		mBaseSamplerate = sampleRate;
 	}
 
 	void SmackerStream::addNextChunk(const unsigned char* buffer, unsigned int sampleCount)
@@ -20,8 +22,9 @@ namespace Ida {
 
 		delete mCurrentChunk;
 		mCurrentChunk = new float[sampleCount];
+		mCurrentChunkSize = sampleCount;
 
-		if (mBitRate == 16)
+		if (mBitDepth == 16)
 		{
 			// Convert 16-bit samples (signed short) to float
 			const short* shortBuffer = reinterpret_cast<const short*>(buffer);
@@ -30,7 +33,7 @@ namespace Ida {
 				mCurrentChunk[i] = shortBuffer[i] / 32768.0f;
 			}
 		}
-		else if (mBitRate == 8)
+		else if (mBitDepth == 8)
 		{
 			// Convert 8-bit samples (unsigned char) to float
 			for (unsigned int i = 0; i < sampleCount; ++i)

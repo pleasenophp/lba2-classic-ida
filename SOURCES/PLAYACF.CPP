@@ -3,8 +3,11 @@
 
 #pragma pack(8)
 #include	"soloud.h"
-#include	"soloud_wav.h"
 #pragma pack(1)
+
+#include "SmackerStream.h"
+
+using namespace Ida;
 
 
 char		PathAcf[ADELINE_MAX_PATH] ;
@@ -24,7 +27,7 @@ U8  	*BufferSmack ;// initialisé dans MEM.CPP
 struct soundHandle2
 {
 	U32 soloudHandle = 0;
-	SoLoud::Wav* soloudWave = nullptr;
+	SmackerStream *soloudStream = nullptr;
 };
 
 soundHandle2 soundHandleMapping[SMACKER_TRACK_SIZE]; // smacker tracks
@@ -236,6 +239,46 @@ void	PlayAllAcf( void )
 |*									   *|
 \***************************************************************************/
 
+
+static void StartPlayAudio(SoLoud::Soloud *soloud, U8 availableTracks, U8 *bitDepthsPerTrack, U32 *sampleRatePerTrack, S32 smackFlags) 
+{
+	for (int i = 0; i < SMACKER_TRACK_SIZE; i++)
+	{
+		if (availableTracks & (1 << i) && (1 << i) & smackFlags)
+		{
+			SmackerStream *smackerStream = new SmackerStream(bitDepthsPerTrack[i], sampleRatePerTrack[i]);
+			soundHandleMapping[i].soloudStream = smackerStream;
+			soundHandleMapping[i].soloudHandle = soloud->play(*smackerStream, -1, 0, false, 0);
+		}
+	}
+}
+
+// TODO - can avaoid calculations here by just checking soloudStream exists
+static void ReadNextAudioChunk(const smk smkObject, U8 availableTracks, S32 smackFlags) {
+	for (int i = 0; i < SMACKER_TRACK_SIZE; i++)
+	{
+		if (availableTracks & (1 << i) && (1 << i) & smackFlags)
+		{
+			long sampleCount = smk_get_audio_size(smkObject, i);
+			const unsigned char *chunk = smk_get_audio(smkObject, i);
+			soundHandleMapping[i].soloudStream->addNextChunk(chunk, sampleCount);
+		}
+	}
+}
+
+static void StopAudio(SoLoud::Soloud *soloud) 
+{
+	for (int i = 0; i < SMACKER_TRACK_SIZE; i++)
+	{
+		soloud->stop(soundHandleMapping[i].soloudHandle);
+		if (soundHandleMapping[i].soloudStream) {
+			delete soundHandleMapping[i].soloudStream;
+			soundHandleMapping[i].soloudStream = nullptr;
+		}
+		soundHandleMapping[i].soloudHandle = 0;
+	}
+}
+
 S32	PlayAcf( char *name )
 {
 	// xesf
@@ -252,7 +295,7 @@ S32	PlayAcf( char *name )
 	U8* pal = nullptr;
 	S32 smackflags = SMK_AUDIO_TRACK_0;
 	U8* dest = nullptr;
-	SoLoud::Soloud* soloudStream = nullptr;
+	SoLoud::Soloud* soloud = nullptr;
 	S32 rate = 22050;
 	S32 chans = 2;
 
@@ -332,8 +375,8 @@ S32	PlayAcf( char *name )
 	smk_info_audio(s, &a_t, a_c, a_d, a_r);
 	fps = (U32)(1000000.0 / usf);
 
-	soloudStream = new SoLoud::Soloud();
-	soloudStream->init(SoLoud::Soloud::CLIP_ROUNDOFF, SoLoud::Soloud::BACKENDS::AUTO, rate, 0, chans);
+	soloud = new SoLoud::Soloud();
+	soloud->init(SoLoud::Soloud::CLIP_ROUNDOFF, SoLoud::Soloud::BACKENDS::AUTO, rate, 0, chans);
 
 	// video & audio
 
@@ -342,8 +385,7 @@ S32	PlayAcf( char *name )
 	
 	dest = (U8*)malloc(640 * 480);
 
-
-	// TODO - implement custom audio source in soloud to play streamed SMK audio here, and start play
+	StartPlayAudio(soloud, a_t, a_d, a_r, smackflags);
 
 	timer = TimerRefHR + (1000/fps);
 	for (c = 0; c < f; c++)
@@ -374,26 +416,7 @@ S32	PlayAcf( char *name )
 		CopyBlock(0, 0, 640, 480, dest, 0, 40, Log);
 		PaletteSync(pal);
 
-		// play audio
-		// TODO - looks like SoLoud doesn't suit good for playing stream like this, or we are using it wrong. After every chunk there is a click, also replay of video causes crash
-		for (i = 0; i < SMACKER_TRACK_SIZE; i++)
-		{
-			if (a_t & (1 << i) && (1 << i) & smackflags)
-			{
-				if (!soundHandleMapping[i].soloudWave) {
-					soundHandleMapping[i].soloudWave = new SoLoud::Wav();
-				}
-				if (a_d[i] == 16) {
-					soundHandleMapping[i].soloudWave->loadRawWave16((short*)smk_get_audio(s, i), smk_get_audio_size(s, i), a_r[i], 1);
-
-				}
-				else if (a_d[i] == 8) {
-					soundHandleMapping[i].soloudWave->loadRawWave8((U8*)smk_get_audio(s, i), smk_get_audio_size(s, i), a_r[i], 1);
-				}
-				//if (!soloudStream->isValidVoiceHandle(soundHandleMapping[i].soloudHandle))
-				soundHandleMapping[i].soloudHandle = soloudStream->play(*soundHandleMapping[i].soloudWave, -1, 0, false, 0);
-			}
-		}
+		ReadNextAudioChunk(s, a_t, smackflags);
 
 		do
 		{
@@ -421,18 +444,10 @@ fin_play:
 	free(dest);
 	Free(decompbuf);
 
-	for (i = 0; i < SMACKER_TRACK_SIZE; i++)
-	{
-		soloudStream->stop(soundHandleMapping[i].soloudHandle);
+	StopAudio(soloud);
 
-		if (soundHandleMapping[i].soloudWave) {
-			delete soundHandleMapping[i].soloudWave;
-			soundHandleMapping[i].soloudWave = nullptr;
-		}
-		soundHandleMapping[i].soloudHandle = 0;
-	}
-	soloudStream->deinit();
-	delete soloudStream;
+	soloud->deinit();
+	delete soloud;
 
 	ret = MyKey;
 
