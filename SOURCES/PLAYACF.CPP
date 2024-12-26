@@ -286,7 +286,7 @@ S32	PlayAcf( char *name )
 	S32	k, n;
 	S32	ret;
 	U32 fps, timer, size;
-	smk s;
+	smk smkObject;
 	double usf;
 	U8	a_t, a_c[SMACKER_TRACK_SIZE], a_d[SMACKER_TRACK_SIZE];
 	U32	a_r[SMACKER_TRACK_SIZE];
@@ -350,14 +350,14 @@ S32	PlayAcf( char *name )
 	if (!size)
 		TheEnd(PROGRAM_OK, MessageNoCD);
 
-	s = smk_open_memory(decompbuf, size);
+	smkObject = smk_open_memory(decompbuf, size);
 
-	if (!s)
+	if (!smkObject)
 		TheEnd(PROGRAM_OK, MessageNoCD);
 
 	if (!decompbuf)
 	{
-		smk_close(s);
+		smk_close(smkObject);
 		return 0;
 	}
 
@@ -370,9 +370,9 @@ S32	PlayAcf( char *name )
 	InitWaitNoKey();
 	InitWaitNoInput(I_JOY | I_FIRE | I_MENUS);
 
-	smk_info_all(s, NULL, &f, &usf);
-	smk_info_video(s, &w, &h, NULL);
-	smk_info_audio(s, &a_t, a_c, a_d, a_r);
+	smk_info_all(smkObject, NULL, &f, &usf);
+	smk_info_video(smkObject, &w, &h, NULL);
+	smk_info_audio(smkObject, &a_t, a_c, a_d, a_r);
 	fps = (U32)(1000000.0 / usf);
 
 	soloud = new SoLoud::Soloud();
@@ -380,8 +380,8 @@ S32	PlayAcf( char *name )
 
 	// video & audio
 
-	smk_enable_all(s, SMK_VIDEO_TRACK | a_t);
-	smk_first(s);
+	smk_enable_all(smkObject, SMK_VIDEO_TRACK | a_t);
+	smk_first(smkObject);
 	
 	dest = (U8*)malloc(640 * 480);
 
@@ -391,8 +391,8 @@ S32	PlayAcf( char *name )
 	for (c = 0; c < f; c++)
 	{
 		U32 offset = 0;
-		frame = (U8 *)smk_get_video(s);
-		pal = (U8*)smk_get_palette(s);
+		frame = (U8 *)smk_get_video(smkObject);
+		pal = (U8*)smk_get_palette(smkObject);
 
 		// very hacky smacker full screen
 		// improve it with memcpy
@@ -416,7 +416,7 @@ S32	PlayAcf( char *name )
 		CopyBlock(0, 0, 640, 480, dest, 0, 40, Log);
 		PaletteSync(pal);
 
-		ReadNextAudioChunk(s, a_t, smackflags);
+		ReadNextAudioChunk(smkObject, a_t, smackflags);
 
 		do
 		{
@@ -431,7 +431,7 @@ S32	PlayAcf( char *name )
 
 		timer = TimerRefHR + (1000 / fps);
 
-		smk_next(s);
+		smk_next(smkObject);
 	}
 
 fin_play:
@@ -440,8 +440,10 @@ fin_play:
 	BoxStaticFullflip();
 	SetBlackPal();
 
-	smk_close(s);
+	smk_close(smkObject);
 	free(dest);
+
+	// TODO - this frees to much, causing access violation next time
 	Free(decompbuf);
 
 	StopAudio(soloud);

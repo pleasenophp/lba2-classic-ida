@@ -16,6 +16,12 @@ namespace Ida {
 		mBaseSamplerate = sampleRate;
 	}
 
+	/*
+	SmackerStream::~SmackerStream() {
+
+	}
+	*/
+
 	void SmackerStream::addNextChunk(const unsigned char* buffer, unsigned int sampleCount)
 	{
 		lock_guard<mutex> lock(mMutex);
