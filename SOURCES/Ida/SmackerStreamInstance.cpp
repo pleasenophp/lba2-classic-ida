@@ -25,8 +25,12 @@ namespace Ida
 
 	bool SmackerStreamInstance::hasEnded()
 	{
-		// TODO - see if we need to return true here in the end
-		return false;
+		return mHasEnded;
+	}
+
+	void SmackerStreamInstance::stop() 
+	{
+		mHasEnded = true;
 	}
 }
 

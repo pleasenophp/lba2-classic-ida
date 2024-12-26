@@ -14,13 +14,15 @@ namespace Ida {
 		}
 
 		mBaseSamplerate = sampleRate;
+		this->setSingleInstance(1);
 	}
 
-	/*
 	SmackerStream::~SmackerStream() {
-
+		if (mInstance) {
+			((SmackerStreamInstance*)mInstance)->stop();
+		}
+		delete mCurrentChunk;
 	}
-	*/
 
 	void SmackerStream::addNextChunk(const unsigned char* buffer, unsigned int sampleCount)
 	{
@@ -70,7 +72,8 @@ namespace Ida {
 
 	AudioSourceInstance *SmackerStream::createInstance()
 	{
-		return new SmackerStreamInstance(this);
+		mInstance = new SmackerStreamInstance(this);
+		return mInstance;
 	}
 
 }
