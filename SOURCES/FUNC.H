@@ -47,7 +47,7 @@ extern void	VsyncTimer( void ) ;
 //yaz #define	PaletteSync(pal)	{ PaletteVblVESA(TRUE); Palette(pal); PaletteVblVESA(FALSE); }
 //#define	PaletteSync(pal)	{ VsyncTimer(); Palette(pal); }
 
-extern void	PaletteSync( U8 *palette ) ;
+extern void	PaletteSync( U8 *palette, bool videoMode = false ) ;
 
 #pragma	aux	VsyncTimer
 

@@ -396,8 +396,11 @@ S32	PlayAcf( char *name )
 		pal = (U8*)smk_get_palette(smkObject);
 
 		// very hacky smacker full screen
-		// improve it with memcpy
+		// TODO - improve it with memcpy
 		memset(dest, 0, 640 * 480);
+
+		offset = 640 * 40;
+
 		for (j = 0; j < h; j++) {
 			U32 innerOffset = 0;
 			for (k = 0; k < w; k++) {
@@ -405,6 +408,7 @@ S32	PlayAcf( char *name )
 				*(dest + offset + 1) = *(frame++);
 				offset += 2;
 			}
+
 			innerOffset = offset - 640;
 			for (k = 0; k < w; k++) {
 				*(dest + offset) = *(dest + innerOffset);
@@ -414,8 +418,8 @@ S32	PlayAcf( char *name )
 			}
 		}
 
-		CopyBlock(0, 0, 640, 480, dest, 0, 40, Log);
-		PaletteSync(pal);
+		CopyBlock(0, 0, 640, 480, dest, 0, 0, Log);
+		PaletteSync(pal, true);
 
 		do
 		{

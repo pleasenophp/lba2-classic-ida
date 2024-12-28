@@ -124,7 +124,7 @@ void SetPaletteDirect(void *pal, S32 start, S32 n)
 
 }
 
-void	PaletteSync( U8 *palette ) 
+void	PaletteSync( U8 *palette, bool videoMode = false ) 
 {
 	for(U32 i=0;i<256; i++)
 	{
@@ -133,9 +133,12 @@ void	PaletteSync( U8 *palette )
 
 	SDL_LockSurface(sdlScreen);
 
+	U32 yStart = videoMode ? 40 : 0;
+	U32 yEnd = videoMode ? 440 : 480;
+
 	for(U32 x=0; x<640; x++)
 	{
-		for(U32 y=0; y<480; y++)
+		for(U32 y=yStart; y<yEnd; y++)
 		{
 			unsigned char color = ((unsigned char*)Log)[y*640 + x];
 
