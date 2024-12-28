@@ -30,15 +30,11 @@ namespace Ida
 			// The SoLoud requires to give them double as many samples as requested, but in this order: L0, L1, L2, ... LN, R0, R1, R2, ... RN
 
 			samplesToRead <<= 1;
-
-			// TODO - pre-allocate
-			float *tempBuffer = new float[samplesToRead];
-
-			auto readSamples = mParent->readNext(tempBuffer, samplesToRead);
+			SmackerStream::AllocateSampleBuffer(&mStereoBuffer, &mStereoBufferSize, samplesToRead);
+			auto readSamples = mParent->readNext(mStereoBuffer, samplesToRead);
 
 			if (!readSamples) 
 			{
-				delete[] tempBuffer;
 				return 0;
 			}
 
@@ -49,11 +45,9 @@ namespace Ida
 
 			for (unsigned int i = 0; i < channelSamples; ++i) 
 			{
-				leftChannel[i] = *(tempBuffer + i * 2);
-				rightChannel[i] = *(tempBuffer + i * 2 + 1);
+				leftChannel[i] = *(mStereoBuffer + i * 2);
+				rightChannel[i] = *(mStereoBuffer + i * 2 + 1);
 			}
-
-			delete[] tempBuffer;
 
 			if (bufferSize > readSamples)
 			{

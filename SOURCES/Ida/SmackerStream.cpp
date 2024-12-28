@@ -30,11 +30,11 @@ namespace Ida {
 		delete[] mSampleBuffer;
 	}
 
-	void SmackerStream::allocateSampleBuffer(unsigned int numberOfSamples) {
-		if (numberOfSamples > mSampleBufferSize || !mSampleBuffer) {
-			mSampleBufferSize = numberOfSamples << 1;
-			delete[] mSampleBuffer;
-			mSampleBuffer = new float[mSampleBufferSize];
+	void SmackerStream::AllocateSampleBuffer(float **buffer, unsigned int *currentBufferSize, unsigned int numberOfSamples) {
+		if (numberOfSamples > *currentBufferSize || !*buffer) {
+			*currentBufferSize = numberOfSamples << 1; 
+			delete[] *buffer;
+			*buffer = new float[*currentBufferSize];
 		}
 	}
 
@@ -43,7 +43,7 @@ namespace Ida {
 		// sampleCount = bufferSize / 2 if bit depth is 16 bit and bufferSize if it's 8 bit
 		auto sampleCount = bufferSize >> (mBitDepth >> 4);
 
-		allocateSampleBuffer(sampleCount);
+		AllocateSampleBuffer(&mSampleBuffer, &mSampleBufferSize, sampleCount);
 
 		if (mBitDepth == 16)
 		{
