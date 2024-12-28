@@ -15,7 +15,7 @@ namespace Ida
 		unsigned char mBitDepth;
 
 		float *mCurrentChunk = nullptr;
-		AudioSourceInstance* mInstance;
+		AudioSourceInstance* mInstance = nullptr;
 		unsigned int mCurrentChunkSize = 0;
 		unsigned int mCurrentPosition = 0;
 

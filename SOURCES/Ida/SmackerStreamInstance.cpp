@@ -10,19 +10,27 @@ namespace Ida
 	{
 		mParent = parent;
 		mCounter = 0;
-		SmackerStreamInstance *a = this;
-		cout << a->mBaseSamplerate;
 	}
 
 	unsigned int SmackerStreamInstance::getAudio(float* buffer, unsigned int samplesToRead, unsigned int bufferSize)
 	{
-		/*
 		unsigned int readSamples = mParent->readNext(buffer, samplesToRead);
-		memset(buffer + readSamples, 0, (bufferSize - readSamples) * sizeof(float));
+
+		if (bufferSize > samplesToRead)
+		{
+			cout << "SAMPLES TO READ WAS LESS THAN bufferSize\n";
+			memset(buffer + readSamples, 0, (bufferSize - readSamples) * sizeof(float));
+		}
+
+		if (samplesToRead < 512) {
+			cout << "He asked us to read " << samplesToRead << "\n";
+		}
+
+		cout << "Requested " << samplesToRead << " samples, and gave " << readSamples << "\n";
 
 		return readSamples;
-		*/
 
+		/*
 		cout << "Samples to read: " << samplesToRead << "; Buffer size: " << bufferSize << "\n";
 
 		for (unsigned int i = 0; i < samplesToRead; ++i)
@@ -35,7 +43,7 @@ namespace Ida
 			memset(buffer + samplesToRead, 0, (bufferSize - samplesToRead) * sizeof(float));
 
 		return samplesToRead;
-
+		*/
 	}
 
 	result SmackerStreamInstance::rewind()

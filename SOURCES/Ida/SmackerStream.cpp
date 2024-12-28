@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 #include "SmackerStream.h"
 #include "SmackerStreamInstance.h"
 
@@ -12,6 +13,9 @@ namespace Ida {
 		{
 			throw invalid_argument("Unsupported bit rate: "+to_string(bitDepth));
 		}
+
+		// TODO - support user amount of channels 
+		mChannels = 1;
 
 		mBaseSamplerate = sampleRate;
 		this->setSingleInstance(1);
@@ -34,6 +38,8 @@ namespace Ida {
 		delete mCurrentChunk;
 		mCurrentChunk = new float[sampleCount];
 		mCurrentChunkSize = sampleCount;
+
+		cout << "ADD NEXT CHUNK " << sampleCount << "\n";
 
 		if (mBitDepth == 16)
 		{
@@ -64,7 +70,10 @@ namespace Ida {
 			return 0;
 
 		unsigned int samplesToCopy = min(numberOfSamples, mCurrentChunkSize - mCurrentPosition);
-		if (!samplesToCopy)
+
+		cout << "Requested " << numberOfSamples << "; Current size: " << mCurrentChunkSize << "; currentPosition: " << mCurrentPosition << "; samples to copy: " << samplesToCopy << "\n";
+
+		if (samplesToCopy <= 0) 
 			return 0;
 
 		memcpy(buffer, mCurrentChunk + mCurrentPosition, samplesToCopy * sizeof(float));
