@@ -252,16 +252,16 @@ static void StartPlayAudio(SoLoud::Soloud *soloud, U8 availableTracks, U8 *chann
 	}
 }
 
-// TODO - can avaoid calculations here by just checking soloudStream exists
 static void ReadNextAudioChunk(const smk smkObject, U8 availableTracks, S32 smackFlags) {
 	for (int i = 0; i < SMACKER_TRACK_SIZE; i++)
 	{
-		if (availableTracks & (1 << i) && (1 << i) & smackFlags)
-		{
-			long sampleCount = smk_get_audio_size(smkObject, i);
-			const unsigned char *chunk = smk_get_audio(smkObject, i);
-			soundHandleMapping[i].soloudStream->addNextChunk(chunk, sampleCount);
+		if (!soundHandleMapping[i].soloudStream) {
+			continue;
 		}
+
+		long sampleCount = smk_get_audio_size(smkObject, i);
+		const unsigned char *chunk = smk_get_audio(smkObject, i);
+		soundHandleMapping[i].soloudStream->addNextChunk(chunk, sampleCount);
 	}
 }
 

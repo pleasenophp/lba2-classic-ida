@@ -42,7 +42,6 @@ namespace Ida
 				return 0;
 			}
 
-
 			assert(readSamples % 2 == 0);
 			auto channelSamples = readSamples >> 1;
 			auto leftChannel = buffer;
