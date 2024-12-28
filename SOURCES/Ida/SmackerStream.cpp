@@ -39,7 +39,7 @@ namespace Ida {
 		mCurrentChunk = new float[sampleCount];
 		mCurrentChunkSize = sampleCount;
 
-		cout << "ADD NEXT CHUNK " << sampleCount << "\n";
+		cout << "ADD NEXT CHUNK " << sampleCount << "; Thread: " << this_thread::get_id() << "\n";
 
 		if (mBitDepth == 16)
 		{

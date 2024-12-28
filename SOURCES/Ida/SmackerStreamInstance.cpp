@@ -16,17 +16,12 @@ namespace Ida
 	{
 		unsigned int readSamples = mParent->readNext(buffer, samplesToRead);
 
-		if (bufferSize > samplesToRead)
+		if (bufferSize > readSamples)
 		{
-			cout << "SAMPLES TO READ WAS LESS THAN bufferSize\n";
 			memset(buffer + readSamples, 0, (bufferSize - readSamples) * sizeof(float));
 		}
 
-		if (samplesToRead < 512) {
-			cout << "He asked us to read " << samplesToRead << "\n";
-		}
-
-		cout << "Requested " << samplesToRead << " samples, and gave " << readSamples << "\n";
+		cout << "Requested " << samplesToRead << " samples, and gave " << readSamples << "; Thread: " << this_thread::get_id() << "\n";
 
 		return readSamples;
 
