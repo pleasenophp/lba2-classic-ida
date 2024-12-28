@@ -8,7 +8,6 @@ namespace Ida
 	SmackerStreamInstance::SmackerStreamInstance(SmackerStream* parent)
 	{
 		mParent = parent;
-		mCounter = 0;
 	}
 
 	unsigned int SmackerStreamInstance::getAudio(float *buffer, unsigned int samplesToRead, unsigned int bufferSize)

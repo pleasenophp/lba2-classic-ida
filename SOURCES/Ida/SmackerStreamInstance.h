@@ -14,7 +14,6 @@ namespace Ida
 	{
 		SmackerStream *mParent;
 		bool mHasEnded = false;
-		int mCounter;
 
 		float *mStereoBuffer = nullptr;
 		unsigned int mStereoBufferSize = 0;
