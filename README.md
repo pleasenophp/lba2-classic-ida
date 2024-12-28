@@ -1,6 +1,6 @@
 # Little Big Adventure 2 - Ida edition
 
-This is a work on the **Little Big Adventure 2 - Engine source code - Community** and **yaz0r** fork of it, in order to make oiobuildable and fully playable on Windows.
+This is a work on the **Little Big Adventure 2 - Engine source code - Community** and **yaz0r** fork of it, in order to make it buildable and fully playable on Windows.
 
 ## Prepare to Debug
 
@@ -41,17 +41,17 @@ This is a work on the **Little Big Adventure 2 - Engine source code - Community*
 
 ## Current issues
 
-- Audio of the video does not play correctly using soloud and crashes
-  - Test video that started in the middle of the game
+- Some videos are cut a bit from the top, like landing Esmers
 - Full screen / higher res doesn't work
 - Make it work with the data files from Steam version as well
 - Test game with different languages, make it easy to switch languages
 - The volume options for sfx and voices seem to be ignored when changing them in the options menu, even though they saved and loaded to/from config
-- Create an easy way to deploy
+- Create configuration to build portable binaries, where necessary paths to assets can be specified in config file
 
 ### Minor issues
 - Voice audio and sfx have clicks after every play in the end (general soloud issue?)
 - Video has a line with non-black color on top when it started from the street
+- When reading long text like Zoe's diary or Esmer's first speech, the audio plays with big delays
 
 
 # Little Big Adventure 2 - Engine source code - Community

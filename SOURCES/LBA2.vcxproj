@@ -169,8 +169,6 @@
     <ClInclude Include="GRILLE.H" />
     <ClInclude Include="HERCULE.H" />
     <ClInclude Include="HOLO.H" />
-    <ClInclude Include="Ida\SmackerStream.h" />
-    <ClInclude Include="Ida\SmackerStreamInstance.h" />
     <ClInclude Include="IMPACT.H" />
     <ClInclude Include="INCRUST.H" />
     <ClInclude Include="INPUT.H" />
@@ -195,6 +193,8 @@
     <ClInclude Include="VALIDPOS.H" />
     <ClInclude Include="WAGON.H" />
     <ClInclude Include="ZV.H" />
+    <ClInclude Include="Ida\SmackerStream.h" />
+    <ClInclude Include="Ida\SmackerStreamInstance.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DEXT\DECORS.CPP" />
@@ -241,8 +241,6 @@
     <ClCompile Include="HOLOBODY.CPP" />
     <ClCompile Include="HOLOGLOB.CPP" />
     <ClCompile Include="HOLOPLAN.CPP" />
-    <ClCompile Include="Ida\SmackerStreamInstance.cpp" />
-    <ClCompile Include="Ida\SmackerStream.cpp" />
     <ClCompile Include="IMPACT.CPP" />
     <ClCompile Include="INCRUST.CPP" />
     <ClCompile Include="INPUT.CPP" />
@@ -277,6 +275,8 @@
     <ClCompile Include="VERSION.CPP" />
     <ClCompile Include="WAGON.CPP" />
     <ClCompile Include="ZV.CPP" />
+    <ClCompile Include="Ida\SmackerStreamInstance.cpp" />
+    <ClCompile Include="Ida\SmackerStream.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lib386\Lib386.vcxproj">
