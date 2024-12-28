@@ -25,19 +25,14 @@ namespace Ida {
 		if (mInstance) {
 			((SmackerStreamInstance*)mInstance)->stop();
 		}
-		delete mCurrentChunk;
 	}
 
 	void SmackerStream::addNextChunk(const unsigned char *buffer, unsigned int bufferSize)
 	{
-		lock_guard<mutex> lock(mMutex);
-
 		// sampleCount = bufferSize / 2 if bit depth is 16 bit and bufferSize if it's 8 bit
 		int sampleCount = bufferSize >> (mBitDepth >> 4);
 
-		delete mCurrentChunk;
-		mCurrentChunk = new float[sampleCount];
-		mCurrentChunkSize = sampleCount;
+		float *samples = new float[sampleCount];
 
 		cout << "ADD NEXT CHUNK " << sampleCount << "; Thread: " << this_thread::get_id() << "\n";
 
@@ -47,7 +42,7 @@ namespace Ida {
 			const short* shortBuffer = reinterpret_cast<const short*>(buffer);
 			for (unsigned int i = 0; i < sampleCount; ++i)
 			{
-				mCurrentChunk[i] = shortBuffer[i] / 32768.0f;
+				samples[i] = shortBuffer[i] / 32768.0f;
 			}
 		}
 		else if (mBitDepth == 8)
@@ -55,31 +50,27 @@ namespace Ida {
 			// Convert 8-bit samples (unsigned char) to float
 			for (unsigned int i = 0; i < sampleCount; ++i)
 			{
-				mCurrentChunk[i] = ((signed)buffer[i] - 128) / 128.0f;
+				samples[i] = ((signed)buffer[i] - 128) / 128.0f;
 			}
 		}
 
-		mCurrentPosition = 0;
+		lock_guard<mutex> lock(mMutex);
+		mBuffer.insert(mBuffer.end(), samples, samples + sampleCount);
 	}
 
-	result SmackerStream::readNext(float *buffer, unsigned int numberOfSamples)
+	unsigned int SmackerStream::readNext(float *buffer, unsigned int numberOfSamples)
 	{
 		lock_guard<mutex> lock(mMutex);
 
-		if (!mCurrentChunk || !mCurrentChunkSize)
+		if (mBuffer.empty())
 			return 0;
 
-		unsigned int samplesToCopy = min(numberOfSamples, mCurrentChunkSize - mCurrentPosition);
+		unsigned int samplesToRead = min(numberOfSamples, mBuffer.size());
+		copy(mBuffer.begin(), mBuffer.begin() + numberOfSamples, buffer);
 
-		cout << "Requested " << numberOfSamples << "; Current size: " << mCurrentChunkSize << "; currentPosition: " << mCurrentPosition << "; samples to copy: " << samplesToCopy << "\n";
+		mBuffer.erase(mBuffer.begin(), mBuffer.begin() + samplesToRead);
 
-		if (samplesToCopy <= 0) 
-			return 0;
-
-		memcpy(buffer, mCurrentChunk + mCurrentPosition, samplesToCopy * sizeof(float));
-		mCurrentPosition += samplesToCopy;
-
-		return samplesToCopy;
+		return samplesToRead;
 	}
 
 	AudioSourceInstance *SmackerStream::createInstance()

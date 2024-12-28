@@ -25,7 +25,7 @@ namespace Ida
 		SmackerStream(unsigned char bitDepth, float sampleRate);
 		virtual ~SmackerStream();
 		void addNextChunk(const unsigned char *buffer, unsigned int bufferSize);
-		result readNext(float *buffer, unsigned int numberOfSamples);
+		unsigned int readNext(float *buffer, unsigned int numberOfSamples);
 		virtual AudioSourceInstance *createInstance();
 	};
 };
