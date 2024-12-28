@@ -249,7 +249,7 @@ static void StartPlayAudio(SoLoud::Soloud *soloud, U8 availableTracks, U8 *chann
 		if (availableTracks & (1 << i) && (1 << i) & smackFlags)
 		{
 			// TODO - music has 2 channels, support 2 channels as well
-			SmackerStream *smackerStream = new SmackerStream(bitDepthsPerTrack[i], sampleRatePerTrack[i]);
+			SmackerStream *smackerStream = new SmackerStream(bitDepthsPerTrack[i], sampleRatePerTrack[i], channelsPerTrack[i]);
 			soundHandleMapping[i].soloudStream = smackerStream;
 			soundHandleMapping[i].soloudHandle = soloud->play(*smackerStream, -1, 0, false, 0);
 		}

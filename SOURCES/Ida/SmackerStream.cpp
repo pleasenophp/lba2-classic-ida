@@ -6,16 +6,19 @@ using namespace std;
 
 namespace Ida {
 
-	SmackerStream::SmackerStream(unsigned char bitDepth, float sampleRate) : mBitDepth(bitDepth)
+	SmackerStream::SmackerStream(unsigned char bitDepth, float sampleRate, unsigned char numChannels) : mBitDepth(bitDepth)
 	{
 		if (bitDepth != 16 && bitDepth != 8)
 		{
 			throw invalid_argument("Unsupported bit rate: "+to_string(bitDepth));
 		}
 
-		// TODO - support user amount of channels 
-		mChannels = 1;
+		if (!numChannels || numChannels > 2) 
+		{
+			throw invalid_argument("Unsupported number of channels: "+to_string(numChannels));
+		}
 
+		mChannels = numChannels;
 		mBaseSamplerate = sampleRate;
 		this->setSingleInstance(1);
 	}
@@ -24,13 +27,13 @@ namespace Ida {
 		if (mInstance) {
 			((SmackerStreamInstance*)mInstance)->stop();
 		}
-		delete mSampleBuffer;
+		delete[] mSampleBuffer;
 	}
 
 	void SmackerStream::allocateSampleBuffer(unsigned int numberOfSamples) {
 		if (numberOfSamples > mSampleBufferSize || !mSampleBuffer) {
 			mSampleBufferSize = numberOfSamples << 1;
-			delete mSampleBuffer;
+			delete[] mSampleBuffer;
 			mSampleBuffer = new float[mSampleBufferSize];
 		}
 	}
@@ -38,14 +41,14 @@ namespace Ida {
 	void SmackerStream::addNextChunk(const unsigned char *buffer, unsigned int bufferSize)
 	{
 		// sampleCount = bufferSize / 2 if bit depth is 16 bit and bufferSize if it's 8 bit
-		int sampleCount = bufferSize >> (mBitDepth >> 4);
+		auto sampleCount = bufferSize >> (mBitDepth >> 4);
 
-		this->allocateSampleBuffer(sampleCount);
+		allocateSampleBuffer(sampleCount);
 
 		if (mBitDepth == 16)
 		{
 			// Convert 16-bit samples (signed short) to float
-			const short* shortBuffer = reinterpret_cast<const short*>(buffer);
+			auto shortBuffer = reinterpret_cast<const short*>(buffer);
 			for (unsigned int i = 0; i < sampleCount; ++i)
 			{
 				mSampleBuffer[i] = shortBuffer[i] / 32768.0f;
@@ -84,6 +87,5 @@ namespace Ida {
 		mInstance = new SmackerStreamInstance(this);
 		return mInstance;
 	}
-
 }
 

@@ -1,6 +1,6 @@
 # Little Big Adventure 2 - Ida edition
 
-This is a work on the **Little Big Adventure 2 - Engine source code - Community** in order to make it easily buildable and fully playable on Windows.
+This is a work on the **Little Big Adventure 2 - Engine source code - Community** and **yaz0r** fork of it, in order to make oiobuildable and fully playable on Windows.
 
 ## Prepare to Debug
 

@@ -27,7 +27,7 @@ namespace Ida
 		void allocateSampleBuffer(unsigned int numberOfSamples);
 
 	public:
-		SmackerStream(unsigned char bitDepth, float sampleRate);
+		SmackerStream(unsigned char bitDepth, float sampleRate, unsigned char numChannels);
 		virtual ~SmackerStream();
 		void addNextChunk(const unsigned char *buffer, unsigned int bufferSize);
 		unsigned int readNext(float *buffer, unsigned int numberOfSamples);
