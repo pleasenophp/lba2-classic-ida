@@ -28,7 +28,7 @@ namespace Ida {
 		delete mCurrentChunk;
 	}
 
-	void SmackerStream::addNextChunk(const unsigned char* buffer, unsigned int bufferSize)
+	void SmackerStream::addNextChunk(const unsigned char *buffer, unsigned int bufferSize)
 	{
 		lock_guard<mutex> lock(mMutex);
 

@@ -12,7 +12,7 @@ namespace Ida
 		mCounter = 0;
 	}
 
-	unsigned int SmackerStreamInstance::getAudio(float* buffer, unsigned int samplesToRead, unsigned int bufferSize)
+	unsigned int SmackerStreamInstance::getAudio(float *buffer, unsigned int samplesToRead, unsigned int bufferSize)
 	{
 		unsigned int readSamples = mParent->readNext(buffer, samplesToRead);
 
