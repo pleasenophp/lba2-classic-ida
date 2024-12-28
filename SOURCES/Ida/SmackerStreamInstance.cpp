@@ -6,12 +6,12 @@ using namespace std;
 
 namespace Ida
 {
-	static int counter;
-
 	SmackerStreamInstance::SmackerStreamInstance(SmackerStream* parent)
 	{
 		mParent = parent;
-		counter = 0;
+		mCounter = 0;
+		SmackerStreamInstance *a = this;
+		cout << a->mBaseSamplerate;
 	}
 
 	unsigned int SmackerStreamInstance::getAudio(float* buffer, unsigned int samplesToRead, unsigned int bufferSize)
@@ -27,7 +27,7 @@ namespace Ida
 
 		for (unsigned int i = 0; i < samplesToRead; ++i)
 		{
-			float time = static_cast<float>(++counter) / 22050.0f;
+			float time = static_cast<float>(++mCounter) / 22050.0f;
 			buffer[i] = 0.8f * std::sin(2.0f * M_PI * 220.f * time);
 		}
 		

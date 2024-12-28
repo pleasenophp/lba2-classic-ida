@@ -14,6 +14,7 @@ namespace Ida
 	{
 		SmackerStream* mParent;
 		bool mHasEnded = false;
+		int mCounter;
 	public:
 		SmackerStreamInstance(SmackerStream* parent);
 		void stop();
