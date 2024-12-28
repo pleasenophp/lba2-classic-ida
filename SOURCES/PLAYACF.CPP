@@ -243,12 +243,8 @@ static void StartPlayAudio(SoLoud::Soloud *soloud, U8 availableTracks, U8 *chann
 {
 	for (int i = 0; i < SMACKER_TRACK_SIZE; i++)
 	{
-		// TODO - for debug
-		if (i != 0) continue;
-
 		if (availableTracks & (1 << i) && (1 << i) & smackFlags)
 		{
-			// TODO - music has 2 channels, support 2 channels as well
 			SmackerStream *smackerStream = new SmackerStream(bitDepthsPerTrack[i], sampleRatePerTrack[i], channelsPerTrack[i]);
 			soundHandleMapping[i].soloudStream = smackerStream;
 			soundHandleMapping[i].soloudHandle = soloud->play(*smackerStream, -1, 0, false, 0);
@@ -260,9 +256,6 @@ static void StartPlayAudio(SoLoud::Soloud *soloud, U8 availableTracks, U8 *chann
 static void ReadNextAudioChunk(const smk smkObject, U8 availableTracks, S32 smackFlags) {
 	for (int i = 0; i < SMACKER_TRACK_SIZE; i++)
 	{
-		// TODO - for debug
-		if (i != 0) continue;
-
 		if (availableTracks & (1 << i) && (1 << i) & smackFlags)
 		{
 			long sampleCount = smk_get_audio_size(smkObject, i);
@@ -276,9 +269,6 @@ static void StopAudio(SoLoud::Soloud *soloud)
 {
 	for (int i = 0; i < SMACKER_TRACK_SIZE; i++)
 	{
-		// TODO - for debug
-		if (i != 0) continue;
-
 		soloud->stop(soundHandleMapping[i].soloudHandle);
 		if (soundHandleMapping[i].soloudStream) {
 			delete soundHandleMapping[i].soloudStream;
