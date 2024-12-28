@@ -24,9 +24,12 @@ namespace Ida {
 		delete mCurrentChunk;
 	}
 
-	void SmackerStream::addNextChunk(const unsigned char* buffer, unsigned int sampleCount)
+	void SmackerStream::addNextChunk(const unsigned char* buffer, unsigned int bufferSize)
 	{
 		lock_guard<mutex> lock(mMutex);
+
+		// sampleCount = bufferSize / 2 if bit depth is 16 bit and bufferSize if it's 8 bit
+		int sampleCount = bufferSize >> (mBitDepth >> 4);
 
 		delete mCurrentChunk;
 		mCurrentChunk = new float[sampleCount];

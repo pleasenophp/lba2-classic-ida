@@ -1,4 +1,4 @@
-#include	"c_extern.h"
+#include "c_extern.h"
 #include <smacker/smacker.h>
 
 #pragma pack(8)
@@ -445,10 +445,7 @@ fin_play:
 
 	smk_close(smkObject);
 	free(dest);
-	
-	// TODO - this frees to much, causing access violation next time
 	Free(decompbuf);
-	// HQF_Close();
 
 	ret = MyKey;
 
