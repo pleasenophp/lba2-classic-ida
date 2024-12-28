@@ -21,6 +21,11 @@ namespace Ida
 		mutex mMutex;
 		deque<float> mBuffer;
 
+		float *mSampleBuffer = nullptr;
+		unsigned int mSampleBufferSize = 0;
+
+		void allocateSampleBuffer(unsigned int numberOfSamples);
+
 	public:
 		SmackerStream(unsigned char bitDepth, float sampleRate);
 		virtual ~SmackerStream();

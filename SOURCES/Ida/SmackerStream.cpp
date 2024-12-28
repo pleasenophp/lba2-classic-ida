@@ -1,5 +1,4 @@
 #include <string>
-#include <iostream>
 #include "SmackerStream.h"
 #include "SmackerStreamInstance.h"
 
@@ -25,6 +24,15 @@ namespace Ida {
 		if (mInstance) {
 			((SmackerStreamInstance*)mInstance)->stop();
 		}
+		delete mSampleBuffer;
+	}
+
+	void SmackerStream::allocateSampleBuffer(unsigned int numberOfSamples) {
+		if (numberOfSamples > mSampleBufferSize || !mSampleBuffer) {
+			mSampleBufferSize = numberOfSamples << 1;
+			delete mSampleBuffer;
+			mSampleBuffer = new float[mSampleBufferSize];
+		}
 	}
 
 	void SmackerStream::addNextChunk(const unsigned char *buffer, unsigned int bufferSize)
@@ -32,9 +40,7 @@ namespace Ida {
 		// sampleCount = bufferSize / 2 if bit depth is 16 bit and bufferSize if it's 8 bit
 		int sampleCount = bufferSize >> (mBitDepth >> 4);
 
-		float *samples = new float[sampleCount];
-
-		cout << "ADD NEXT CHUNK " << sampleCount << "; Thread: " << this_thread::get_id() << "\n";
+		this->allocateSampleBuffer(sampleCount);
 
 		if (mBitDepth == 16)
 		{
@@ -42,7 +48,7 @@ namespace Ida {
 			const short* shortBuffer = reinterpret_cast<const short*>(buffer);
 			for (unsigned int i = 0; i < sampleCount; ++i)
 			{
-				samples[i] = shortBuffer[i] / 32768.0f;
+				mSampleBuffer[i] = shortBuffer[i] / 32768.0f;
 			}
 		}
 		else if (mBitDepth == 8)
@@ -50,12 +56,12 @@ namespace Ida {
 			// Convert 8-bit samples (unsigned char) to float
 			for (unsigned int i = 0; i < sampleCount; ++i)
 			{
-				samples[i] = ((signed)buffer[i] - 128) / 128.0f;
+				mSampleBuffer[i] = ((signed)buffer[i] - 128) / 128.0f;
 			}
 		}
 
 		lock_guard<mutex> lock(mMutex);
-		mBuffer.insert(mBuffer.end(), samples, samples + sampleCount);
+		mBuffer.insert(mBuffer.end(), mSampleBuffer, mSampleBuffer + sampleCount);
 	}
 
 	unsigned int SmackerStream::readNext(float *buffer, unsigned int numberOfSamples)

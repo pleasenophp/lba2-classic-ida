@@ -239,12 +239,12 @@ void	PlayAllAcf( void )
 \***************************************************************************/
 
 
-static void StartPlayAudio(SoLoud::Soloud *soloud, U8 availableTracks, U8 *bitDepthsPerTrack, U32 *sampleRatePerTrack, S32 smackFlags) 
+static void StartPlayAudio(SoLoud::Soloud *soloud, U8 availableTracks, U8 *channelsPerTrack, U8 *bitDepthsPerTrack, U32 *sampleRatePerTrack, S32 smackFlags) 
 {
 	for (int i = 0; i < SMACKER_TRACK_SIZE; i++)
 	{
 		// TODO - for debug
-		if (i != 1) continue;
+		if (i != 0) continue;
 
 		if (availableTracks & (1 << i) && (1 << i) & smackFlags)
 		{
@@ -261,7 +261,7 @@ static void ReadNextAudioChunk(const smk smkObject, U8 availableTracks, S32 smac
 	for (int i = 0; i < SMACKER_TRACK_SIZE; i++)
 	{
 		// TODO - for debug
-		if (i != 1) continue;
+		if (i != 0) continue;
 
 		if (availableTracks & (1 << i) && (1 << i) & smackFlags)
 		{
@@ -277,7 +277,7 @@ static void StopAudio(SoLoud::Soloud *soloud)
 	for (int i = 0; i < SMACKER_TRACK_SIZE; i++)
 	{
 		// TODO - for debug
-		if (i != 1) continue;
+		if (i != 0) continue;
 
 		soloud->stop(soundHandleMapping[i].soloudHandle);
 		if (soundHandleMapping[i].soloudStream) {
@@ -394,7 +394,7 @@ S32	PlayAcf( char *name )
 	
 	dest = (U8*)malloc(640 * 480);
 
-	StartPlayAudio(soloud, a_t, a_d, a_r, smackflags);
+	StartPlayAudio(soloud, a_t, a_c, a_d, a_r, smackflags);
 
 	timer = TimerRefHR + (1000/fps);
 	for (c = 0; c < f; c++)

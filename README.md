@@ -1,4 +1,8 @@
-# Prepare to Debug
+# Little Big Adventure 2 - Ida edition
+
+This is a work on the **Little Big Adventure 2 - Engine source code - Community** in order to make it easily buildable and fully playable on Windows.
+
+## Prepare to Debug
 
 1. VS 2019 build tools with C++ dev enabled should be installed, if you use VS 2022 or later
 
@@ -35,16 +39,19 @@
 
 1. If when running the LBA2.exe it is complaining about SDL dll not found, copy all the files from Win32\Debug to Debug\
 
-# Current issues
+## Current issues
 
 - Audio of the video does not play correctly using soloud and crashes
+  - Test video that started in the middle of the game
 - Full screen / higher res doesn't work
 - Make it work with the data files from Steam version as well
+- Test game with different languages, make it easy to switch languages
 - The volume options for sfx and voices seem to be ignored when changing them in the options menu, even though they saved and loaded to/from config
 - Create an easy way to deploy
 
-## Minor issues
+### Minor issues
 - Voice audio and sfx have clicks after every play in the end (general soloud issue?)
+- Video has a line with non-black color on top when it started from the street
 
 
 # Little Big Adventure 2 - Engine source code - Community
