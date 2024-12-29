@@ -278,11 +278,39 @@ static void StopAudio(SoLoud::Soloud *soloud)
 	}
 }
 
+static void ReadNextVideoFrame(const smk smkObject, U32 width, U32 height, U8 *buffer, U8 **pal)
+{
+	U32 offset = 640 * 40;
+	U8 *frame = (U8*)smk_get_video(smkObject);
+	*pal = (U8*)smk_get_palette(smkObject);
+
+	// very hacky smacker full screen
+	// TODO - improve it with memcpy
+	memset(buffer, 0, 640 * 480);
+
+	for (U32 j = 0; j < height; j++) {
+		U32 innerOffset = 0;
+		for (U32 k = 0; k < width; k++) {
+			*(buffer + offset) = *(frame);
+			*(buffer + offset + 1) = *(frame++);
+			offset += 2;
+		}
+
+		innerOffset = offset - 640;
+		for (U32 k = 0; k < width; k++) {
+			*(buffer + offset) = *(buffer + innerOffset);
+			*(buffer + offset + 1) = *(buffer + innerOffset + 1);
+			offset += 2;
+			innerOffset += 2;
+		}
+	}
+}
+
 S32	PlayAcf( char *name )
 {
 	// xesf
-	U32	i, j, c, h, w, f;
-	S32	k, n;
+	U32	c, h, w, f;
+	S32	n;
 	S32	ret;
 	U32 fps, timer, size;
 	smk smkObject;
@@ -290,8 +318,6 @@ S32	PlayAcf( char *name )
 	U8	a_t, a_c[SMACKER_TRACK_SIZE], a_d[SMACKER_TRACK_SIZE];
 	U32	a_r[SMACKER_TRACK_SIZE];
 	U8* decompbuf = nullptr;
-	U8* frame = nullptr;
-	U8* pal = nullptr;
 	S32 smackflags = SMK_AUDIO_TRACK_0;
 	U8* dest = nullptr;
 	SoLoud::Soloud* soloud = nullptr;
@@ -378,7 +404,6 @@ S32	PlayAcf( char *name )
 	soloud->init(SoLoud::Soloud::CLIP_ROUNDOFF, SoLoud::Soloud::BACKENDS::AUTO, rate, 0, chans);
 
 	// video & audio
-
 	smk_enable_all(smkObject, SMK_VIDEO_TRACK | a_t);
 	smk_first(smkObject);
 	
@@ -387,36 +412,12 @@ S32	PlayAcf( char *name )
 	StartPlayAudio(soloud, a_t, a_c, a_d, a_r, smackflags);
 
 	timer = TimerRefHR + (1000/fps);
+
+	U8* pal;
 	for (c = 0; c < f; c++)
 	{
 		ReadNextAudioChunk(smkObject, a_t, smackflags);
-
-		U32 offset = 0;
-		frame = (U8 *)smk_get_video(smkObject);
-		pal = (U8*)smk_get_palette(smkObject);
-
-		// very hacky smacker full screen
-		// TODO - improve it with memcpy
-		memset(dest, 0, 640 * 480);
-
-		offset = 640 * 40;
-
-		for (j = 0; j < h; j++) {
-			U32 innerOffset = 0;
-			for (k = 0; k < w; k++) {
-				*(dest + offset) = *(frame);
-				*(dest + offset + 1) = *(frame++);
-				offset += 2;
-			}
-
-			innerOffset = offset - 640;
-			for (k = 0; k < w; k++) {
-				*(dest + offset) = *(dest + innerOffset);
-				*(dest + offset + 1) = *(dest + innerOffset + 1);
-				offset += 2;
-				innerOffset += 2;
-			}
-		}
+		ReadNextVideoFrame(smkObject, w, h, dest, &pal);
 
 		CopyBlock(0, 0, 640, 480, dest, 0, 0, Log);
 		PaletteSync(pal, true);
