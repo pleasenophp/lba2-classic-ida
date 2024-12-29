@@ -41,7 +41,6 @@ This is a work on the **Little Big Adventure 2 - Engine source code - Community*
 
 ## Current issues
 
-- Some videos are cut a bit from the top, like landing Esmers
 - Full screen / higher res doesn't work
 - Make it work with the data files from Steam version as well
 - Test game with different languages, make it easy to switch languages
