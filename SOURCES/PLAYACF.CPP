@@ -287,30 +287,25 @@ static void ReadNextVideoFrame(const smk smkObject, U8 *buffer, U8 **pal)
 	constexpr U32 screenWidth = 640;
 	constexpr U32 screenHeight = 480;
 
-	U32 offset = screenWidth * 40;
+	constexpr U32 videoStartY = 40;
 
-	U8 *frame = (U8*)smk_get_video(smkObject);
+	U8* frame = (U8*)smk_get_video(smkObject);
 	*pal = (U8*)smk_get_palette(smkObject);
 
-	// very hacky smacker full screen
-	// TODO - improve it with memcpy
 	memset(buffer, 0, screenWidth * screenHeight);
 
-	for (U32 j = 0; j < height; j++) {
-		U32 innerOffset = 0;
-		for (U32 k = 0; k < width; k++) {
-			*(buffer + offset) = *(frame);
-			*(buffer + offset + 1) = *(frame++);
-			offset += 2;
+	auto targetRow = buffer + videoStartY * screenWidth;
+	for (U32 y = 0; y < height; y++) {
+		auto sourceRow = frame + y * width;
+
+		for (U32 x = 0; x < width; x++) {
+			targetRow[2 * x] = sourceRow[x];
+			targetRow[2 * x + 1] = sourceRow[x];
 		}
 
-		innerOffset = offset - screenWidth;
-		for (U32 k = 0; k < width; k++) {
-			*(buffer + offset) = *(buffer + innerOffset);
-			*(buffer + offset + 1) = *(buffer + innerOffset + 1);
-			offset += 2;
-			innerOffset += 2;
-		}
+		memcpy(targetRow + screenWidth, targetRow, screenWidth);
+
+		targetRow += screenWidth * 2;
 	}
 }
 
@@ -431,8 +426,8 @@ S32	PlayAcf( char *name )
 	for (c = 0; c < f; c++)
 	{
 		ReadNextAudioChunk(smkObject, a_t, smackflags);
-		ReadNextVideoFrame(smkObject, dest, &pal);
 
+		ReadNextVideoFrame(smkObject, dest, &pal);
 		CopyBlock(0, 0, 640, 480, dest, 0, 0, Log);
 		PaletteSync(pal, true);
 
