@@ -33,7 +33,7 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 
 	sdlTexture = SDL_CreateTexture(
 		sdlRenderer,
-		SDL_PIXELFORMAT_ARGB8888, // or SDL_PIXELFORMAT_INDEX8 if you really want 8bpp
+		SDL_PIXELFORMAT_ARGB8888,
 		SDL_TEXTUREACCESS_STREAMING,
 		640,
 		480
@@ -67,10 +67,53 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 	return 1;
 }
 
+static void UpdateFrame()
+{
+	// 1) Lock the texture
+	void* pixels;
+	int pitch;
+	SDL_LockTexture(sdlTexture, NULL, &pixels, &pitch);
+
+	// 2) Convert 8-bit Phys data into 32-bit ARGB
+	Uint32 *dstPixels = (Uint32*)pixels;
+	Uint8* srcPixels = (Uint8*)Phys;
+	for (int y = 0; y < 480; y++)
+	{
+		for (int x = 0; x < 640; x++)
+		{
+			Uint8 colorIndex = srcPixels[y * 640 + x];
+			Uint32 color = g_pal[colorIndex];
+			dstPixels[y * (pitch / 4) + x] = color;
+		}
+	}
+
+	SDL_UnlockTexture(sdlTexture);
+
+	// 3) Render
+	SDL_RenderClear(sdlRenderer);
+	SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+	SDL_RenderPresent(sdlRenderer);
+}
+
 void CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box) 
 {
-	if(dst == Phys)
+	if (dst == Phys)
 	{
+		for (int x = box->x0; x < box->x1; x++)
+		{
+			for (int y = box->y0; y < box->y1; y++)
+			{
+				// color index from src
+				U8 colorIndex = *((U8*)src + TabOffDst[y] + x);
+
+				// write the 8-bit index into Phys
+				*((U8*)Phys + (y * 640) + x) = colorIndex;
+			}
+		}
+
+		UpdateFrame();
+
+		/*
 		SDL_LockSurface(sdlScreen);
 
 		for(int x=box->x0; x<box->x1; x++)
@@ -78,7 +121,7 @@ void CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box)
 			for(int y=box->y0; y<box->y1; y++)
 			{
 				U32* pOut = (U32*)((U8*)sdlScreen->pixels + y*sdlScreen->pitch + x * 4);
-				U8 color= *(((U8*)src) + TabOffDst[y] + x);
+				U8 color= *((U8*)src + TabOffDst[y] + x);
 				
 				*pOut = g_pal[color];
 			}
@@ -93,6 +136,7 @@ void CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box)
 		updateRect.w = box->x1-box->x0;
 		updateRect.h = box->y1-box->y0;
 		SDL_UpdateWindowSurfaceRects(sdlWindow, &updateRect, 1);
+		*/
 	}
 	else
 	{
@@ -122,7 +166,7 @@ extern "C" {
 	{
 		U8 *palette = (U8*)pal;
 
-		for(U32 i=start;i<start+n; i++)
+		for (U32 i=start;i<start+n; i++)
 		{
 			PalOne(i, palette[i*3+0], palette[i*3+1], palette[i*3+2]);
 		}
