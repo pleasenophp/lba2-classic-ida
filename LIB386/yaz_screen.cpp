@@ -4,6 +4,8 @@
 
 SDL_Surface *sdlScreen;
 SDL_Window *sdlWindow;
+SDL_Renderer* sdlRenderer = nullptr;
+SDL_Texture* sdlTexture = nullptr;
 U32 g_pal[256];
 
 S32 InitVESA()
@@ -15,30 +17,46 @@ S32 InitVESA()
 S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 {
 	SDL_ShowCursor(false);
-    sdlWindow = SDL_CreateWindow("LBA2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ResX, ResY, SDL_WINDOW_SHOWN);
+    sdlWindow = SDL_CreateWindow("LBA2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0, 0, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP);
     if ( sdlWindow == NULL ) {
         fprintf(stderr, "Unable to set 640x480 video: %s\n", SDL_GetError());
         exit(1);
     }
 
-	sdlScreen = SDL_GetWindowSurface(sdlWindow);
-	/*
-//    ScreenX = 640;
-//    ScreenY = 480;*/
+	sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
+	if (!sdlRenderer) {
+		fprintf(stderr, "Unable to create renderer: %s\n", SDL_GetError());
+		exit(1);
+	}
 
-    //ModeX = 640;
-    //ModeY = 480;
-	/*
-    for(U32 i=0; i<480; i++)
-    {
-        TabOffLine[i] = (U32)(640 * i);
-    }*/
+	SDL_RenderSetLogicalSize(sdlRenderer, ResX, ResY);
+
+	sdlTexture = SDL_CreateTexture(
+		sdlRenderer,
+		SDL_PIXELFORMAT_ARGB8888, // or SDL_PIXELFORMAT_INDEX8 if you really want 8bpp
+		SDL_TEXTUREACCESS_STREAMING,
+		640,
+		480
+	);
+
+	if (!sdlTexture) {
+		fprintf(stderr, "Unable to create texture: %s\n", SDL_GetError());
+		exit(1);
+	}
+
+	sdlScreen = SDL_CreateRGBSurfaceWithFormat(0, ResX, ResY, 32, SDL_PIXELFORMAT_ARGB8888);
+	if (!sdlScreen) {
+		fprintf(stderr, "Unable to create surface: %s\n", SDL_GetError());
+		exit(1);
+	}
+
+	// sdlScreen = SDL_GetWindowSurface(sdlWindow);
 
 	ModeResX	= ResX	;
 	ModeResY	= ResY;
 	BytesScanLine	= ResX	;
 
-	Phys = malloc(640*480);
+	Phys = malloc(ResX*ResY);
 
 	SetPaletteVESA= &SetPaletteVESA1;
 
@@ -49,7 +67,7 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 	return 1;
 }
 
-void	CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box) 
+void CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box) 
 {
 	if(dst == Phys)
 	{
@@ -89,73 +107,73 @@ void	CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box)
 }
 
 extern "C" {
-
-void VblVESA(void)
-{
-
-}
-
-void SetPaletteVESA2(void *pal, S32 start, S32 n)
-{
-
-}
-
-void SetPaletteVESA1(void *pal, S32 start, S32 n)
-{
-	U8 *palette = (U8*)pal;
-
-	for(U32 i=start;i<start+n; i++)
+	
+	void VblVESA(void)
 	{
-		PalOne(i, palette[i*3+0], palette[i*3+1], palette[i*3+2]);
-	}
-}
 
-void (*SetPaletteVESA)(void *pal, S32 start, S32 n) = 0;
-
-void	SetPaletteOneVESA(S32 col, S32 red, S32 green, S32 blue)
-{
-	U32 color = ((U32)0xFF << 24) | ((U32)red << 16) | ((U32)green << 8) | ((U32)blue << 0);
-
-	g_pal[col] = color;
-}
-
-void SetPaletteDirect(void *pal, S32 start, S32 n)
-{
-
-}
-
-void	PaletteSync( U8 *palette, bool videoMode = false ) 
-{
-	for(U32 i=0;i<256; i++)
-	{
-		PalOne(i, palette[i*3+0], palette[i*3+1], palette[i*3+2]);
 	}
 
-	SDL_LockSurface(sdlScreen);
-
-	U32 yStart = videoMode ? 40 : 0;
-	U32 yEnd = videoMode ? 440 : 480;
-
-	for(U32 x=0; x<640; x++)
+	void SetPaletteVESA2(void *pal, S32 start, S32 n)
 	{
-		for(U32 y=yStart; y<yEnd; y++)
+
+	}
+
+	void SetPaletteVESA1(void *pal, S32 start, S32 n)
+	{
+		U8 *palette = (U8*)pal;
+
+		for(U32 i=start;i<start+n; i++)
 		{
-			unsigned char color = ((unsigned char*)Log)[y*640 + x];
-
-			U32* pOut = (U32*)((U8*)sdlScreen->pixels + y*sdlScreen->pitch + x * 4);
-
-			*pOut = g_pal[color];
+			PalOne(i, palette[i*3+0], palette[i*3+1], palette[i*3+2]);
 		}
 	}
 
-	SDL_UnlockSurface(sdlScreen);
+	void (*SetPaletteVESA)(void *pal, S32 start, S32 n) = 0;
 
-	SDL_UpdateWindowSurface(sdlWindow);
+	void SetPaletteOneVESA(S32 col, S32 red, S32 green, S32 blue)
+	{
+		U32 color = ((U32)0xFF << 24) | ((U32)red << 16) | ((U32)green << 8) | ((U32)blue << 0);
+
+		g_pal[col] = color;
+	}
+
+	void SetPaletteDirect(void *pal, S32 start, S32 n)
+	{
+
+	}
+
+	void PaletteSync( U8 *palette, bool videoMode = false ) 
+	{
+		for(U32 i=0;i<256; i++)
+		{
+			PalOne(i, palette[i*3+0], palette[i*3+1], palette[i*3+2]);
+		}
+
+		SDL_LockSurface(sdlScreen);
+
+		U32 yStart = videoMode ? 40 : 0;
+		U32 yEnd = videoMode ? 440 : 480;
+
+		for(U32 x=0; x<640; x++)
+		{
+			for(U32 y=yStart; y<yEnd; y++)
+			{
+				unsigned char color = ((unsigned char*)Log)[y*640 + x];
+
+				U32* pOut = (U32*)((U8*)sdlScreen->pixels + y*sdlScreen->pitch + x * 4);
+
+				*pOut = g_pal[color];
+			}
+		}
+
+		SDL_UnlockSurface(sdlScreen);
+
+		SDL_UpdateWindowSurface(sdlWindow);
+	}
+
+	void SavePCX(char *,unsigned char *,unsigned long,unsigned long,unsigned char *)
+	{
+
+	}
 }
 
-void SavePCX(char *,unsigned char *,unsigned long,unsigned long,unsigned char *)
-{
-
-}
-
-}
