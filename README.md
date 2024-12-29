@@ -41,9 +41,9 @@ This is a work on the **Little Big Adventure 2 - Engine source code - Community*
 
 ## Current issues
 
-- Full screen / higher res doesn't work
+- Full screen doesn't work
+- Test game with different languages, make sure it's easy to switch languages
 - Make it work with the data files from Steam version as well
-- Test game with different languages, make it easy to switch languages
 - The volume options for sfx and voices seem to be ignored when changing them in the options menu, even though they saved and loaded to/from config
 - Create configuration to build portable binaries, where necessary paths to assets can be specified in config file
 
