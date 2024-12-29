@@ -1,4 +1,5 @@
 #include "c_extern.h"
+#include <string>
 #include <smacker/smacker.h>
 
 #pragma pack(8)
@@ -278,15 +279,22 @@ static void StopAudio(SoLoud::Soloud *soloud)
 	}
 }
 
-static void ReadNextVideoFrame(const smk smkObject, U32 width, U32 height, U8 *buffer, U8 **pal)
+static void ReadNextVideoFrame(const smk smkObject, U8 *buffer, U8 **pal)
 {
-	U32 offset = 640 * 40;
+	constexpr U32 width = 320;
+	constexpr U32 height = 200;
+
+	constexpr U32 screenWidth = 640;
+	constexpr U32 screenHeight = 480;
+
+	U32 offset = screenWidth * 40;
+
 	U8 *frame = (U8*)smk_get_video(smkObject);
 	*pal = (U8*)smk_get_palette(smkObject);
 
 	// very hacky smacker full screen
 	// TODO - improve it with memcpy
-	memset(buffer, 0, 640 * 480);
+	memset(buffer, 0, screenWidth * screenHeight);
 
 	for (U32 j = 0; j < height; j++) {
 		U32 innerOffset = 0;
@@ -296,7 +304,7 @@ static void ReadNextVideoFrame(const smk smkObject, U32 width, U32 height, U8 *b
 			offset += 2;
 		}
 
-		innerOffset = offset - 640;
+		innerOffset = offset - screenWidth;
 		for (U32 k = 0; k < width; k++) {
 			*(buffer + offset) = *(buffer + innerOffset);
 			*(buffer + offset + 1) = *(buffer + innerOffset + 1);
@@ -397,6 +405,12 @@ S32	PlayAcf( char *name )
 
 	smk_info_all(smkObject, NULL, &f, &usf);
 	smk_info_video(smkObject, &w, &h, NULL);
+	if (w != 320 || h != 200) 
+	{
+		LogPrintf("ERROR: only videos of format 320x200 are supported at the moment; Tried to play %s (%d) with resolution %dx%d", name, n, w, h);
+		TheEnd(PROGRAM_FAIL, "Unsupported video format");
+	}
+
 	smk_info_audio(smkObject, &a_t, a_c, a_d, a_r);
 	fps = (U32)(1000000.0 / usf);
 
@@ -417,7 +431,7 @@ S32	PlayAcf( char *name )
 	for (c = 0; c < f; c++)
 	{
 		ReadNextAudioChunk(smkObject, a_t, smackflags);
-		ReadNextVideoFrame(smkObject, w, h, dest, &pal);
+		ReadNextVideoFrame(smkObject, dest, &pal);
 
 		CopyBlock(0, 0, 640, 480, dest, 0, 0, Log);
 		PaletteSync(pal, true);
