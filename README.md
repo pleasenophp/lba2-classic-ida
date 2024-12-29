@@ -48,10 +48,8 @@ This is a work on the **Little Big Adventure 2 - Engine source code - Community*
 - Create configuration to build portable binaries, where necessary paths to assets can be specified in config file
 
 ### Minor issues
-- Voice audio and sfx have clicks after every play in the end (general soloud issue?)
-- Video has a line with non-black color on top when it started from the street
 - When reading long text like Zoe's diary or Esmer's first speech, the audio plays with big delays
-
+- Voice audio and some sfx have clicks after every play in the end 
 
 # Little Big Adventure 2 - Engine source code - Community
 
