@@ -2,7 +2,7 @@
 #include <system.h>
 #include <SDL.h>
 
-// Set to 0 to window mode (useful for debug) 
+// Set to 0 for window mode (useful for debug) 
 constexpr auto FullScreen = 1;
 
 // Update this if there is any monitor refresh mismatch artifacts
