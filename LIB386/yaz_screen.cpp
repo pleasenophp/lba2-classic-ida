@@ -16,10 +16,17 @@ S32 InitVESA()
 
 S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 {
+	if (ResX != 640 || ResY != 480) {
+		fprintf(stderr, "Only 640x480 resolution is supported at the moment. Tried to initialize: %dx%d", ResX, ResY);
+		exit(1);
+	}
+
 	SDL_ShowCursor(false);
+
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     sdlWindow = SDL_CreateWindow("LBA2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0, 0, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP);
-    if ( sdlWindow == NULL ) {
-        fprintf(stderr, "Unable to set 640x480 video: %s\n", SDL_GetError());
+    if (sdlWindow == NULL) {
+        fprintf(stderr, "Unable to set video: %s\n", SDL_GetError());
         exit(1);
     }
 
@@ -31,12 +38,15 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 
 	SDL_RenderSetLogicalSize(sdlRenderer, ResX, ResY);
 
+	// Optional
+	// SDL_RenderSetIntegerScale(sdlRenderer, SDL_TRUE);
+
 	sdlTexture = SDL_CreateTexture(
 		sdlRenderer,
 		SDL_PIXELFORMAT_ARGB8888,
 		SDL_TEXTUREACCESS_STREAMING,
-		640,
-		480
+		ResX,
+		ResY
 	);
 
 	if (!sdlTexture) {
@@ -44,11 +54,13 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 		exit(1);
 	}
 
+	/*
 	sdlScreen = SDL_CreateRGBSurfaceWithFormat(0, ResX, ResY, 32, SDL_PIXELFORMAT_ARGB8888);
 	if (!sdlScreen) {
 		fprintf(stderr, "Unable to create surface: %s\n", SDL_GetError());
 		exit(1);
 	}
+	*/
 
 	// sdlScreen = SDL_GetWindowSurface(sdlWindow);
 
@@ -65,34 +77,6 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 	ProcessorSignature.Manufacturer = 1;
 
 	return 1;
-}
-
-static void UpdateFrame()
-{
-	// 1) Lock the texture
-	void* pixels;
-	int pitch;
-	SDL_LockTexture(sdlTexture, NULL, &pixels, &pitch);
-
-	// 2) Convert 8-bit Phys data into 32-bit ARGB
-	Uint32 *dstPixels = (Uint32*)pixels;
-	Uint8* srcPixels = (Uint8*)Phys;
-	for (int y = 0; y < 480; y++)
-	{
-		for (int x = 0; x < 640; x++)
-		{
-			Uint8 colorIndex = srcPixels[y * 640 + x];
-			Uint32 color = g_pal[colorIndex];
-			dstPixels[y * (pitch / 4) + x] = color;
-		}
-	}
-
-	SDL_UnlockTexture(sdlTexture);
-
-	// 3) Render
-	SDL_RenderClear(sdlRenderer);
-	SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
-	SDL_RenderPresent(sdlRenderer);
 }
 
 void CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box) 
@@ -124,7 +108,7 @@ void CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box)
 		{
 			for(int y=box->y0; y<box->y1; y++)
 			{
-				*(((U8*)dst) + TabOffDst[y] + x) = *(((U8*)src) + TabOffDst[y] + x);
+				*((U8*)dst + TabOffDst[y] + x) = *((U8*)src + TabOffDst[y] + x);
 			}
 		}
 	}
