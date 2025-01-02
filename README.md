@@ -2,7 +2,7 @@
 
 This is a work on the **Little Big Adventure 2 - Engine source code - Community** and **yaz0r** fork of it, in order to make it buildable and fully playable on Windows.
 
-## Prepare to Debug
+## How to Run and Debug
 
 1. VS 2019 build tools with C++ dev enabled should be installed, if you use VS 2022 or later
 
@@ -29,7 +29,7 @@ This is a work on the **Little Big Adventure 2 - Engine source code - Community*
 1. Run this command to copy the original config file to the debug config file:
   copy SOURCES\LBA2.CFG GameRun\LBA2.CFG
 
-1. In Visual studio LBA2 project properties go to Debugger settings and add ADELINE environment variable in Environment section. 
+1. In Visual Studio, open LBA2 project properties, go to Debugger settings, and add ADELINE environment variable in Environment section. 
 This should be the absolute path to LBA2.CFG:
 
   ADELINE=<PathToThisProject>\GameRun\LBA2.CFG
