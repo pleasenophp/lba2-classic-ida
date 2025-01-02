@@ -2,7 +2,13 @@
 #include <system.h>
 #include <SDL.h>
 
+// Set to 0 to window mode (useful for debug) 
 constexpr auto FullScreen = 1;
+
+// Update this if there is any monitor refresh mismatch artifacts
+constexpr Uint32 FullScreenFixedFrameRate = 120;
+
+constexpr Uint32 FullScreenFixedFramePeriod = 1000 / FullScreenFixedFrameRate;
 
 SDL_Surface *sdlScreen;
 SDL_Window *sdlWindow;
@@ -79,6 +85,8 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 	return 1;
 }
 
+static Uint32 lastPresentTime = 0;
+
 void CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box) 
 {
 	// If destination is a physical buffer. We don't write anything into Phys anymore here, just using it to check the desired destination
@@ -102,8 +110,14 @@ void CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box)
 			}
 
 			SDL_UnlockTexture(sdlTexture);
-			SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
-			SDL_RenderPresent(sdlRenderer);
+
+			Uint32 currentTime = SDL_GetTicks();
+			if (currentTime - lastPresentTime >= FullScreenFixedFramePeriod)
+			{
+				lastPresentTime = currentTime;
+				SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+				SDL_RenderPresent(sdlRenderer);
+			}
 		}
 		else 
 		{
@@ -201,9 +215,6 @@ extern "C" {
 					U8 colorIndex = ((U8*)Log)[y * 640 + x];
 					Uint32 color = g_pal[colorIndex];
 					dstPixels[y * (pitch / 4) + x] = color;
-
-					// U32* pOut = (U32*)((U8*)sdlScreen->pixels + y*sdlScreen->pitch + x * 4);
-					// *pOut = g_pal[color];
 				}
 			}
 
