@@ -39,9 +39,10 @@ This is a work on the **Little Big Adventure 2 - Engine source code - Community*
 
 1. If when running the LBA2.exe it is complaining about SDL dll not found, copy all the files from Win32\Debug to Debug\
 
+1. If you want to run the game in Window, set the FullScreen to 0 in the beginning of LIB386/yaz_screen.cpp
+
 ## Current issues
 
-- Full screen doesn't work
 - Test game with different languages, make sure it's easy to switch languages
 - Make it work with the data files from Steam version as well
 - The volume options for sfx and voices seem to be ignored when changing them in the options menu, even though they saved and loaded to/from config

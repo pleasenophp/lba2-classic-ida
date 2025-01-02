@@ -5,7 +5,7 @@
 // Set to 0 for window mode (useful for debug) 
 constexpr auto FullScreen = 1;
 
-// Update this if there is any monitor refresh mismatch artifacts
+// Update this if there is any monitor refresh mismatch visual issues
 constexpr Uint32 FullScreenFixedFrameRate = 120;
 
 constexpr Uint32 FullScreenFixedFramePeriod = 1000 / FullScreenFixedFrameRate;
@@ -76,7 +76,7 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 
 	Phys = malloc(ResX*ResY);
 
-	SetPaletteVESA= &SetPaletteVESA1;
+	SetPaletteVESA = &SetPaletteVESA1;
 
 	ProcessorSignature.FPU = 1;
 	ProcessorSignature.Family = 5;
@@ -111,10 +111,11 @@ void CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box)
 
 			SDL_UnlockTexture(sdlTexture);
 
-			Uint32 currentTime = SDL_GetTicks();
+			Uint64 currentTime = SDL_GetTicks64();
 			if (currentTime - lastPresentTime >= FullScreenFixedFramePeriod)
 			{
 				lastPresentTime = currentTime;
+				SDL_RenderClear(sdlRenderer);
 				SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
 				SDL_RenderPresent(sdlRenderer);
 			}
@@ -205,7 +206,6 @@ extern "C" {
 			void* pixels;
 			int pitch;
 			SDL_LockTexture(sdlTexture, NULL, &pixels, &pitch);
-
 
 			Uint32* dstPixels = (Uint32*)pixels;
 			for (U32 x = 0; x < 640; x++)
