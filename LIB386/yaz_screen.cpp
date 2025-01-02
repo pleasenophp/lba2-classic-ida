@@ -42,10 +42,10 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 		sdlScreen = SDL_GetWindowSurface(sdlWindow);
 	}
 
-    if (sdlWindow == NULL) {
-        fprintf(stderr, "Unable to set video: %s\n", SDL_GetError());
-        exit(1);
-    }
+	if (sdlWindow == NULL) {
+		fprintf(stderr, "Unable to set video: %s\n", SDL_GetError());
+		exit(1);
+	}
 
 	if (FullScreen) {
 		sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
