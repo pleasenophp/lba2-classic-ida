@@ -6,7 +6,7 @@ This is a work on the **Little Big Adventure 2 - Engine source code - Community*
 
 1. VS 2019 build tools with C++ dev enabled should be installed, if you use VS 2022 or later
 
-1. Edit DEFINES.H to provide path to local game data files (where the HQR files are):
+1. Edit DEFINES.H to provide path to local game data files (where the HQR files are) and music.
   For example:
 
   #define	PATH_RESSOURCE		"c:\\Games\\tlba2-classic\\Common\\"
@@ -18,7 +18,6 @@ This is a work on the **Little Big Adventure 2 - Engine source code - Community*
 #define	PATH_PCX_SAVE		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\shoot\\"
 #define	PATH_SAVE_BUGS		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\bugs\\"
 
-
 1. Create GameRun directory in the root of this project and create the following empty directories structure inside:
 - GameRun
   - save
@@ -27,9 +26,12 @@ This is a work on the **Little Big Adventure 2 - Engine source code - Community*
 
   This will be derictory for the save files, logs and configuration file for the development. 
 
-1. copy SOURCES\LBA2.CFG GameRun\LBA2.CFG
+1. Run this command to copy the original config file to the debug config file:
+  copy SOURCES\LBA2.CFG GameRun\LBA2.CFG
 
-1. In Visual studio LBA2 project properties go to Debugger settings and add environment variable in Environment section:
+1. In Visual studio LBA2 project properties go to Debugger settings and add ADELINE environment variable in Environment section. 
+This should be the absolute path to LBA2.CFG:
+
   ADELINE=<PathToThisProject>\GameRun\LBA2.CFG
   
   For example: 
