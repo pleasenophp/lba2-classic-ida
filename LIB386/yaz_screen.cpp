@@ -99,44 +99,24 @@ void CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box)
 {
 	if (dst == Phys)
 	{
+		void* pixels;
+		int pitch;
+		SDL_LockTexture(sdlTexture, NULL, &pixels, &pitch);
+
+		Uint32* dstPixels = (Uint32*)pixels;
 		for (int x = box->x0; x < box->x1; x++)
 		{
 			for (int y = box->y0; y < box->y1; y++)
 			{
-				// color index from src
 				U8 colorIndex = *((U8*)src + TabOffDst[y] + x);
-
-				// write the 8-bit index into Phys
-				*((U8*)Phys + (y * 640) + x) = colorIndex;
+				Uint32 color = g_pal[colorIndex];
+				dstPixels[y * (pitch / 4) + x] = color;
 			}
 		}
 
-		UpdateFrame();
-
-		/*
-		SDL_LockSurface(sdlScreen);
-
-		for(int x=box->x0; x<box->x1; x++)
-		{
-			for(int y=box->y0; y<box->y1; y++)
-			{
-				U32* pOut = (U32*)((U8*)sdlScreen->pixels + y*sdlScreen->pitch + x * 4);
-				U8 color= *((U8*)src + TabOffDst[y] + x);
-				
-				*pOut = g_pal[color];
-			}
-		}
-
-		SDL_UnlockSurface(sdlScreen);
-
-		//SDL_UpdateRect(sdlScreen, 0, 0, 639, 479);
-		SDL_Rect updateRect;
-		updateRect.x = box->x0;
-		updateRect.y = box->y0;
-		updateRect.w = box->x1-box->x0;
-		updateRect.h = box->y1-box->y0;
-		SDL_UpdateWindowSurfaceRects(sdlWindow, &updateRect, 1);
-		*/
+		SDL_UnlockTexture(sdlTexture);
+		SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+		SDL_RenderPresent(sdlRenderer);
 	}
 	else
 	{
@@ -186,33 +166,42 @@ extern "C" {
 
 	}
 
-	void PaletteSync( U8 *palette, bool videoMode = false ) 
+	void PaletteSync(U8 *palette, bool videoMode = false) 
 	{
-		for(U32 i=0;i<256; i++)
+		U32 yStart = videoMode ? 40 : 0;
+		U32 yEnd = videoMode ? 440 : 480;
+
+		for (U32 i=0; i<256; i++)
 		{
 			PalOne(i, palette[i*3+0], palette[i*3+1], palette[i*3+2]);
 		}
 
-		SDL_LockSurface(sdlScreen);
-
-		U32 yStart = videoMode ? 40 : 0;
-		U32 yEnd = videoMode ? 440 : 480;
-
+		// SDL_LockSurface(sdlScreen);
+		void* pixels;
+		int pitch;
+		SDL_LockTexture(sdlTexture, NULL, &pixels, &pitch);
+		
+		Uint32* dstPixels = (Uint32*)pixels;
 		for(U32 x=0; x<640; x++)
 		{
 			for(U32 y=yStart; y<yEnd; y++)
 			{
-				unsigned char color = ((unsigned char*)Log)[y*640 + x];
+				U8 colorIndex = ((U8*)Log)[y*640 + x];
+				Uint32 color = g_pal[colorIndex];
+				dstPixels[y * (pitch / 4) + x] = color;
 
-				U32* pOut = (U32*)((U8*)sdlScreen->pixels + y*sdlScreen->pitch + x * 4);
-
-				*pOut = g_pal[color];
+				// U32* pOut = (U32*)((U8*)sdlScreen->pixels + y*sdlScreen->pitch + x * 4);
+				// *pOut = g_pal[color];
 			}
 		}
 
-		SDL_UnlockSurface(sdlScreen);
+		SDL_UnlockTexture(sdlTexture);
+		SDL_RenderClear(sdlRenderer);
+		SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+		SDL_RenderPresent(sdlRenderer);
 
-		SDL_UpdateWindowSurface(sdlWindow);
+		// SDL_UnlockSurface(sdlScreen);
+		// SDL_UpdateWindowSurface(sdlWindow);
 	}
 
 	void SavePCX(char *,unsigned char *,unsigned long,unsigned long,unsigned char *)
