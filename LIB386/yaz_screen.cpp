@@ -2,6 +2,8 @@
 #include <system.h>
 #include <SDL.h>
 
+constexpr auto FullScreen = 1;
+
 SDL_Surface *sdlScreen;
 SDL_Window *sdlWindow;
 SDL_Renderer* sdlRenderer = nullptr;
@@ -23,50 +25,48 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 
 	SDL_ShowCursor(false);
 
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-    sdlWindow = SDL_CreateWindow("LBA2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0, 0, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP);
+	if (FullScreen) 
+	{
+		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+		sdlWindow = SDL_CreateWindow("LBA2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0, 0, SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP);
+	}
+	else 
+	{
+		sdlWindow = SDL_CreateWindow("LBA2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ResX, ResY, SDL_WINDOW_SHOWN);
+		sdlScreen = SDL_GetWindowSurface(sdlWindow);
+	}
+
     if (sdlWindow == NULL) {
         fprintf(stderr, "Unable to set video: %s\n", SDL_GetError());
         exit(1);
     }
 
-	sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
-	if (!sdlRenderer) {
-		fprintf(stderr, "Unable to create renderer: %s\n", SDL_GetError());
-		exit(1);
+	if (FullScreen) {
+		sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
+		if (!sdlRenderer) {
+			fprintf(stderr, "Unable to create renderer: %s\n", SDL_GetError());
+			exit(1);
+		}
+
+		SDL_RenderSetLogicalSize(sdlRenderer, ResX, ResY);
+
+		sdlTexture = SDL_CreateTexture(
+			sdlRenderer,
+			SDL_PIXELFORMAT_ARGB8888,
+			SDL_TEXTUREACCESS_STREAMING,
+			ResX,
+			ResY
+		);
+
+		if (!sdlTexture) {
+			fprintf(stderr, "Unable to create texture: %s\n", SDL_GetError());
+			exit(1);
+		}
 	}
 
-	SDL_RenderSetLogicalSize(sdlRenderer, ResX, ResY);
-
-	// Optional
-	// SDL_RenderSetIntegerScale(sdlRenderer, SDL_TRUE);
-
-	sdlTexture = SDL_CreateTexture(
-		sdlRenderer,
-		SDL_PIXELFORMAT_ARGB8888,
-		SDL_TEXTUREACCESS_STREAMING,
-		ResX,
-		ResY
-	);
-
-	if (!sdlTexture) {
-		fprintf(stderr, "Unable to create texture: %s\n", SDL_GetError());
-		exit(1);
-	}
-
-	/*
-	sdlScreen = SDL_CreateRGBSurfaceWithFormat(0, ResX, ResY, 32, SDL_PIXELFORMAT_ARGB8888);
-	if (!sdlScreen) {
-		fprintf(stderr, "Unable to create surface: %s\n", SDL_GetError());
-		exit(1);
-	}
-	*/
-
-	// sdlScreen = SDL_GetWindowSurface(sdlWindow);
-
-	ModeResX	= ResX	;
-	ModeResY	= ResY;
-	BytesScanLine	= ResX	;
+	ModeResX = ResX;
+	ModeResY = ResY;
+	BytesScanLine = ResX;
 
 	Phys = malloc(ResX*ResY);
 
@@ -81,26 +81,51 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 
 void CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box) 
 {
+	// If destination is a physical buffer. We don't write anything into Phys anymore here, just using it to check the desired destination
 	if (dst == Phys)
 	{
-		void* pixels;
-		int pitch;
-		SDL_LockTexture(sdlTexture, NULL, &pixels, &pitch);
-
-		Uint32* dstPixels = (Uint32*)pixels;
-		for (int x = box->x0; x < box->x1; x++)
+		if (FullScreen) 
 		{
-			for (int y = box->y0; y < box->y1; y++)
-			{
-				U8 colorIndex = *((U8*)src + TabOffDst[y] + x);
-				Uint32 color = g_pal[colorIndex];
-				dstPixels[y * (pitch / 4) + x] = color;
-			}
-		}
+			void* pixels;
+			int pitch;
+			SDL_LockTexture(sdlTexture, NULL, &pixels, &pitch);
 
-		SDL_UnlockTexture(sdlTexture);
-		SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
-		SDL_RenderPresent(sdlRenderer);
+			Uint32* dstPixels = (Uint32*)pixels;
+			for (int x = box->x0; x < box->x1; x++)
+			{
+				for (int y = box->y0; y < box->y1; y++)
+				{
+					U8 colorIndex = *((U8*)src + TabOffDst[y] + x);
+					Uint32 color = g_pal[colorIndex];
+					dstPixels[y * (pitch / 4) + x] = color;
+				}
+			}
+
+			SDL_UnlockTexture(sdlTexture);
+			SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+			SDL_RenderPresent(sdlRenderer);
+		}
+		else 
+		{
+			SDL_LockSurface(sdlScreen);
+			for (int x = box->x0; x < box->x1; x++)
+			{
+				for (int y = box->y0; y < box->y1; y++)
+				{
+					U32* pOut = (U32*)((U8*)sdlScreen->pixels + y * sdlScreen->pitch + x * 4);
+					U8 colorIndex = *((U8*)src + TabOffDst[y] + x);
+					*pOut = g_pal[colorIndex];
+				}
+			}
+			SDL_UnlockSurface(sdlScreen);
+			SDL_Rect updateRect = {
+				box->x0,
+				box->y0,
+				box->x1 - box->x0,
+				box->y1 - box->y0
+			};
+			SDL_UpdateWindowSurfaceRects(sdlWindow, &updateRect, 1);
+		}
 	}
 	else
 	{
@@ -160,32 +185,50 @@ extern "C" {
 			PalOne(i, palette[i*3+0], palette[i*3+1], palette[i*3+2]);
 		}
 
-		// SDL_LockSurface(sdlScreen);
-		void* pixels;
-		int pitch;
-		SDL_LockTexture(sdlTexture, NULL, &pixels, &pitch);
-		
-		Uint32* dstPixels = (Uint32*)pixels;
-		for(U32 x=0; x<640; x++)
+		if (FullScreen)
 		{
-			for(U32 y=yStart; y<yEnd; y++)
+
+			void* pixels;
+			int pitch;
+			SDL_LockTexture(sdlTexture, NULL, &pixels, &pitch);
+
+
+			Uint32* dstPixels = (Uint32*)pixels;
+			for (U32 x = 0; x < 640; x++)
 			{
-				U8 colorIndex = ((U8*)Log)[y*640 + x];
-				Uint32 color = g_pal[colorIndex];
-				dstPixels[y * (pitch / 4) + x] = color;
+				for (U32 y = yStart; y < yEnd; y++)
+				{
+					U8 colorIndex = ((U8*)Log)[y * 640 + x];
+					Uint32 color = g_pal[colorIndex];
+					dstPixels[y * (pitch / 4) + x] = color;
 
-				// U32* pOut = (U32*)((U8*)sdlScreen->pixels + y*sdlScreen->pitch + x * 4);
-				// *pOut = g_pal[color];
+					// U32* pOut = (U32*)((U8*)sdlScreen->pixels + y*sdlScreen->pitch + x * 4);
+					// *pOut = g_pal[color];
+				}
 			}
+
+			SDL_UnlockTexture(sdlTexture);
+			SDL_RenderClear(sdlRenderer);
+			SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+			SDL_RenderPresent(sdlRenderer);
 		}
+		else 
+		{
+			SDL_LockSurface(sdlScreen);
 
-		SDL_UnlockTexture(sdlTexture);
-		SDL_RenderClear(sdlRenderer);
-		SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
-		SDL_RenderPresent(sdlRenderer);
+			for (U32 x = 0; x < 640; x++)
+			{
+				for (U32 y = yStart; y < yEnd; y++)
+				{
+					U8 colorIndex = ((U8*)Log)[y * 640 + x];
+					U32* pOut = (U32*)((U8*)sdlScreen->pixels + y*sdlScreen->pitch + x * 4);
+					*pOut = g_pal[colorIndex];
+				}
+			}
 
-		// SDL_UnlockSurface(sdlScreen);
-		// SDL_UpdateWindowSurface(sdlWindow);
+			SDL_UnlockSurface(sdlScreen);
+			SDL_UpdateWindowSurface(sdlWindow);
+		}
 	}
 
 	void SavePCX(char *,unsigned char *,unsigned long,unsigned long,unsigned char *)
