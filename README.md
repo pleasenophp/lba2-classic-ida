@@ -45,7 +45,6 @@ This should be the absolute path to LBA2.CFG:
 
 ## Current issues
 
-- Test game with different languages, make sure it's easy to switch languages
 - Make it work with the data files from Steam version as well
 - The volume options for sfx and voices seem to be ignored when changing them in the options menu, even though they saved and loaded to/from config
 - Create configuration to build portable binaries, where necessary paths to assets can be specified in config file
