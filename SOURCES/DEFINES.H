@@ -48,8 +48,8 @@
 
 //=======================================================================
 // tous fichiers dans même dir
-// TODO - use it for the release ??
-// #define	ONE_GAME_DIRECTORY	1
+// WARNING: Only enable it if you want to experiment. The ONE_GAME_DIRECTORY mode is not tested, and probably doesn't work.
+// #define	ONE_GAME_DIRECTORY 0
 //=======================================================================
 
 //path des ressources
@@ -57,11 +57,7 @@
 #define	PATH_RESSOURCE		"" 
 #define	PATH_SAVE		PATH_RESSOURCE"SAVE\\"
 #else
-#ifdef	DEMO
-#define	PATH_RESSOURCE		"f:\\projet\\lba2\\demo\\"
-#else
 #define	PATH_RESSOURCE		"c:\\Games\\tlba2-classic\\Common\\"
-#endif
 #define	PATH_SAVE		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\"
 #endif
 

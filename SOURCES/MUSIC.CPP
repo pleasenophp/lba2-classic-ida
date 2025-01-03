@@ -32,7 +32,7 @@ U32	JingleVolume = DEF_JINGLE_VOLUME ;
 
 #define	NB_JINGLE	 26
 
-/* This can be useful for non-GOG data version // TODO
+/* This can be useful for non-GOG/Steam data version
 char	ListJingle[NB_JINGLE][9] = {
 	"",		// pour interfacer avec la music CD (car Track 0 == NO_TRACK)
 	"TADPCM1",
