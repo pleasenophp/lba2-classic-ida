@@ -1359,7 +1359,7 @@ void    DrawOneChoice( S32 x, S32 y, S32 type, S32 num, S32 select )
 
 							PanMenu    = 20+MyRnd(88) ;
 
-							PlaySample( (U8*)GivePtrSample(VoiceMenu), VoiceMenu, 0x1000, 1, VoiceVolume, PanMenu ) ;
+							PlaySample((U8*)GivePtrSample(VoiceMenu), VoiceMenu, 0x1000, 1, VoiceVolume, PanMenu) ;
 						}
 						else    if( VoiceVolume!=LastVoiceVolume )
 						{

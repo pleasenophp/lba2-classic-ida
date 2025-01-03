@@ -44,13 +44,12 @@ This should be the absolute path to LBA2.CFG:
 1. If you want to run the game in Window, set the FullScreen to 0 in the beginning of LIB386/yaz_screen.cpp
 
 ## Current issues
-
-- The volume options for sfx and voices seem to be ignored when changing them in the options menu, even though they saved and loaded to/from config
+- When reading long text like Zoe's diary or Esmer's first speech, the audio plays with big delays
+- Voice audio and some sfx have clicks after every play in the end 
 - Create configuration to build portable binaries, where necessary paths to assets can be specified in config file
 
 ### Minor issues
-- When reading long text like Zoe's diary or Esmer's first speech, the audio plays with big delays
-- Voice audio and some sfx have clicks after every play in the end 
+- Sometimes white dots and lines artifacts appear on the ground (this is and old issue)
 
 # Little Big Adventure 2 - Engine source code - Community
 

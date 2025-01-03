@@ -3,7 +3,7 @@
 #include <SDL.h>
 
 // Set to 0 for window mode (might be convenient for debug) 
-constexpr auto FullScreen = 1;
+constexpr auto FullScreen = 0;
 
 // Update this if there is any monitor refresh mismatch visual issues
 constexpr Uint32 FullScreenFixedFrameRate = 120;

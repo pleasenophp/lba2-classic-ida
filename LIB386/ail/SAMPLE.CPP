@@ -601,7 +601,6 @@ U32	PlaySample(void *ptrsample, U32 usernum, S32 pitchbend, S32 nbrepeat, S32 vo
 
 		samplesSize = (char*)decompressedData - samplesPtr;
 
-
 		pAudioSource->loadRawWave16((short*)samplesPtr, samplesSize, sampleRate, 1);
 	}
 
@@ -645,6 +644,7 @@ U32	PlaySample(void *ptrsample, U32 usernum, S32 pitchbend, S32 nbrepeat, S32 vo
 	*/
 
 	// GO !!!
+	gSoloud->setVolume(gSoundHandleMapping[handle].soloudHandle, volume / 127.0f);
 	gSoloud->setPause(gSoundHandleMapping[handle].soloudHandle, false);
 
 	// Compute handle
