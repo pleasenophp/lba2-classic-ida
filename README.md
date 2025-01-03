@@ -6,7 +6,7 @@ This is a work on the **Little Big Adventure 2 - Engine source code - Community*
 
 1. VS 2019 build tools with C++ dev enabled should be installed, if you use VS 2022 or later
 
-1. Edit DEFINES.H to provide path to local game data files (where the HQR files are) and music.
+1. Edit DEFINES.H to provide path to local game data files (where the HQR files are) and music. Steam and GoG versions are supported.
   For example:
 
   #define	PATH_RESSOURCE		"c:\\Games\\tlba2-classic\\Common\\"
@@ -45,7 +45,6 @@ This should be the absolute path to LBA2.CFG:
 
 ## Current issues
 
-- Make it work with the data files from Steam version as well
 - The volume options for sfx and voices seem to be ignored when changing them in the options menu, even though they saved and loaded to/from config
 - Create configuration to build portable binaries, where necessary paths to assets can be specified in config file
 
