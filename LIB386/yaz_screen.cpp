@@ -16,6 +16,8 @@ SDL_Renderer* sdlRenderer = nullptr;
 SDL_Texture* sdlTexture = nullptr;
 U32 g_pal[256];
 
+static Uint64 lastPresentTime = 0;
+
 S32 InitVESA()
 {
 	SDL_VideoInit(NULL);
@@ -88,7 +90,6 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 	return 1;
 }
 
-static Uint32 lastPresentTime = 0;
 
 void CopyBoxF(void *dst, void *src, U32 *TabOffDst, T_BOX *box) 
 {
