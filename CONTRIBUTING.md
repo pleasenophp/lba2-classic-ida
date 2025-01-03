@@ -12,7 +12,6 @@ If you observe a bug you can report it [here](https://github.com/2point21/lba2-c
 
 If you have an idea, you can [create a feature request](https://github.com/2point21/lba2-classic-community/issues/new) to suggest a new feature.
 
-
 ## Contributing to the documentation
 
 You can also help to build the official documentation here : https://github.com/2point21/lba-classic-doc
