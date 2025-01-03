@@ -2,8 +2,8 @@
 #include <system.h>
 #include <SDL.h>
 
-// Set to 0 for window mode (useful for debug) 
-constexpr auto FullScreen = 1;
+// Set to 0 for window mode (might be convenient for debug) 
+constexpr auto FullScreen = 0;
 
 // Update this if there is any monitor refresh mismatch visual issues
 constexpr Uint32 FullScreenFixedFrameRate = 120;
@@ -39,11 +39,10 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 	else 
 	{
 		sdlWindow = SDL_CreateWindow("LBA2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ResX, ResY, SDL_WINDOW_SHOWN);
-		sdlScreen = SDL_GetWindowSurface(sdlWindow);
 	}
 
 	if (sdlWindow == NULL) {
-		fprintf(stderr, "Unable to set video: %s\n", SDL_GetError());
+		fprintf(stderr, "Unable to create window: %s\n", SDL_GetError());
 		exit(1);
 	}
 
@@ -68,6 +67,10 @@ S32	DetectInitVESAMode(U32 ResX, U32 ResY, U32 Depth, U32 Memory)
 			fprintf(stderr, "Unable to create texture: %s\n", SDL_GetError());
 			exit(1);
 		}
+	}
+	else
+	{
+		sdlScreen = SDL_GetWindowSurface(sdlWindow);
 	}
 
 	ModeResX = ResX;
