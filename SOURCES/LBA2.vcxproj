@@ -64,6 +64,9 @@
     <MASM>
       <IncludePaths>$(ProjectDir)..\Lib386\H;%(IncludePaths)</IncludePaths>
     </MASM>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)Win32\Debug\*" "$(SolutionDir)Debug\" /I /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
