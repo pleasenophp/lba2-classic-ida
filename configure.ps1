@@ -131,8 +131,8 @@ $templateContent = $templateContent -replace "\$\{DISPLAY_FPS\}", $displayFps
 $templateContent = $templateContent -replace "\$\{FULLSCREEN\}", $fullscreen
 
 $outputFileSources = Join-Path "SOURCES" $outputFile
-$outputFileLib386 = Join-Path "LIB386" $outputFile
+$outputFileLib386 =  Join-Path "LIB386" $outputFile
 Set-Content -Path $outputFileSources -Value $templateContent
-Set-Content -Path $outputFileLib386 -Value $templateContent
+Set-Content -Path $outputFileLib386 -Value $templateContent 
 
 Write-Host "$outputFile has been successfully generated. You can now build the game" -ForegroundColor Green
