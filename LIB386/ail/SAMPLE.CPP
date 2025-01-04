@@ -6,6 +6,8 @@
 #include 	<stdlib.h>
 #include 	<string.h>
 
+#include    "..\SOURCES\Ida\ElasticBuffer.h"
+
 #ifdef	YAZ_WIN32
 #include 	"mixer.h"
 #include	<system\winsys.h>
@@ -85,6 +87,8 @@ static	U32		SampleSeed			;
 static	S32		SamplesPaused = 0		;
 static	S32		SamplesFade = 0			;
 static	S32		FadeStartTime			;
+
+static ElasticBuffer sampleBuffer;
 
 //████████████████████████████████████████████████████████████████████████████
 
@@ -568,8 +572,8 @@ U32	PlaySample(void *ptrsample, U32 usernum, S32 pitchbend, S32 nbrepeat, S32 vo
 	}
 	if (numChannels == 1 && bitsPerSample == 4)
 	{
-		// TODO - pre-allocate the buffer for the playing sample and only resize if needed
-		samplesPtr = (char*)malloc(samplesSize * 4);
+		sampleBuffer.ensureCapacity(samplesSize * 4);
+		samplesPtr = sampleBuffer.getBuffer();
 
 		S16 stepIndex = 0;
 		S16 predicted = 0;
@@ -601,8 +605,6 @@ U32	PlaySample(void *ptrsample, U32 usernum, S32 pitchbend, S32 nbrepeat, S32 vo
 		int actualSamplesSize = ((char*)decompressedData - samplesPtr) / 2;
 
 		pAudioSource->loadRawWave16((short*)samplesPtr, actualSamplesSize, sampleRate, 1);
-
-		// delete samplesPtr;
 	}
 
 	gSoundHandleMapping[handle].soloudHandle = gSoloud->play(*pAudioSource, -1, 0, true, 0);

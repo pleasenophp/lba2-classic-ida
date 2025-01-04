@@ -193,6 +193,7 @@
     <ClInclude Include="VALIDPOS.H" />
     <ClInclude Include="WAGON.H" />
     <ClInclude Include="ZV.H" />
+    <ClInclude Include="Ida\ElasticBuffer.h" />
     <ClInclude Include="Ida\SmackerStream.h" />
     <ClInclude Include="Ida\SmackerStreamInstance.h" />
   </ItemGroup>
@@ -275,6 +276,7 @@
     <ClCompile Include="VERSION.CPP" />
     <ClCompile Include="WAGON.CPP" />
     <ClCompile Include="ZV.CPP" />
+    <ClCompile Include="Ida\ElasticBuffer.cpp" />
     <ClCompile Include="Ida\SmackerStreamInstance.cpp" />
     <ClCompile Include="Ida\SmackerStream.cpp" />
   </ItemGroup>

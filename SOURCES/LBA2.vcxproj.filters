@@ -222,6 +222,9 @@
     <ClInclude Include="Ida\SmackerStream.h">
       <Filter>Source Files\Ida</Filter>
     </ClInclude>
+    <ClInclude Include="Ida\ElasticBuffer.h">
+      <Filter>Source Files\Ida</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AMBIANCE.CPP">
@@ -399,6 +402,9 @@
       <Filter>Source Files\Ida</Filter>
     </ClCompile>
     <ClCompile Include="Ida\SmackerStream.cpp">
+      <Filter>Source Files\Ida</Filter>
+    </ClCompile>
+    <ClCompile Include="Ida\ElasticBuffer.cpp">
       <Filter>Source Files\Ida</Filter>
     </ClCompile>
   </ItemGroup>
