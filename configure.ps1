@@ -45,7 +45,8 @@ function Validate-LBA2Directory($directory) {
 
 # Function to normalize paths and ensure they end with a single backslash and wrapped in quotes
 function Normalize-Path($path) {
-    $normalizedPath = $path -replace '\\+', '\\'
+    $normalizedPath = $path.TrimEnd('\') + '\'
+    $normalizedPath = $normalizedPath -replace '\\+', '\\'
     return "`"$normalizedPath`""
 }
 
