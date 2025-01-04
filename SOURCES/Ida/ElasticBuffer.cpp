@@ -5,6 +5,7 @@
 
 using namespace std;
 
+// TODO - setup auto-format in vscode
 ElasticBuffer::ElasticBuffer(size_t initialSize, double growthRate)
     : currentCapacity(initialSize), growthRate(growthRate) {
     if (growthRate <= 1) {
@@ -16,6 +17,11 @@ ElasticBuffer::ElasticBuffer(size_t initialSize, double growthRate)
 }
 
 void ElasticBuffer::ensureCapacity(size_t requiredSize) {
+    if (!requiredSize) 
+    {
+        return;
+    }
+
     if (!buffer.capacity()) {
         currentCapacity = requiredSize * 2;
         buffer.reserve(currentCapacity);
