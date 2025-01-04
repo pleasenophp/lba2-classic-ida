@@ -17,9 +17,10 @@ namespace Ida
 
 		float *mStereoBuffer = nullptr;
 		unsigned int mStereoBufferSize = 0;
+
 	public:
-		SmackerStreamInstance(SmackerStream* parent);
-		virtual ~SmackerStreamInstance() 
+		SmackerStreamInstance(SmackerStream *parent);
+		virtual ~SmackerStreamInstance()
 		{
 			delete[] mStereoBuffer;
 		}
@@ -29,4 +30,3 @@ namespace Ida
 		virtual bool hasEnded();
 	};
 }
-

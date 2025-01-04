@@ -3,14 +3,16 @@
 #include <vector>
 #include <cstddef>
 
-namespace Ida {
-    class ElasticBuffer {
+namespace Ida
+{
+    class ElasticBuffer
+    {
     public:
         ElasticBuffer(size_t initialSize = 0, double growthRate = 2);
 
         void ensureCapacity(size_t requiredSize);
 
-        char* getBuffer();
+        char *getBuffer();
 
     private:
         std::vector<char> buffer;
@@ -18,4 +20,3 @@ namespace Ida {
         double growthRate;
     };
 }
-

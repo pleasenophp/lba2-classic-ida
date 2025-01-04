@@ -5,33 +5,40 @@
 
 using namespace std;
 
-namespace Ida {
-    // TODO - setup auto-format in vscode
+namespace Ida
+{
     ElasticBuffer::ElasticBuffer(size_t initialSize, double growthRate)
-        : currentCapacity(initialSize), growthRate(growthRate) {
-        if (growthRate <= 1) {
+        : currentCapacity(initialSize), growthRate(growthRate)
+    {
+        if (growthRate <= 1)
+        {
             throw invalid_argument("Growth rate must be greater than 1.0.");
         }
-        if (initialSize > 0) {
+        if (initialSize > 0)
+        {
             buffer.reserve(initialSize);
         }
     }
 
-    void ElasticBuffer::ensureCapacity(size_t requiredSize) {
+    void ElasticBuffer::ensureCapacity(size_t requiredSize)
+    {
         if (!requiredSize)
         {
             return;
         }
 
-        if (!buffer.capacity()) {
+        if (!buffer.capacity())
+        {
             currentCapacity = requiredSize * 2;
             buffer.reserve(currentCapacity);
             // TODO - remove debug messages
             std::cout << "Buffer initially reallocated to " << currentCapacity << " bytes." << std::endl;
         }
 
-        if (requiredSize > currentCapacity) {
-            while (currentCapacity < requiredSize) {
+        if (requiredSize > currentCapacity)
+        {
+            while (currentCapacity < requiredSize)
+            {
                 currentCapacity = static_cast<size_t>(std::ceil(currentCapacity * growthRate));
             }
             buffer.reserve(currentCapacity);
@@ -41,8 +48,8 @@ namespace Ida {
     }
 
     // Access the raw buffer pointer
-    char* ElasticBuffer::getBuffer() {
+    char *ElasticBuffer::getBuffer()
+    {
         return buffer.data();
     }
 }
-

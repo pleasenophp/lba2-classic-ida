@@ -4,18 +4,18 @@
 
 using namespace std;
 
-namespace Ida {
-
+namespace Ida
+{
 	SmackerStream::SmackerStream(unsigned char bitDepth, float sampleRate, unsigned char numChannels) : mBitDepth(bitDepth)
 	{
 		if (bitDepth != 16 && bitDepth != 8)
 		{
-			throw invalid_argument("Unsupported bit rate: "+to_string(bitDepth));
+			throw invalid_argument("Unsupported bit rate: " + to_string(bitDepth));
 		}
 
-		if (!numChannels || numChannels > 2) 
+		if (!numChannels || numChannels > 2)
 		{
-			throw invalid_argument("Unsupported number of channels: "+to_string(numChannels));
+			throw invalid_argument("Unsupported number of channels: " + to_string(numChannels));
 		}
 
 		mChannels = numChannels;
@@ -23,17 +23,21 @@ namespace Ida {
 		this->setSingleInstance(1);
 	}
 
-	SmackerStream::~SmackerStream() {
-		if (mInstance) {
-			((SmackerStreamInstance*)mInstance)->stop();
+	SmackerStream::~SmackerStream()
+	{
+		if (mInstance)
+		{
+			((SmackerStreamInstance *)mInstance)->stop();
 		}
 		delete[] mSampleBuffer;
 	}
 
 	// TODO - use ElasticBuffer
-	void SmackerStream::AllocateSampleBuffer(float **buffer, unsigned int *currentBufferSize, unsigned int numberOfSamples) {
-		if (numberOfSamples > *currentBufferSize || !*buffer) {
-			*currentBufferSize = numberOfSamples << 1; 
+	void SmackerStream::AllocateSampleBuffer(float **buffer, unsigned int *currentBufferSize, unsigned int numberOfSamples)
+	{
+		if (numberOfSamples > *currentBufferSize || !*buffer)
+		{
+			*currentBufferSize = numberOfSamples << 1;
 			delete[] *buffer;
 			*buffer = new float[*currentBufferSize];
 		}
@@ -49,7 +53,7 @@ namespace Ida {
 		if (mBitDepth == 16)
 		{
 			// Convert 16-bit samples (signed short) to float
-			auto shortBuffer = reinterpret_cast<const short*>(buffer);
+			auto shortBuffer = reinterpret_cast<const short *>(buffer);
 			for (unsigned int i = 0; i < sampleCount; ++i)
 			{
 				mSampleBuffer[i] = shortBuffer[i] / 32768.0f;
@@ -89,4 +93,3 @@ namespace Ida {
 		return mInstance;
 	}
 }
-

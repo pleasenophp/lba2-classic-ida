@@ -5,14 +5,15 @@ using namespace std;
 
 namespace Ida
 {
-	SmackerStreamInstance::SmackerStreamInstance(SmackerStream* parent)
+	SmackerStreamInstance::SmackerStreamInstance(SmackerStream *parent)
 	{
 		mParent = parent;
 	}
 
 	unsigned int SmackerStreamInstance::getAudio(float *buffer, unsigned int samplesToRead, unsigned int bufferSize)
 	{
-		if (mChannels == 1) {
+		if (mChannels == 1)
+		{
 
 			unsigned int readSamples = mParent->readNext(buffer, samplesToRead);
 
@@ -23,16 +24,15 @@ namespace Ida
 
 			return readSamples;
 		}
-		else if (mChannels == 2) 
+		else if (mChannels == 2)
 		{
 			// For the stereo sound SMK audio has sequence of the samples L0, R0, L1, R1, L2, R2, ... LN, RN
 			// The SoLoud requires to give them double as many samples as requested, but in this order: L0, L1, L2, ... LN, R0, R1, R2, ... RN
-
 			samplesToRead <<= 1;
 			SmackerStream::AllocateSampleBuffer(&mStereoBuffer, &mStereoBufferSize, samplesToRead);
 			auto readSamples = mParent->readNext(mStereoBuffer, samplesToRead);
 
-			if (!readSamples) 
+			if (!readSamples)
 			{
 				return 0;
 			}
@@ -42,7 +42,7 @@ namespace Ida
 			auto leftChannel = buffer;
 			auto rightChannel = buffer + channelSamples;
 
-			for (unsigned int i = 0; i < channelSamples; ++i) 
+			for (unsigned int i = 0; i < channelSamples; ++i)
 			{
 				leftChannel[i] = *(mStereoBuffer + i * 2);
 				rightChannel[i] = *(mStereoBuffer + i * 2 + 1);
@@ -69,9 +69,8 @@ namespace Ida
 		return mHasEnded;
 	}
 
-	void SmackerStreamInstance::stop() 
+	void SmackerStreamInstance::stop()
 	{
 		mHasEnded = true;
 	}
 }
-

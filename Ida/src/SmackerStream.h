@@ -34,4 +34,3 @@ namespace Ida
 		static void AllocateSampleBuffer(float **buffer, unsigned int *currentBufferSize, unsigned int numberOfSamples);
 	};
 };
-
