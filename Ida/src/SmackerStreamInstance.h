@@ -2,10 +2,7 @@
 
 #include "SmackerStream.h"
 #include "ElasticBuffer.h"
-
-#pragma pack(8)
 #include "soloud.h"
-#pragma pack(1)
 
 using namespace SoLoud;
 

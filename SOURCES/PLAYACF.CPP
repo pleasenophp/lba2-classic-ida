@@ -3,10 +3,10 @@
 #include <smacker/smacker.h>
 
 #pragma pack(8)
-#include	"soloud.h"
+#include "soloud.h"
+#include "SmackerStream.h"
 #pragma pack(1)
 
-#include "SmackerStream.h"
 
 using namespace Ida;
 

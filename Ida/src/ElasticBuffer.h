@@ -4,7 +4,6 @@
 #include <cstddef>
 #include <stdexcept>
 #include <cmath>
-#include <iostream>
 
 namespace Ida
 {
@@ -36,8 +35,6 @@ namespace Ida
             {
                 currentCapacity = requiredSize * 2;
                 buffer.reserve(currentCapacity);
-                // TODO - remove debug messages
-                std::cout << "Buffer initially reallocated to " << currentCapacity << " bytes." << std::endl;
             }
 
             if (requiredSize > currentCapacity)
@@ -47,7 +44,6 @@ namespace Ida
                     currentCapacity = static_cast<size_t>(std::ceil(currentCapacity * growthRate));
                 }
                 buffer.reserve(currentCapacity);
-                std::cout << "Buffer reallocated to " << currentCapacity << " bytes." << std::endl;
             }
             buffer.resize(requiredSize);
         }

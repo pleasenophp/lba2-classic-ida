@@ -16,7 +16,8 @@
 			"editor.defaultFormatter": "ms-vscode.cpptools"
 		},
 		"files.associations": {
-			"stdexcept": "cpp"
+			"stdexcept": "cpp",
+			"deque": "cpp"
 		}
 	}
 }

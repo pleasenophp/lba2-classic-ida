@@ -29,9 +29,8 @@ namespace Ida
 			// For the stereo sound SMK audio has sequence of the samples L0, R0, L1, R1, L2, R2, ... LN, RN
 			// The SoLoud requires to give them double as many samples as requested, but in this order: L0, L1, L2, ... LN, R0, R1, R2, ... RN
 			samplesToRead <<= 1;
-			// mStereoBuffer.ensureCapacity(samplesToRead);
-			// float *stereoBuffer = mStereoBuffer.getBuffer();
-			float *stereoBuffer = new float[samplesToRead];
+			mStereoBuffer.ensureCapacity(samplesToRead);
+			float *stereoBuffer = mStereoBuffer.getBuffer();
 
 			auto readSamples = mParent->readNext(stereoBuffer, samplesToRead);
 
@@ -55,8 +54,6 @@ namespace Ida
 			{
 				memset(buffer + readSamples, 0, (bufferSize - readSamples) * sizeof(float));
 			}
-
-			delete[] stereoBuffer;
 
 			return channelSamples;
 		}

@@ -36,9 +36,8 @@ namespace Ida
 		// sampleCount = bufferSize / 2 if bit depth is 16 bit and bufferSize if it's 8 bit
 		auto sampleCount = bufferSize >> (mBitDepth >> 4);
 
-		// mSampleBuffer.ensureCapacity(sampleCount);
-		// float *sampleBuffer = mSampleBuffer.getBuffer();
-		float* sampleBuffer = new float[sampleCount];
+		mSampleBuffer.ensureCapacity(sampleCount);
+		float *sampleBuffer = mSampleBuffer.getBuffer();
 
 		if (mBitDepth == 16)
 		{
@@ -60,8 +59,6 @@ namespace Ida
 
 		lock_guard<mutex> lock(mMutex);
 		mBuffer.insert(mBuffer.end(), sampleBuffer, sampleBuffer + sampleCount);
-
-		delete[] sampleBuffer;
 	}
 
 	unsigned int SmackerStream::readNext(float *buffer, unsigned int numberOfSamples)
