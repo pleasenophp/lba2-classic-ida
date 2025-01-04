@@ -50,7 +50,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\Lib386\;..\Lib386\H;..\SDL\Include;..\soloud\include;..\SOURCES\Ida;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Lib386\;..\Lib386\H;..\Ida\src;..\SDL\Include;..\soloud\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;OBJECT_PTR;LBA_GAME;CDROM;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <DisableSpecificWarnings>4068</DisableSpecificWarnings>
@@ -193,9 +193,6 @@
     <ClInclude Include="VALIDPOS.H" />
     <ClInclude Include="WAGON.H" />
     <ClInclude Include="ZV.H" />
-    <ClInclude Include="Ida\ElasticBuffer.h" />
-    <ClInclude Include="Ida\SmackerStream.h" />
-    <ClInclude Include="Ida\SmackerStreamInstance.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DEXT\DECORS.CPP" />
@@ -276,11 +273,11 @@
     <ClCompile Include="VERSION.CPP" />
     <ClCompile Include="WAGON.CPP" />
     <ClCompile Include="ZV.CPP" />
-    <ClCompile Include="Ida\ElasticBuffer.cpp" />
-    <ClCompile Include="Ida\SmackerStreamInstance.cpp" />
-    <ClCompile Include="Ida\SmackerStream.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ida\Ida.vcxproj">
+      <Project>{dea5be2e-8071-470d-9235-066644dc30e6}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Lib386\Lib386.vcxproj">
       <Project>{3697d988-1e10-4308-8b2c-a6c5ee57ac45}</Project>
     </ProjectReference>

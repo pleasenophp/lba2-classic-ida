@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31702.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lib386", "LIB386\Lib386.vcxproj", "{3697D988-1E10-4308-8B2C-A6C5EE57AC45}"
 EndProject
@@ -17,6 +17,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL2main", "SDL\VisualC\SDLmain\SDLmain.vcxproj", "{DA956FD3-E142-46F2-9DD5-C78BEBB56B7A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "soloud", "soloud.vcxproj", "{5A057537-09EC-4D7D-9327-1003CFF50601}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ida", "Ida\Ida.vcxproj", "{DEA5BE2E-8071-470D-9235-066644DC30E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,14 @@ Global
 		{5A057537-09EC-4D7D-9327-1003CFF50601}.Release|Win32.Build.0 = Release|Win32
 		{5A057537-09EC-4D7D-9327-1003CFF50601}.Release|x64.ActiveCfg = Release|x64
 		{5A057537-09EC-4D7D-9327-1003CFF50601}.Release|x64.Build.0 = Release|x64
+		{DEA5BE2E-8071-470D-9235-066644DC30E6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DEA5BE2E-8071-470D-9235-066644DC30E6}.Debug|Win32.Build.0 = Debug|Win32
+		{DEA5BE2E-8071-470D-9235-066644DC30E6}.Debug|x64.ActiveCfg = Debug|x64
+		{DEA5BE2E-8071-470D-9235-066644DC30E6}.Debug|x64.Build.0 = Debug|x64
+		{DEA5BE2E-8071-470D-9235-066644DC30E6}.Release|Win32.ActiveCfg = Release|Win32
+		{DEA5BE2E-8071-470D-9235-066644DC30E6}.Release|Win32.Build.0 = Release|Win32
+		{DEA5BE2E-8071-470D-9235-066644DC30E6}.Release|x64.ActiveCfg = Release|x64
+		{DEA5BE2E-8071-470D-9235-066644DC30E6}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

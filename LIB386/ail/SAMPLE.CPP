@@ -6,7 +6,7 @@
 #include 	<stdlib.h>
 #include 	<string.h>
 
-#include    "..\SOURCES\Ida\ElasticBuffer.h"
+#include    "ElasticBuffer.h"
 
 #ifdef	YAZ_WIN32
 #include 	"mixer.h"
@@ -88,7 +88,7 @@ static	S32		SamplesPaused = 0		;
 static	S32		SamplesFade = 0			;
 static	S32		FadeStartTime			;
 
-static ElasticBuffer sampleBuffer;
+static Ida::ElasticBuffer sampleBuffer;
 
 //████████████████████████████████████████████████████████████████████████████
 

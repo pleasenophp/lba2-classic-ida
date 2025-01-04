@@ -22,9 +22,6 @@
     <Filter Include="Source Files\3DExt\Asm">
       <UniqueIdentifier>{67edec31-5b18-41f7-a907-8d66774809cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Ida">
-      <UniqueIdentifier>{a70a4074-a937-46c1-9730-7a2356ed44ce}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADDKEYS.H">
@@ -216,15 +213,6 @@
     <ClInclude Include="3DEXT\VAR_EXT.H">
       <Filter>Source Files\3DExt</Filter>
     </ClInclude>
-    <ClInclude Include="Ida\SmackerStreamInstance.h">
-      <Filter>Source Files\Ida</Filter>
-    </ClInclude>
-    <ClInclude Include="Ida\SmackerStream.h">
-      <Filter>Source Files\Ida</Filter>
-    </ClInclude>
-    <ClInclude Include="Ida\ElasticBuffer.h">
-      <Filter>Source Files\Ida</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AMBIANCE.CPP">
@@ -397,15 +385,6 @@
     </ClCompile>
     <ClCompile Include="3DEXT\VAR_EXT.CPP">
       <Filter>Source Files\3DExt</Filter>
-    </ClCompile>
-    <ClCompile Include="Ida\SmackerStreamInstance.cpp">
-      <Filter>Source Files\Ida</Filter>
-    </ClCompile>
-    <ClCompile Include="Ida\SmackerStream.cpp">
-      <Filter>Source Files\Ida</Filter>
-    </ClCompile>
-    <ClCompile Include="Ida\ElasticBuffer.cpp">
-      <Filter>Source Files\Ida</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

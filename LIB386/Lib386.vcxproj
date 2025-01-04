@@ -1073,6 +1073,11 @@
     <ClInclude Include="smacker\smk_malloc.h" />
     <ClInclude Include="yaz.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ida\Ida.vcxproj">
+      <Project>{dea5be2e-8071-470d-9235-066644dc30e6}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3697D988-1E10-4308-8B2C-A6C5EE57AC45}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -1114,7 +1119,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)\H;$(ProjectDir);..\SDL\Include;..\soloud\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\H;$(ProjectDir);..\Ida\src;..\SDL\Include;..\soloud\include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4068</DisableSpecificWarnings>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
     </ClCompile>
