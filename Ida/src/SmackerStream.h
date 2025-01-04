@@ -2,6 +2,7 @@
 
 #include <mutex>
 #include <deque>
+#include "ElasticBuffer.h"
 
 #pragma pack(8)
 #include "soloud.h"
@@ -14,6 +15,8 @@ namespace Ida
 {
 	class SmackerStream : public AudioSource
 	{
+		ElasticBuffer<float> mSampleBuffer;
+
 		unsigned char mBitDepth;
 
 		AudioSourceInstance *mInstance = nullptr;
@@ -21,16 +24,12 @@ namespace Ida
 		mutex mMutex;
 		deque<float> mBuffer;
 
-		float *mSampleBuffer = nullptr;
-		unsigned int mSampleBufferSize = 0;
-
 	public:
 		SmackerStream(unsigned char bitDepth, float sampleRate, unsigned char numChannels);
 		virtual ~SmackerStream();
 		void addNextChunk(const unsigned char *buffer, unsigned int bufferSize);
 		unsigned int readNext(float *buffer, unsigned int numberOfSamples);
 		virtual AudioSourceInstance *createInstance();
-
-		static void AllocateSampleBuffer(float **buffer, unsigned int *currentBufferSize, unsigned int numberOfSamples);
 	};
 };
+

@@ -88,7 +88,7 @@ static	S32		SamplesPaused = 0		;
 static	S32		SamplesFade = 0			;
 static	S32		FadeStartTime			;
 
-static Ida::ElasticBuffer sampleBuffer;
+static Ida::ElasticBuffer<char> sampleBuffer;
 
 //████████████████████████████████████████████████████████████████████████████
 

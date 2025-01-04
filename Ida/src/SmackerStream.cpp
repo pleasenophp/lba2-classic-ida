@@ -29,18 +29,6 @@ namespace Ida
 		{
 			((SmackerStreamInstance *)mInstance)->stop();
 		}
-		delete[] mSampleBuffer;
-	}
-
-	// TODO - use ElasticBuffer
-	void SmackerStream::AllocateSampleBuffer(float **buffer, unsigned int *currentBufferSize, unsigned int numberOfSamples)
-	{
-		if (numberOfSamples > *currentBufferSize || !*buffer)
-		{
-			*currentBufferSize = numberOfSamples << 1;
-			delete[] *buffer;
-			*buffer = new float[*currentBufferSize];
-		}
 	}
 
 	void SmackerStream::addNextChunk(const unsigned char *buffer, unsigned int bufferSize)
@@ -48,7 +36,9 @@ namespace Ida
 		// sampleCount = bufferSize / 2 if bit depth is 16 bit and bufferSize if it's 8 bit
 		auto sampleCount = bufferSize >> (mBitDepth >> 4);
 
-		AllocateSampleBuffer(&mSampleBuffer, &mSampleBufferSize, sampleCount);
+		// mSampleBuffer.ensureCapacity(sampleCount);
+		// float *sampleBuffer = mSampleBuffer.getBuffer();
+		float* sampleBuffer = new float[sampleCount];
 
 		if (mBitDepth == 16)
 		{
@@ -56,7 +46,7 @@ namespace Ida
 			auto shortBuffer = reinterpret_cast<const short *>(buffer);
 			for (unsigned int i = 0; i < sampleCount; ++i)
 			{
-				mSampleBuffer[i] = shortBuffer[i] / 32768.0f;
+				sampleBuffer[i] = shortBuffer[i] / 32768.0f;
 			}
 		}
 		else if (mBitDepth == 8)
@@ -64,12 +54,14 @@ namespace Ida
 			// Convert 8-bit samples (unsigned char) to float
 			for (unsigned int i = 0; i < sampleCount; ++i)
 			{
-				mSampleBuffer[i] = ((signed)buffer[i] - 128) / 128.0f;
+				sampleBuffer[i] = ((signed)buffer[i] - 128) / 128.0f;
 			}
 		}
 
 		lock_guard<mutex> lock(mMutex);
-		mBuffer.insert(mBuffer.end(), mSampleBuffer, mSampleBuffer + sampleCount);
+		mBuffer.insert(mBuffer.end(), sampleBuffer, sampleBuffer + sampleCount);
+
+		delete[] sampleBuffer;
 	}
 
 	unsigned int SmackerStream::readNext(float *buffer, unsigned int numberOfSamples)

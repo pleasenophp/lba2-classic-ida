@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SmackerStream.h"
+#include "ElasticBuffer.h"
 
 #pragma pack(8)
 #include "soloud.h"
@@ -15,15 +16,11 @@ namespace Ida
 		SmackerStream *mParent;
 		bool mHasEnded = false;
 
-		float *mStereoBuffer = nullptr;
-		unsigned int mStereoBufferSize = 0;
+		ElasticBuffer<float> mStereoBuffer;
 
 	public:
 		SmackerStreamInstance(SmackerStream *parent);
-		virtual ~SmackerStreamInstance()
-		{
-			delete[] mStereoBuffer;
-		}
+		virtual ~SmackerStreamInstance() = default;
 		void stop();
 		virtual unsigned int getAudio(float *buffer, unsigned int samplesToRead, unsigned int bufferSize);
 		virtual result rewind();
