@@ -1,3 +1,6 @@
+// Please run configure.ps1 from the root of this repo first, to generate this file
+#include "cfg-defines.h"
+
 /*══════════════════════════════════════════════════════════════════════════*
 		   █▀▀▀▄ █▀▀▀▀ █▀▀▀▀  █    ██▄ █ █▀▀▀▀ ██▀▀▀
 		   ██  █ ██▀▀  ██▀▀   ██   ██▀██ ██▀▀  ▀▀▀▀█
@@ -47,8 +50,9 @@
 #define	SAMPLE_FLA_HQR	1
 
 //=======================================================================
-// tous fichiers dans même dir
+// Legacy setting: all the files in the same directory
 // WARNING: Only enable it if you want to experiment. The ONE_GAME_DIRECTORY mode is not tested, and probably doesn't work.
+// Use instead configure.ps1 script to properly configure the game for Release
 // #define	ONE_GAME_DIRECTORY 0
 //=======================================================================
 
@@ -57,29 +61,21 @@
 #define	PATH_RESSOURCE		"" 
 #define	PATH_SAVE		PATH_RESSOURCE"SAVE\\"
 #else
-#define	PATH_RESSOURCE		"c:\\Games\\tlba2-classic\\Common\\"
-#define	PATH_SAVE		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\"
+#define	PATH_RESSOURCE CFG_PATH_RESSOURCE
+#define	PATH_SAVE CFG_PATH_SAVE
 #endif
 
 #ifdef	ONE_GAME_DIRECTORY
 #define	PATH_PCX_SAVE		PATH_SAVE"shoot\\"
 #else
-#define	PATH_PCX_SAVE		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\shoot\\"
+#define	PATH_PCX_SAVE CFG_PATH_PCX_SAVE
 #endif
 
 // repertoire ou sauver les bugs
-#define	PATH_SAVE_BUGS		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\bugs\\"
+#define	PATH_SAVE_BUG CFG_PATH_SAVE_BUGS
 
-//#define	PATH_ACF	PATH_RESSOURCE"ACF\\"
 #define	PATH_ACF	PATH_RESSOURCE"VIDEO\\VIDEO.HQR"
-
-
-#ifdef	ONE_GAME_DIRECTORY
-#define	PATH_JINGLE	"MUSIC\\"
-#else
-#define	PATH_JINGLE	"C:\\Games\\tlba2-classic\\Common\\Music\\"
-
-#endif
+#define	PATH_JINGLE	PATH_RESSOURCE"MUSIC\\"
 
 /*──────────────────────────────────────────────────────────────────────────*/
 /*----------------------------- camera -----------------------------*/

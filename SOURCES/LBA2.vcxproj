@@ -145,6 +145,7 @@
     <ClInclude Include="ANIMTEX.H" />
     <ClInclude Include="BEZIER.H" />
     <ClInclude Include="BUGGY.H" />
+    <ClInclude Include="cfg-defines.h" />
     <ClInclude Include="CHEATCOD.H" />
     <ClInclude Include="COMMON.H" />
     <ClInclude Include="COMPORTE.H" />

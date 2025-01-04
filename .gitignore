@@ -6,5 +6,6 @@ Win32
 SOURCES/ADELINE.LOG
 GameRun/
 
+**/cfg-defines.h
 
 
