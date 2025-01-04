@@ -6,8 +6,6 @@
 #include 	<stdlib.h>
 #include 	<string.h>
 
-#include    "ElasticBuffer.h"
-
 #ifdef	YAZ_WIN32
 #include 	"mixer.h"
 #include	<system\winsys.h>
@@ -23,6 +21,7 @@
 #pragma pack(8)
 #include	"soloud.h"
 #include	"soloud_wav.h"
+#include    "ElasticBuffer.h"
 #pragma pack(1)
 
 #include	<assert.h>
@@ -88,7 +87,7 @@ static	S32		SamplesPaused = 0		;
 static	S32		SamplesFade = 0			;
 static	S32		FadeStartTime			;
 
-static Ida::ElasticBuffer sampleBuffer;
+static Ida::ElasticBuffer<char> sampleBuffer;
 
 //████████████████████████████████████████████████████████████████████████████
 

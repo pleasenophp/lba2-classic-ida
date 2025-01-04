@@ -29,8 +29,10 @@ namespace Ida
 			// For the stereo sound SMK audio has sequence of the samples L0, R0, L1, R1, L2, R2, ... LN, RN
 			// The SoLoud requires to give them double as many samples as requested, but in this order: L0, L1, L2, ... LN, R0, R1, R2, ... RN
 			samplesToRead <<= 1;
-			SmackerStream::AllocateSampleBuffer(&mStereoBuffer, &mStereoBufferSize, samplesToRead);
-			auto readSamples = mParent->readNext(mStereoBuffer, samplesToRead);
+			mStereoBuffer.ensureCapacity(samplesToRead);
+			float *stereoBuffer = mStereoBuffer.getBuffer();
+
+			auto readSamples = mParent->readNext(stereoBuffer, samplesToRead);
 
 			if (!readSamples)
 			{
@@ -44,8 +46,8 @@ namespace Ida
 
 			for (unsigned int i = 0; i < channelSamples; ++i)
 			{
-				leftChannel[i] = *(mStereoBuffer + i * 2);
-				rightChannel[i] = *(mStereoBuffer + i * 2 + 1);
+				leftChannel[i] = *(stereoBuffer + i * 2);
+				rightChannel[i] = *(stereoBuffer + i * 2 + 1);
 			}
 
 			if (bufferSize > readSamples)
