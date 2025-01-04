@@ -12,14 +12,13 @@ namespace Ida
 {
 	class SmackerStream : public AudioSource
 	{
-		ElasticBuffer<float> mSampleBuffer;
-
 		unsigned char mBitDepth;
 
 		AudioSourceInstance *mInstance = nullptr;
 
 		mutex mMutex;
 		deque<float> mBuffer;
+		ElasticBuffer<float> mSampleBuffer;
 
 	public:
 		SmackerStream(unsigned char bitDepth, float sampleRate, unsigned char numChannels);
@@ -29,4 +28,3 @@ namespace Ida
 		virtual AudioSourceInstance *createInstance();
 	};
 };
-
