@@ -30,6 +30,7 @@ namespace Ida {
 		delete[] mSampleBuffer;
 	}
 
+	// TODO - use ElasticBuffer
 	void SmackerStream::AllocateSampleBuffer(float **buffer, unsigned int *currentBufferSize, unsigned int numberOfSamples) {
 		if (numberOfSamples > *currentBufferSize || !*buffer) {
 			*currentBufferSize = numberOfSamples << 1; 
