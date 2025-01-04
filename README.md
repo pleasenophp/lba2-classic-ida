@@ -47,6 +47,8 @@ This should be the absolute path to LBA2.CFG:
 - Create configuration to build portable binaries, where necessary paths to assets can be specified in config file
 
 ### Minor issues
+- Volume CD is useless property in menu - remove?
+- General volume slider in the menu has no effect - might as well just remove, as general sound can be regulated by the Windows
 - Sometimes white dots and lines artifacts appear on the ground (this is and old issue)
 
 # Little Big Adventure 2 - Engine source code - Community
