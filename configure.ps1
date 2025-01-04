@@ -100,7 +100,7 @@ if ($BuildType -eq "Debug") {
     $displayFps = 1
     $fullscreen = 0
 } else {
-    $pathResource ="`"`""
+    $pathResource = Normalize-Path "Common"
 }
 
 # Path to template and output files

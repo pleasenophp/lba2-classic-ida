@@ -1145,7 +1145,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <DisableSpecificWarnings>4068</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(ProjectDir)\H;$(ProjectDir);..\SDL\Include;..\soloud\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\H;$(ProjectDir);..\SDL\Include;..\soloud\include;..\Ida\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
