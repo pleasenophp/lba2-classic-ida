@@ -1,6 +1,7 @@
 .vs/
 Debug/
 Release/
+build/
 soloud/Release/
 *.vcxproj.user
 Win32

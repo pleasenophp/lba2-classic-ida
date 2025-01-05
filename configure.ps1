@@ -101,6 +101,26 @@ if ($BuildType -eq "Debug") {
     $fullscreen = 0
 } else {
     $pathResource = Normalize-Path "Common"
+
+    $buildFolder = Join-Path $scriptDirectory "build"
+    if (Test-Path $buildFolder) {
+        Remove-Item -Recurse -Force -Path $buildFolder
+    }
+    New-Item -ItemType Directory -Path $buildFolder | Out-Null
+
+    # Create the required folder structure inside the build folder
+    $buildSubfolders = @(
+        "save",
+        "save\\shoot",
+        "bugs"
+    )
+    foreach ($folder in $buildSubfolders) {
+        $fullPath = Join-Path $buildFolder $folder
+        New-Item -ItemType Directory -Path $fullPath | Out-Null
+    }
+
+    # Copy LBA2.cfg from SOURCES to the build folder
+    Copy-Item -Path (Join-Path "SOURCES" "LBA2.cfg") -Destination (Join-Path $buildFolder "LBA2.cfg") -Force
 }
 
 # Path to template and output files
