@@ -60,11 +60,11 @@ This will clone the SoLoud and SDL2. Note that the modules are configured via ht
 
 The configure command will save paths to your game assets to read in this project. It will not modify or write anything into your installed LBA2 game folders.
 
-1. Open the **LBA2.sln** in Visual Studio 2022 and build the solution in **Debug/Win32** configuration.
+3. Open the **LBA2.sln** in Visual Studio 2022 and build the solution in **Debug/Win32** configuration.
 
-2. If the build completed successfully, you can now run the game in Visual Studio. The debug session game logs, config, and save game are put in **GameRun** folder in the root of your solution.
+4. If the build completed successfully, you can now run the game in Visual Studio. The debug session game logs, config, and save game are put in **GameRun** folder in the root of your solution.
 
-3. By default game runs in window mode in Debug configuration. If you want to run fullscreen in Debug mode, change the *LIB386\cfg-defines.h* file and set *CFG_FULLSCREEN* to 1
+5. By default game runs in window mode in Debug configuration. If you want to run fullscreen in Debug mode, change the *LIB386\cfg-defines.h* file and set *CFG_FULLSCREEN* to 1
 
 ## Build and run for Release
 
@@ -74,9 +74,9 @@ If you made some fun / mods and are ready to ship the release build, follow thos
 
 ```.\configure.ps1 -BuildType Release```
 
-1. Open the **LBA2.sln** in Visual Studio 2022 and build the solution in **Release/Win32** configuration.
+2. Open the **LBA2.sln** in Visual Studio 2022 and build the solution in **Release/Win32** configuration.
 
-1. If the build completed successfully, the portable deployable files will be in the **build** folder in this solution. Those files include
+3. If the build completed successfully, the portable deployable files will be in the **build** folder in this solution. Those files include
 - LBA2.exe
 - LBA2.cfg
 - SDL2.dll
