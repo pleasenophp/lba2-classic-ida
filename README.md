@@ -1,55 +1,78 @@
 # Little Big Adventure 2 - Ida edition
 
-This is a work on the **Little Big Adventure 2 - Engine source code - Community** and **yaz0r** fork of it, in order to make it buildable and fully playable on Windows.
+This is a work on top of the **Little Big Adventure 2 - Engine source code - Community** and **yaz0r** fork, that makes the LBA2 community project buildable and fully playable on Windows.
 
-## How to Run and Debug
+## List of fixes
 
-1. VS 2019 build tools with C++ dev enabled should be installed, if you use VS 2022 or later
+TODO
 
-1. Edit DEFINES.H to provide path to local game data files (where the HQR files are) and music. Steam and GoG versions are supported.
-  For example:
+# Build and Run
 
-  #define	PATH_RESSOURCE		"c:\\Games\\tlba2-classic\\Common\\"
-  #define	PATH_JINGLE	        "C:\\Games\\tlba2-classic\\Common\\Music\\"
+## Prerequisites
 
-1. Edit DEFINES.H to provide path to the save files folders in the debug mode. Replace c:\\Projects\\lba2-classic-community with your local path to this source code.
+- Windows 10 or later
+- Visual Studio 2022, with the following components enabled:
+  - Desktop development with C++ (including MSVC v143)
+  - Windows application development
+- Powershell
+- Git
 
-#define	PATH_SAVE		    "c:\\Projects\\lba2-classic-community\\GameRun\\save\\"
-#define	PATH_PCX_SAVE		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\shoot\\"
-#define	PATH_SAVE_BUGS		"c:\\Projects\\lba2-classic-community\\GameRun\\save\\bugs\\"
+## Fetching the project
 
-1. Create GameRun directory in the root of this project and create the following empty directories structure inside:
-- GameRun
-  - save
-    - bugs
-    - shoot
+1. Git clone the lba2-classic-ida repository
 
-  This will be derictory for the save files, logs and configuration file for the development. 
+1. Open the git command line in the root of your repository and run
 
-1. Run this command to copy the original config file to the debug config file:
-  copy SOURCES\LBA2.CFG GameRun\LBA2.CFG
+```git submodule update --init --recursive```
 
-1. In Visual Studio, open LBA2 project properties, go to Debugger settings, and add ADELINE environment variable in Environment section. 
-This should be the absolute path to LBA2.CFG:
+This will clone the SoLoud and SDL2
 
-  ADELINE=<PathToThisProject>\GameRun\LBA2.CFG
-  
-  For example: 
-    ADELINE=C:\Projects\lba2-classic-community\GameRun\LBA2.CFG
+## Build and run for Debug
 
-1. Build and run using Win32 configuration
+1. Open the PowerShell command line in the root of your repository and run:
 
-1. If when running the LBA2.exe it is complaining about SDL dll not found, copy all the files from Win32\Debug to Debug\
+```.\configure.ps1```
 
-1. If you want to run the game in Window, set the FullScreen to 0 in the beginning of LIB386/yaz_screen.cpp
+1. In the dialog prompt select *Common* folder from the installation of your LBA2 game. You should use either **GoG** or **Steam** purchased version of the LBA2 classic game.
 
-## Current issues
-- Create configuration to build portable binaries, where necessary paths to assets can be specified in config file
+The configure command will save paths to your game assets to read in this project. It will not modify or write anything into your installed LBA2 game folders.
+
+1. Open the **LBA2.sln** in Visual Studio 2022 and build the solution in **Debug/Win32** configuration.
+
+1. If the build completed successfully, you can now run the game in Visual Studio. The debug session game logs, config, and save game are put in **GameRun** folder in the root of your solution.
+
+1. By default game runs in window mode in Debug configuration. If you want to run fullscreen in Debug mode, change the *LIB386\cfg-defines.h* file and set *CFG_FULLSCREEN* to 1
+
+## Build and run for Release
+
+If you made some fun / mods and are ready to ship the release build, follow those steps: 
+
+1. Open the PowerShell command line in the root of your repository and run:
+
+```.\configure.ps1 -BuildType Release```
+
+1. Open the **LBA2.sln** in Visual Studio 2022 and build the solution in **Releae/Win32** configuration.
+
+1. If the build completed successfully, the portable deployable files will be in the **build** folder in this solution. Those files include
+- LBA2.exe
+- LBA2.cfg
+- SDL2.dll
+- save folder
+- bugs folder
+
+All those files and folders need to be put to the root of the existing LBA2 GoG or Steam installations (to the folder where the **Common** folder is, but **NOT inside the Common folder**)
+
+Make backup of existing files before deploying if necessary.
+
+1. Edit LBA2.cfg file as necessary to change the default settings (for example, language, etc)
+
+# Known bugs and issues
 
 ### Minor issues
 - Volume CD is useless property in menu - remove?
 - General volume slider in the menu has no effect - might as well just remove, as general sound can be regulated by the Windows
 - Sometimes white dots and lines artifacts appear on the ground (this is and old issue)
+
 
 # Little Big Adventure 2 - Engine source code - Community
 
