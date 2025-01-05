@@ -1,9 +1,9 @@
 #pragma once
 
-#include <vector>
+#include <cmath>
 #include <cstddef>
 #include <stdexcept>
-#include <cmath>
+#include <vector>
 
 namespace Ida
 {
@@ -58,4 +58,4 @@ namespace Ida
         size_t currentCapacity;
         double growthRate;
     };
-}
+}  // namespace Ida

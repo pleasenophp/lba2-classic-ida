@@ -1,23 +1,20 @@
 {
 	"folders": [
 		{
-			"path": "../Ida"
+			"path": "."
 		}
 	],
 	"settings": {
 		"editor.formatOnSave": true,
 		"[cpp]": {
-			"editor.defaultFormatter": "ms-vscode.cpptools"
+			"editor.defaultFormatter": "ms-vscode.cpptools",
 		},
 		"[c]": {
-			"editor.defaultFormatter": "ms-vscode.cpptools"
+			"editor.defaultFormatter": "ms-vscode.cpptools",
 		},
 		"[h]": {
-			"editor.defaultFormatter": "ms-vscode.cpptools"
+			"editor.defaultFormatter": "ms-vscode.cpptools",
 		},
-		"files.associations": {
-			"stdexcept": "cpp",
-			"deque": "cpp"
-		}
+		"files.associations": {}
 	}
 }
