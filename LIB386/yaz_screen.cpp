@@ -1,9 +1,10 @@
 #include <svga.h>
 #include <system.h>
 #include <SDL.h>
+#include "cfg-defines.h"
 
-// Set to 0 for window mode (might be convenient for debug) 
-constexpr auto FullScreen = 0;
+// Set to 1 to force full screen in debug configuration
+constexpr auto FullScreen = CFG_FULLSCREEN;
 
 // Update this if there is any monitor refresh mismatch visual issues
 constexpr Uint32 FullScreenFixedFrameRate = 120;

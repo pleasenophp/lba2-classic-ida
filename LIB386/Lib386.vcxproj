@@ -843,6 +843,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ail\MIXER.H" />
+    <ClInclude Include="cfg-defines.h" />
     <ClInclude Include="FILEIO\PCXHEAD.H" />
     <ClInclude Include="glext.h" />
     <ClInclude Include="H\3D.H" />
@@ -1138,13 +1139,13 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <DisableSpecificWarnings>4068</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(ProjectDir)\H;$(ProjectDir);..\SDL\Include;..\soloud\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\H;$(ProjectDir);..\SDL\Include;..\soloud\include;..\Ida\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

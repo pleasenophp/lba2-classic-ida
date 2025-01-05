@@ -730,6 +730,9 @@
     <ClInclude Include="smacker\smk_malloc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cfg-defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="3D\ARCSIN.ASM">

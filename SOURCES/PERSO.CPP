@@ -1,5 +1,6 @@
 #include        "c_extern.h"
 #include        <SDL.h>
+#include        <iostream>
 #undef YAZ_WIN32
 
 extern  char    *Version ;
@@ -2192,6 +2193,14 @@ int main(int argc, char *argv[])
 #endif
 
 	End_Error = ""  ;
+
+        std::cout << std::endl << "LBA2 Community Ida Edition" << std::endl;
+        std::cout << "PATH_RESSOURCE: " << PATH_RESSOURCE << std::endl;
+        std::cout << "PATH_SAVE: " << PATH_SAVE << std::endl;
+        std::cout << "PATH_PCX_SAVE: " << PATH_PCX_SAVE << std::endl;
+        std::cout << "PATH_SAVE_BUGS: " << PATH_SAVE_BUGS << std::endl;
+        std::cout << "PATH_ACF: " << PATH_ACF << std::endl;
+        std::cout << "PATH_JINGLE: " << PATH_JINGLE << std::endl;
 
 	// Passe en clavier "Splitté" (différenciation de chaque touche)
 	AllowExtendedKeyb() ;

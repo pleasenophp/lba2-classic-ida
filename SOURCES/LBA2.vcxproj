@@ -58,35 +58,45 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>soloud.lib;Setupapi.lib;Imm32.lib;Version.lib;Winmm.lib;Opengl32.lib;%(AdditionalDependencies);SDL2.lib;SDL2main.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\Win32\Debug;..\Debug\%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Win32\Debug;..\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
     </Link>
     <MASM>
       <IncludePaths>$(ProjectDir)..\Lib386\H;%(IncludePaths)</IncludePaths>
     </MASM>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)Win32\Debug\*" "$(SolutionDir)Debug\" /I /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\Lib386\;..\Lib386\H;..\SDL\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Lib386\;..\Lib386\H;..\soloud\include;..\SDL\Include;..\Ida\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <DisableSpecificWarnings>4068</DisableSpecificWarnings>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;OBJECT_PTR;LBA_GAME;CDROM;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;OBJECT_PTR;LBA_GAME;CDROM;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>false</EnableCOMDATFolding>
-      <OptimizeReferences>false</OptimizeReferences>
-      <AdditionalDependencies>Winmm.lib;Opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\SDL\Lib;..\openal-soft\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>soloud.lib;Setupapi.lib;Imm32.lib;Version.lib;Winmm.lib;Opengl32.lib;%(AdditionalDependencies);SDL2.lib;SDL2main.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Win32\Release;..\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <MASM>
       <IncludePaths>$(ProjectDir)..\Lib386\H;%(IncludePaths)</IncludePaths>
     </MASM>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)Win32\Release\*.dll" "$(SolutionDir)build\" /I /Y 
+xcopy "$(SolutionDir)Release\*.exe" "$(SolutionDir)build\" /I /Y
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <MASM Include="3DEXT\BOXZBUF.ASM" />
@@ -145,6 +155,7 @@
     <ClInclude Include="ANIMTEX.H" />
     <ClInclude Include="BEZIER.H" />
     <ClInclude Include="BUGGY.H" />
+    <ClInclude Include="cfg-defines.h" />
     <ClInclude Include="CHEATCOD.H" />
     <ClInclude Include="COMMON.H" />
     <ClInclude Include="COMPORTE.H" />
