@@ -89,6 +89,9 @@ Make backup of existing files before deploying if necessary.
 
 - Edit LBA2.cfg file as necessary to change the default settings (for example, language, etc)
 
+# How can I contribute ?
+
+Read [Contribution Guidelines](https://github.com/pleasenophp/lba2-classic-ida/blob/main/CONTRIBUTING.md).
 
 # Little Big Adventure 2 - Engine source code - Community
 
@@ -102,10 +105,6 @@ The engine uses Assembly code and was originally compiled with non-open source l
 This source code is licensed under the [GNU General Public License](https://github.com/2point21/lba2-classic-community/blob/main/LICENSE).
 
 Please note this license only applies to **Little Big Adventure 2** engine source code. **Little Big Adventure 2** game assets (art, models, textures, audio, etc.) are not open-source and therefore aren't redistributable.
-
-## How can I contribute ?
-
-Read [Contribution Guidelines](https://github.com/pleasenophp/lba2-classic-ida/blob/main/CONTRIBUTING.md).
 
 ## Links:
 **Official Website:** https://www.2point21.com/games/little-big-adventure-2-twinsen-odyssey
