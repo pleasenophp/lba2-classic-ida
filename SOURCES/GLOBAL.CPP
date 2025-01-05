@@ -11,7 +11,7 @@
 #ifdef	ONE_GAME_DIRECTORY
 S32	DebugFps = FALSE ;
 #else
-S32	DebugFps = TRUE ;
+S32	DebugFps = CFG_DISPLAY_FPS ? TRUE : FALSE;
 #endif
 
 S32	DistribVersion = ACTIVISION_VERSION ;

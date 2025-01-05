@@ -21,6 +21,7 @@
 #pragma pack(8)
 #include	"soloud.h"
 #include	"soloud_wav.h"
+#include    "ElasticBuffer.h"
 #pragma pack(1)
 
 #include	<assert.h>
@@ -85,6 +86,8 @@ static	U32		SampleSeed			;
 static	S32		SamplesPaused = 0		;
 static	S32		SamplesFade = 0			;
 static	S32		FadeStartTime			;
+
+static Ida::ElasticBuffer<char> sampleBuffer;
 
 //████████████████████████████████████████████████████████████████████████████
 
@@ -558,24 +561,24 @@ U32	PlaySample(void *ptrsample, U32 usernum, S32 pitchbend, S32 nbrepeat, S32 vo
 	char * samplesPtr = dataPtr + 8;
 
 	SoLoud::Wav* pAudioSource = new SoLoud::Wav();
-	if(numChannels == 1 && bitsPerSample == 16)
+	if (numChannels == 1 && bitsPerSample == 16)
 	{
 		pAudioSource->loadRawWave16((short*)samplesPtr, samplesSize, sampleRate, 1);
 	}
-	if(numChannels == 1 && bitsPerSample == 8)
+	if (numChannels == 1 && bitsPerSample == 8)
 	{
 		pAudioSource->loadRawWave8((unsigned char*)samplesPtr, samplesSize, sampleRate, 1);
 	}
-	if(numChannels == 1 && bitsPerSample == 4)
+	if (numChannels == 1 && bitsPerSample == 4)
 	{
-		int numSamples = samplesSize * 2;
-		samplesPtr = (char*)malloc(numSamples * 4);
+		sampleBuffer.ensureCapacity(samplesSize * 4);
+		samplesPtr = sampleBuffer.getBuffer();
 
 		S16 stepIndex = 0;
 		S16 predicted = 0;
 
 		int adpcm_decode_init(int numChannels);
-		int adpcm_decode_frame(void *data, int *data_size,unsigned char *buf, int buf_size);
+		int adpcm_decode_frame(void *data, int *data_size, unsigned char *buf, int buf_size);
 
 		short* decompressedData = (short*)samplesPtr;
 		unsigned char* inputData = (unsigned char*)dataPtr+8;
@@ -597,12 +600,10 @@ U32	PlaySample(void *ptrsample, U32 usernum, S32 pitchbend, S32 nbrepeat, S32 vo
 			sizeLeftToDecode-=frameSize;
 			decompressedData+=decodedSize/2;
 		}
-	
 
-		samplesSize = (char*)decompressedData - samplesPtr;
+		int actualSamplesSize = ((char*)decompressedData - samplesPtr) / 2;
 
-
-		pAudioSource->loadRawWave16((short*)samplesPtr, samplesSize, sampleRate, 1);
+		pAudioSource->loadRawWave16((short*)samplesPtr, actualSamplesSize, sampleRate, 1);
 	}
 
 	gSoundHandleMapping[handle].soloudHandle = gSoloud->play(*pAudioSource, -1, 0, true, 0);
@@ -610,41 +611,17 @@ U32	PlaySample(void *ptrsample, U32 usernum, S32 pitchbend, S32 nbrepeat, S32 vo
 
 	// link sample data with sample handle
 	gSoundHandleMapping[handle].soloudWave = pAudioSource;
-	/*
-	if(!AIL_set_sample_file(handle, ptrsample, -1 ))
-	{
-		return 0xFFFFFFFF	;
-	}*/
 	
 	// Pichpend
-	//AIL_set_sample_user_data( handle, USER_DATA_RATE, AIL_sample_playback_rate(handle));
-	if( pitchbend != 4096 )
+	if(pitchbend != 4096)
 	{
 		gSoloud->setSamplerate(gSoundHandleMapping[handle].soloudHandle, Scale((int)gSoloud->getSamplerate(gSoundHandleMapping[handle].soloudHandle), pitchbend, 12));
 	}
-	/*
-	AIL_set_sample_user_data( handle, USER_DATA_PITCHBEND, pitchbend);
-	*/
-	// Loop sample ( 0 = indefinitely )
+
 	gSoloud->setLooping(gSoundHandleMapping[handle].soloudHandle, nbrepeat != 1);
 
-	// Volume
-	/*
-	AIL_set_sample_user_data( handle, USER_DATA_VOLUME, volume);
-	AIL_set_sample_volume( handle,
-				SamplesFade?0:
-#ifdef	YAZ_WIN32
-				UseWaveMixer?volume:
-#endif//YAZ_WIN32
-				Scale(volume, LibWaveMasterVolume, 7));
-
-	// Pan
-	if(pan>127)		pan = 127	;
-	else if(pan<0)		pan = 0		;
-	AIL_set_sample_pan( handle, pan^InversePanMask);
-	*/
-
 	// GO !!!
+	gSoloud->setVolume(gSoundHandleMapping[handle].soloudHandle, volume / 127.0f);
 	gSoloud->setPause(gSoundHandleMapping[handle].soloudHandle, false);
 
 	// Compute handle
@@ -672,24 +649,7 @@ SampleCallBack(U32 user)
 
 U32	TimerPlaySample(void *ptrsample, U32 usernum, S32 pitchbend, S32 nbrepeat, S32 volume, S32 pan, S32 period)
 {
-	if( !Sample_Driver_Enabled )	return	FALSE	;
-
-// 	if(!HandleTimer)
-	{
-#ifndef	YAZ_WIN32
-		/*if (!AIL_vmm_lock_range(&SampleCallBack, &TimerPlaySample) OR
-			!AIL_vmm_lock_range(&HandleTimer, &Sample_Handle[0]))
-		{
-			HandleTimer = (HTIMER)-1;
-			return	FALSE		;
-		}*/
-#endif
-		//yaz HandleTimer = AIL_register_timer( SampleCallBack ) ;
-		//yaz if (HandleTimer == -1)
-		{
-		//yaz 	return FALSE ;
-		}
-	}
+	if (!Sample_Driver_Enabled)	return FALSE;
 
 	Timer_ptrsample	= ptrsample	;
 	Timer_usernum	= usernum	;
@@ -698,8 +658,6 @@ U32	TimerPlaySample(void *ptrsample, U32 usernum, S32 pitchbend, S32 nbrepeat, S
 	Timer_volume	= volume	;
 	Timer_pan	= pan		;
 
-	//yaz AIL_set_timer_period( HandleTimer, period*1000 ) ;
-	//yaz AIL_start_timer( HandleTimer ) 	;
 	return TRUE			;
 }
 
@@ -707,7 +665,7 @@ U32	TimerPlaySample(void *ptrsample, U32 usernum, S32 pitchbend, S32 nbrepeat, S
 
 void	TimerStopSample()
 {
-	if( !Sample_Driver_Enabled )	return	;
+	if(!Sample_Driver_Enabled )	return;
 
 	//if(HandleTimer)
 	{

@@ -213,6 +213,9 @@
     <ClInclude Include="3DEXT\VAR_EXT.H">
       <Filter>Source Files\3DExt</Filter>
     </ClInclude>
+    <ClInclude Include="cfg-defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AMBIANCE.CPP">

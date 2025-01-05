@@ -688,7 +688,7 @@
     <MASM Include="SYSTEM\LZ.ASM">
       <FileType>Document</FileType>
     </MASM>
-	<MASM Include="3D\REGLE3.ASM">
+    <MASM Include="3D\REGLE3.ASM">
       <FileType>Document</FileType>
     </MASM>
     <MASM Include="SYSTEM\PATCH.ASM">
@@ -745,6 +745,9 @@
     <ClCompile Include="MENU\MENUFUNC.CPP" />
     <ClCompile Include="MENU\MENULIB.CPP" />
     <ClCompile Include="MENU\SELECTOR.CPP" />
+    <ClCompile Include="smacker\smacker.c" />
+    <ClCompile Include="smacker\smk_bitstream.c" />
+    <ClCompile Include="smacker\smk_hufftree.c" />
     <ClCompile Include="SVGA\DDRAW.CPP">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -840,6 +843,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ail\MIXER.H" />
+    <ClInclude Include="cfg-defines.h" />
     <ClInclude Include="FILEIO\PCXHEAD.H" />
     <ClInclude Include="glext.h" />
     <ClInclude Include="H\3D.H" />
@@ -1064,7 +1068,16 @@
     <ClInclude Include="H\SYSTEM\WINSYS.H">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="smacker\smacker.h" />
+    <ClInclude Include="smacker\smk_bitstream.h" />
+    <ClInclude Include="smacker\smk_hufftree.h" />
+    <ClInclude Include="smacker\smk_malloc.h" />
     <ClInclude Include="yaz.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ida\Ida.vcxproj">
+      <Project>{dea5be2e-8071-470d-9235-066644dc30e6}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3697D988-1E10-4308-8B2C-A6C5EE57AC45}</ProjectGuid>
@@ -1080,14 +1093,14 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>NotSet</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -1107,7 +1120,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)\H;$(ProjectDir);..\SDL\Include;..\soloud\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\H;$(ProjectDir);..\Ida\src;..\SDL\Include;..\soloud\include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4068</DisableSpecificWarnings>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
     </ClCompile>
@@ -1126,13 +1139,13 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <DisableSpecificWarnings>4068</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>$(ProjectDir)\H;$(ProjectDir);..\SDL\Include;..\soloud\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\H;$(ProjectDir);..\SDL\Include;..\soloud\include;..\Ida\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

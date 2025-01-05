@@ -18,11 +18,20 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\SmackerStream.cpp" />
+    <ClCompile Include="src\SmackerStreamInstance.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ElasticBuffer.h" />
+    <ClInclude Include="src\SmackerStream.h" />
+    <ClInclude Include="src\SmackerStreamInstance.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>16.0</VCProjectVersion>
+    <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{5a057537-09ec-4d7d-9327-1003cff50601}</ProjectGuid>
-    <RootNamespace>soloud</RootNamespace>
+    <ProjectGuid>{dea5be2e-8071-470d-9235-066644dc30e6}</ProjectGuid>
+    <RootNamespace>Ida</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -38,7 +47,6 @@
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <IntDir>$(SolutionDir)SoloudRelease\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -71,27 +79,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>soloud/include;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>soloud/include;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WITH_SDL2_STATIC;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>SDL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\soloud\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -104,9 +99,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WITH_SDL2_STATIC;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\soloud\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,39 +139,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="soloud\src\audiosource\wav\dr_impl.cpp" />
-    <ClCompile Include="soloud\src\audiosource\wav\soloud_wav.cpp" />
-    <ClCompile Include="soloud\src\audiosource\wav\soloud_wavstream.cpp" />
-    <ClCompile Include="soloud\src\audiosource\wav\stb_vorbis.c" />
-    <ClCompile Include="soloud\src\backend\sdl2_static\soloud_sdl2_static.cpp" />
-    <ClCompile Include="soloud\src\backend\wasapi\soloud_wasapi.cpp" />
-    <ClCompile Include="soloud\src\core\soloud.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_audiosource.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_bus.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_core_3d.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_core_basicops.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_core_faderops.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_core_filterops.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_core_getters.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_core_setters.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_core_voicegroup.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_core_voiceops.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_fader.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_fft.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_fft_lut.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_file.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_filter.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_misc.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_queue.cpp" />
-    <ClCompile Include="soloud\src\core\soloud_thread.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="soloud\src\audiosource\wav\dr_flac.h" />
-    <ClInclude Include="soloud\src\audiosource\wav\dr_mp3.h" />
-    <ClInclude Include="soloud\src\audiosource\wav\dr_wav.h" />
-    <ClInclude Include="soloud\src\audiosource\wav\stb_vorbis.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

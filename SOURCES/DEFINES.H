@@ -1,3 +1,6 @@
+// Please run configure.ps1 from the root of this repo first, to generate this file
+#include "cfg-defines.h"
+
 /*══════════════════════════════════════════════════════════════════════════*
 		   █▀▀▀▄ █▀▀▀▀ █▀▀▀▀  █    ██▄ █ █▀▀▀▀ ██▀▀▀
 		   ██  █ ██▀▀  ██▀▀   ██   ██▀██ ██▀▀  ▀▀▀▀█
@@ -5,7 +8,7 @@
  *══════════════════════════════════════════════════════════════════════════*/
 /*──────────────────────────────────────────────────────────────────────────*/
 // Cdrom Version  si pas define version disk
-//#define	CDROM	1
+// #define	CDROM	1
 
 // mettre ce define pour une version travail seulement
 // en cdrom pas d'importance ATTENTION à supprimer pour version disk
@@ -47,41 +50,32 @@
 #define	SAMPLE_FLA_HQR	1
 
 //=======================================================================
-// tous fichiers dans même dir
-#define	ONE_GAME_DIRECTORY	1
+// Legacy setting: all the files in the same directory
+// WARNING: Only enable it if you want to experiment. The ONE_GAME_DIRECTORY mode is not tested, and probably doesn't work.
+// Use instead configure.ps1 script to properly configure the game for Release
+// #define	ONE_GAME_DIRECTORY 0
 //=======================================================================
 
 //path des ressources
 #ifdef	ONE_GAME_DIRECTORY
-#define	PATH_RESSOURCE		""
+#define	PATH_RESSOURCE		"" 
 #define	PATH_SAVE		PATH_RESSOURCE"SAVE\\"
 #else
-#ifdef	DEMO
-#define	PATH_RESSOURCE		"f:\\projet\\lba2\\demo\\"
-#else
-#define	PATH_RESSOURCE		"f:\\projet\\lba2\\game\\"
-#endif
-#define	PATH_SAVE		"c:\\adeline\\"
+#define	PATH_RESSOURCE CFG_PATH_RESSOURCE
+#define	PATH_SAVE CFG_PATH_SAVE
 #endif
 
 #ifdef	ONE_GAME_DIRECTORY
 #define	PATH_PCX_SAVE		PATH_SAVE"shoot\\"
 #else
-#define	PATH_PCX_SAVE		"f:\\projet\\lba2\\graph\\shoot\\"
+#define	PATH_PCX_SAVE CFG_PATH_PCX_SAVE
 #endif
 
 // repertoire ou sauver les bugs
-#define	PATH_SAVE_BUGS		"f:\\panier\\lba2\\save\\bugs\\"
+#define	PATH_SAVE_BUGS CFG_PATH_SAVE_BUGS
 
-//#define	PATH_ACF	PATH_RESSOURCE"ACF\\"
 #define	PATH_ACF	PATH_RESSOURCE"VIDEO\\VIDEO.HQR"
-
-
-#ifdef	ONE_GAME_DIRECTORY
-#define	PATH_JINGLE	"MUSIC\\"
-#else
-#define	PATH_JINGLE	"F:\\PROJET\\LBA2\\MUSIC\\WAV_LBA2\\"
-#endif
+#define	PATH_JINGLE	PATH_RESSOURCE"MUSIC\\"
 
 /*──────────────────────────────────────────────────────────────────────────*/
 /*----------------------------- camera -----------------------------*/

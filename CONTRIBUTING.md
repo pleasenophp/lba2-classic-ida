@@ -1,18 +1,18 @@
 # How to Contribute
 
-If you'd like to contribute to the project, there are several ways you can help.
+This project currently doesn't accept any new gameplay features, but the bug fixes and improvements are accepted.
 
-If you need help to get you started with this project, you can join us on [Discord](https://discord.gg/wQse6WB6).
+If you have any ideas for your own game modifications or new stories in LBA2 world based on this project, create your own fork.
 
-### Reporting crashes and bugs
+If you spotted any bugs or want to improve something, the PR is always welcome here.
 
-If you observe a bug you can report it [here](https://github.com/2point21/lba2-classic-community/issues/new).
+# Known bugs and issues
 
-### Propose features
+### Minor issues
+- Volume CD is useless property in menu - remove?
+- General volume slider in the menu has no effect - might as well just remove, as general sound can be regulated by the Windows
+- Sometimes white dots and lines artifacts appear on the ground (this is and old issue)
 
-If you have an idea, you can [create a feature request](https://github.com/2point21/lba2-classic-community/issues/new) to suggest a new feature.
+# Contacts
 
-
-## Contributing to the documentation
-
-You can also help to build the official documentation here : https://github.com/2point21/lba-classic-doc
+Contact me at [info@innerbytes.com](mailto:info@innerbytes.com) for any questions ot suggestions. 

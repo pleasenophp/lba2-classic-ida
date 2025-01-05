@@ -173,9 +173,9 @@ S32     LastFileInit=-1 ;
 char    *TabLanguage[] = {
                         //      Ne pas toucher l'ordre cause HQR
         "English",
-        "Fran""\x87""ais",
+        "Français",
         "Deutsch",
-        "Espa""\xA4""ol",
+        "Español",
         "Italiano",
         "Portugues"     }       ;
 
@@ -378,7 +378,7 @@ void    InitLanguage()
 
         // Attention: Textes toujours Valides ???
         strcpy( string, DefFileBufferReadStringDefault( "Language", TabLanguage[1] ) ) ;
-
+                
         for( n=0; n<NB_LANGUAGES; n++ )
         {
                 if( !stricmp( string, TabLanguage[n] ) )
@@ -391,7 +391,7 @@ void    InitLanguage()
 #ifdef  CDROM
         // Attention: Voix toujours Valides !!!
         strcpy( string, DefFileBufferReadStringDefault( "LanguageCD", TabLanguage[1] ) ) ;
-
+          
         FlagSpeak = FALSE       ;
 
         for( n=0; n<NB_LANGUAGES; n++ )

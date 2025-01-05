@@ -10,6 +10,11 @@
 #include	<ail\sample.h>
 #include	<ail\stream.h>
 
+#pragma pack(8)
+#include	"soloud.h"
+#include    "soloud_wavstream.h"
+#pragma pack(1)
+
 #include	<assert.h>
 
 #include 	<stdlib.h>
@@ -17,42 +22,35 @@
 
 #include	<stdio.h>
 
-//████████████████████████████████████████████████████████████████████████████
-
-#define	Scale(value, scale, range)	( ( (value)*(scale) + (1<<(range-1)) ) >> range )
-
-//████████████████████████████████████████████████████████████████████████████
-
 extern	S32		LibWaveMasterVolume	;
 
 //████████████████████████████████████████████████████████████████████████████
 
-static	char*		Stream			;
-static	S32		StreamVolume = 127	;
-static	S32		PausedPos		;
-static	char		StreamPathName[_MAX_PATH];
-static	char		PausedPathName[_MAX_PATH];
+static	S32		StreamVolume = 127;
+static	S32		PausedPos;
+static	char	StreamPathName[_MAX_PATH];
+static	char	PausedPathName[_MAX_PATH];
 
 //████████████████████████████████████████████████████████████████████████████
 
-static	VOID_FUNC	*StreamManageProc	;
+static	VOID_FUNC	*StreamManageProc;
 
 //████████████████████████████████████████████████████████████████████████████
 
-static	VOID_FUNC	ManageStream		;
+static	VOID_FUNC	ManageStream;
 
 //████████████████████████████████████████████████████████████████████████████
+
+U32 soloudHandle = 0;
+SoLoud::WavStream* soloudWave = nullptr;
+SoLoud::Soloud* soloudStream = nullptr;
+
 
 static void	ManageStream()
 {
-	if( Sample_Driver_Enabled && Stream )
+	if (StreamManageProc)
 	{
-		//yaz AIL_service_stream(Stream, 0)	;
-	}
-
-	if(StreamManageProc)
-	{
-		StreamManageProc()	;
+		StreamManageProc();
 	}
 }
 
@@ -60,240 +58,137 @@ static void	ManageStream()
 
 static void PlayThisStream(char *name, S32 pos)
 {
-	if( !Sample_Driver_Enabled )	return	;
+	if (!Sample_Driver_Enabled) return;
 
-	StopStream()	;
+	StopStream();
 
-	{
-		FILE * pFile = fopen(name, "rb");
-		if(pFile == NULL)
-			return;
+	strcpy(StreamPathName, name);
 
-		fseek(pFile, 0, SEEK_END);
-		int fileSize = ftell(pFile);
-		fseek(pFile, 0, SEEK_SET);
+	soloudWave = new SoLoud::WavStream();
+	soloudWave->load(StreamPathName);
 
-		char* ptrsample = (char*)malloc(fileSize);
-		fread(ptrsample, fileSize, 1, pFile);
-		fclose(pFile);
+	soloudHandle = soloudStream->play(*soloudWave, StreamVolume / 127.0f, 0, true, 0);
+	soloudStream->setAutoStop(soloudHandle, true);
+	soloudStream->setPause(soloudHandle, false);
 
-		///
-
-		int numChannels = *(short*)((char*)ptrsample + 22);
-		int sampleRate = *(U32*)((char*)ptrsample + 24);
-		int bitsPerSample = *(short*)((char*)ptrsample + 34);
-
-		char* dataPtr =  ((char*)ptrsample + 36);
-		while(*(U32*)dataPtr != 'atad')
-		{
-			dataPtr++;
-		}
-
-		int samplesSize = *(U32*)(dataPtr + 4);
-		char * samplesPtr = dataPtr + 8;
-
-		
-		////
-		int numSamples = samplesSize * 2;
-		Stream = samplesPtr = (char*)malloc(numSamples * 4);
-
-		S16 stepIndex = 0;
-		S16 predicted = 0;
-
-		int adpcm_decode_init(int numChannels);
-		int adpcm_decode_frame(void *data, int *data_size,unsigned char *buf, int buf_size);
-
-		short* decompressedData = (short*)samplesPtr;
-		unsigned char* inputData = (unsigned char*)dataPtr+8;
-
-		int sizeLeftToDecode = samplesSize;
-
-		int maxFrameSize= 0x400;
-		if(sampleRate == 44100)
-		{
-			maxFrameSize *=2;
-		}
-
-		adpcm_decode_init(numChannels);
-		while(sizeLeftToDecode)
-		{
-			int frameSize = maxFrameSize;
-
-			if(frameSize > sizeLeftToDecode)
-				frameSize = sizeLeftToDecode;
-
-			int decodedSize;
-			adpcm_decode_frame(decompressedData, &decodedSize, inputData, frameSize);
-
-			inputData+=frameSize;
-			sizeLeftToDecode-=frameSize;
-			decompressedData+=decodedSize/2;
-		}
-
-
-		samplesSize = (char*)decompressedData - samplesPtr;
-
-		/*
-		if(streamSource == 0)
-		{
-			alGenSources(1, &streamSource);
-		}
-
-		alGenBuffers(1, &streamBuffer);
-
-		ALenum error = alGetError();
-		alBufferData(streamBuffer, AL_FORMAT_STEREO16, samplesPtr, samplesSize, sampleRate);
-		error = alGetError();
-		alSourcei(streamSource, AL_BUFFER, streamBuffer);
-		error = alGetError();
-
-		alSourcePlay(streamSource);
-		*/
-		free(ptrsample);
-		
-	}
-
-	if(!Stream)			return	;
-
-	strcpy(StreamPathName, name)		;
-
-	//yaz AIL_set_stream_position(Stream, pos)	;
-
-	ChangeVolumeStream(
-#ifdef	YAZ_WIN32
-			UseWaveMixer?StreamVolume:
-#endif//YAZ_WIN32
-			Scale(StreamVolume, LibWaveMasterVolume, 7));
-
-	//yaz AIL_start_stream(Stream)		;
-
-	ManageStream()				;
+	ManageStream();
 }
 
 //████████████████████████████████████████████████████████████████████████████
 
-void	OpenStream()
+void OpenStream()
 {
-	static	char init = TRUE	;
+	static	char init = TRUE;
 
 	if(init)
 	{
-//yaz		StreamManageProc = ManageProc	;
-//yaz		ManageProc	 = ManageStream	;
-		init 		 = FALSE	;
+		init 		 = FALSE;
+
+		// xesf
+		S32 rate = 44100;
+		S32 chans = 2;
+		soloudStream = new SoLoud::Soloud();
+		soloudStream->init(SoLoud::Soloud::CLIP_ROUNDOFF, SoLoud::Soloud::BACKENDS::AUTO, rate, 0, chans);
 	}
 }
 
 //████████████████████████████████████████████████████████████████████████████
 
-void	PlayStream(char *name)
+void PlayStream(char *name)
 {
 	PlayThisStream(name, 0)	;
 }
 
 //████████████████████████████████████████████████████████████████████████████
 
-void	ChangeVolumeStream(S32 volume)
+void ChangeVolumeStream(S32 volume)
 {
-	if(volume>127)
+	if (!Sample_Driver_Enabled) return;
+
+	if (volume > 127)
 	{
-		volume = 127	;
+		volume = 127;
 	}
-	else if (volume<0)
+	else if (volume < 0)
 	{
-		volume = 0	;
+		volume = 0;
 	}
 
-	StreamVolume = volume	;
+	StreamVolume = volume;
 
-	if( !Sample_Driver_Enabled || !Stream )	return ;
+	if (!soloudStream || !soloudHandle) return;
 
-	//yaz AIL_set_stream_volume(Stream,
-#ifdef	YAZ_WIN32
-	//yaz 		UseWaveMixer?StreamVolume:
-#endif//YAZ_WIN32
-	//yaz 		Scale(StreamVolume, LibWaveMasterVolume, 7));
-
+	soloudStream->setVolume(soloudHandle, volume / 127.0f);
 }
 
 //████████████████████████████████████████████████████████████████████████████
 
 S32	GetVolumeStream()
 {
-	return	StreamVolume	;
+	return StreamVolume;
 }
 
 //████████████████████████████████████████████████████████████████████████████
 
-void	StopStream()
+void StopStream()
 {
-	if( !Sample_Driver_Enabled || !Stream )	return ;
-
-	//alSourceStop(streamSource);
-	
-	free(Stream);
-	//alDeleteBuffers(1, &streamBuffer);
-	//streamBuffer = 0;
-
-	Stream = NULL		;
-	StreamPathName[0] = 0	;
+	soloudStream->stop(soloudHandle);
+	delete soloudWave;
+	soloudWave = nullptr;
+	soloudHandle = 0;
+	StreamPathName[0] = 0;
 }
 
 //████████████████████████████████████████████████████████████████████████████
 
-void	PauseStream()
+void PauseStream()
 {
-	if(!IsStreamPlaying())		return	;
+	if (!soloudStream) return;
+	if (!IsStreamPlaying())	return;
 
-	//yaz AIL_pause_stream(Stream, TRUE)		;
-	//alSourcePause(streamSource);
-
+	soloudStream->setPause(soloudHandle, true);
 	ManageStream()				;
-
-	//PausedPos = AIL_stream_position(Stream)	;
-	strcpy(PausedPathName, StreamPathName)	;
-
-	StopStream()				;
+	strcpy(PausedPathName, StreamPathName);
 }
 
 //████████████████████████████████████████████████████████████████████████████
 
-void	ResumeStream()
+void ResumeStream()
 {
-	if( !PausedPathName[0] )	return ;
+	if (!soloudStream) return;
 
-	PlayThisStream(PausedPathName, PausedPos) ;
+	if (!PausedPathName[0]) return;
 
-	PausedPathName[0] = 0	;
+	soloudStream->setPause(soloudHandle, false);
+
+	PausedPathName[0] = 0;
 }
 
 //████████████████████████████████████████████████████████████████████████████
 
 S32	IsStreamPlaying()
 {
-	S32	playing = false	;
+	S32	playing = false;
 
-	if( !Sample_Driver_Enabled || !Stream )	return FALSE ;
+	if (!Sample_Driver_Enabled || !soloudWave || !soloudStream) return FALSE;
 
-	ManageStream()			;
+	ManageStream();
 
-	//ALint status;
-	//alGetSourcei(streamSource, AL_SOURCE_STATE, &status);
+	playing = soloudStream->isValidVoiceHandle(soloudHandle);
 
-	//playing = (status != AL_STOPPED);
+	if (!playing) StopStream();
 
-	if(!playing)	StopStream()	;
-
-	return	playing	;
+	return playing;
 }
 
 //████████████████████████████████████████████████████████████████████████████
 
-char	*StreamName()
+char *StreamName()
 {
-	IsStreamPlaying()	;
+	IsStreamPlaying();
 
-	return	StreamPathName	;
+	return StreamPathName;
 }
 
 //████████████████████████████████████████████████████████████████████████████
+

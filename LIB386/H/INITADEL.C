@@ -364,11 +364,10 @@
 		LogPuts("\nSome command Line Parameters override SVGA detection.\n");
 	}
 
-        if(InitGraphSvga(RESOLUTION_X, RESOLUTION_Y, RESOLUTION_DEPTH))
-        {
-        	exit(1)	;
-        }
-
+    if (InitGraphSvga(RESOLUTION_X, RESOLUTION_Y, RESOLUTION_DEPTH))
+    {
+    	exit(1)	;
+    }
 #endif
 #endif
 
