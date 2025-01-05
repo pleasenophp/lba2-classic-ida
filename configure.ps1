@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    A script to configure the project by generating cfg-defines.h.
+    A script to configure the project by generating cfg-defines.h and preparing necessary folders.
 
 .DESCRIPTION
     This script generates cfg-defines.h based on the build type (Debug or Release) and user input.
