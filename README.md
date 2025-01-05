@@ -2,9 +2,31 @@
 
 This is a work on top of the **Little Big Adventure 2 - Engine source code - Community** and **yaz0r** fork, that makes the LBA2 community project buildable and fully playable on Windows.
 
-## List of fixes
+## List of fixes on top of the **yaz0r** fork (https://github.com/yaz0r/lba2-classic-community/)
 
-TODO
+- **Added Video Playback Support**  
+  Incorporated xesf's fix of video playback functionality; Implemented custom SmackerStream to address video sound issues.
+
+- **Enabled Full Screen mode**  
+  Added support for rendering to high-resolution textures
+
+- **Restored and fixed Audio Playback in Dialogs**  
+  Restored French and Spanish voices in the dialogs, that didn't work due to wrong language names encoding. Also addressed audio crackles and delays affecting dialog playback, that was caused by wrong sample count calculation.
+
+- **Fixed Memory Leaks in Audio and Video Systems**  
+  Resolved memory leak issues in the video buffer and audio playback systems, enhancing stability and performance.
+
+- **Made Music Playback work**  
+  Incorporated xesf's fix to make music work, fixed further issues
+
+- **Improved Build Process for Debug and Release Modes**  
+  Automated configuring, fixed paths and folders
+
+- **Updated Platform Toolset to v143 (Visual Studio 2022)**  
+  Migrated to the latest toolset
+
+- **Reorganized Project Structure**  
+  Separated new code into distinct Ida project
 
 # Build and Run
 
@@ -25,7 +47,7 @@ TODO
 
 ```git submodule update --init --recursive```
 
-This will clone the SoLoud and SDL2
+This will clone the SoLoud and SDL2. Note that the modules are configured via https, so you might need to setup github access token.
 
 ## Build and run for Debug
 
@@ -65,13 +87,6 @@ All those files and folders need to be put to the root of the existing LBA2 GoG 
 Make backup of existing files before deploying if necessary.
 
 1. Edit LBA2.cfg file as necessary to change the default settings (for example, language, etc)
-
-# Known bugs and issues
-
-### Minor issues
-- Volume CD is useless property in menu - remove?
-- General volume slider in the menu has no effect - might as well just remove, as general sound can be regulated by the Windows
-- Sometimes white dots and lines artifacts appear on the ground (this is and old issue)
 
 
 # Little Big Adventure 2 - Engine source code - Community
