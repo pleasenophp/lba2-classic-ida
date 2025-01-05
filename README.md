@@ -56,15 +56,15 @@ This will clone the SoLoud and SDL2. Note that the modules are configured via ht
 
 ```.\configure.ps1```
 
-1. In the dialog prompt select *Common* folder from the installation of your LBA2 game. You should use either **GoG** or **Steam** purchased version of the LBA2 classic game.
+2. In the dialog prompt select *Common* folder from the installation of your LBA2 game. You should use either **GoG** or **Steam** purchased version of the LBA2 classic game.
 
 The configure command will save paths to your game assets to read in this project. It will not modify or write anything into your installed LBA2 game folders.
 
 1. Open the **LBA2.sln** in Visual Studio 2022 and build the solution in **Debug/Win32** configuration.
 
-1. If the build completed successfully, you can now run the game in Visual Studio. The debug session game logs, config, and save game are put in **GameRun** folder in the root of your solution.
+2. If the build completed successfully, you can now run the game in Visual Studio. The debug session game logs, config, and save game are put in **GameRun** folder in the root of your solution.
 
-1. By default game runs in window mode in Debug configuration. If you want to run fullscreen in Debug mode, change the *LIB386\cfg-defines.h* file and set *CFG_FULLSCREEN* to 1
+3. By default game runs in window mode in Debug configuration. If you want to run fullscreen in Debug mode, change the *LIB386\cfg-defines.h* file and set *CFG_FULLSCREEN* to 1
 
 ## Build and run for Release
 
@@ -87,7 +87,7 @@ All those files and folders need to be put to the root of the existing LBA2 GoG 
 
 Make backup of existing files before deploying if necessary.
 
-1. Edit LBA2.cfg file as necessary to change the default settings (for example, language, etc)
+- Edit LBA2.cfg file as necessary to change the default settings (for example, language, etc)
 
 
 # Little Big Adventure 2 - Engine source code - Community
