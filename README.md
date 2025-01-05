@@ -74,7 +74,7 @@ If you made some fun / mods and are ready to ship the release build, follow thos
 
 ```.\configure.ps1 -BuildType Release```
 
-1. Open the **LBA2.sln** in Visual Studio 2022 and build the solution in **Releae/Win32** configuration.
+1. Open the **LBA2.sln** in Visual Studio 2022 and build the solution in **Release/Win32** configuration.
 
 1. If the build completed successfully, the portable deployable files will be in the **build** folder in this solution. Those files include
 - LBA2.exe
