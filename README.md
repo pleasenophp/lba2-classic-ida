@@ -2,7 +2,8 @@
 
 This is a work on top of the **Little Big Adventure 2 - Engine source code - Community** and **yaz0r** fork, that makes the LBA2 community project buildable and fully playable on Windows.
 
-## List of fixes on top of the **yaz0r** fork (https://github.com/yaz0r/lba2-classic-community/)
+## List of fixes on top of the **yaz0r** fork 
+(https://github.com/yaz0r/lba2-classic-community/)
 
 - **Added Video Playback Support**  
   Incorporated xesf's fix of video playback functionality; Implemented custom SmackerStream to address video sound issues.
