@@ -3,7 +3,6 @@ Debug/
 Release/
 SoloudRelease/
 build/
-soloud/Release/
 *.vcxproj.user
 Win32
 
@@ -11,5 +10,3 @@ SOURCES/ADELINE.LOG
 GameRun/
 
 **/cfg-defines.h
-
-
