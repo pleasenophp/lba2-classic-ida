@@ -1,6 +1,7 @@
 .vs/
 Debug/
 Release/
+SoloudRelease/
 build/
 soloud/Release/
 *.vcxproj.user
