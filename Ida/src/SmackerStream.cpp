@@ -71,7 +71,7 @@ namespace Ida
         if (mBuffer.empty()) return 0;
 
         unsigned int samplesToRead = min(numberOfSamples, mBuffer.size());
-        copy(mBuffer.begin(), mBuffer.begin() + numberOfSamples, buffer);
+        copy(mBuffer.begin(), mBuffer.begin() + samplesToRead, buffer);
 
         mBuffer.erase(mBuffer.begin(), mBuffer.begin() + samplesToRead);
 
