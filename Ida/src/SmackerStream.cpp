@@ -13,7 +13,7 @@ namespace Ida
     {
         if (bitDepth != 16 && bitDepth != 8)
         {
-            throw invalid_argument("Unsupported bit rate: " + to_string(bitDepth));
+            throw invalid_argument("Unsupported bit depth: " + to_string(bitDepth));
         }
 
         if (!numChannels || numChannels > 2)

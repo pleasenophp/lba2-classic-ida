@@ -12,7 +12,7 @@ This is a work on top of the **Little Big Adventure 2 - Engine source code - Com
   Added support for rendering to high-resolution textures
 
 - **Restored and fixed Audio Playback in Dialogs**  
-  Restored French and Spanish voices in the dialogs, that didn't work due to wrong language names encoding. Also addressed audio crackles and delays affecting dialog playback, that was caused by wrong sample count calculation.
+  Restored French voices in the dialogs, that didn't work due to wrong language names encoding. Also addressed audio crackles and delays affecting dialog playback, that was caused by wrong sample count calculation.
 
 - **Fixed Memory Leaks in Audio and Video Systems**  
   Resolved memory leak issues in the video buffer and audio playback systems, enhancing stability and performance.
