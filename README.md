@@ -107,9 +107,9 @@ This source code is licensed under the [GNU General Public License](https://gith
 Please note this license only applies to **Little Big Adventure 2** engine source code. **Little Big Adventure 2** game assets (art, models, textures, audio, etc.) are not open-source and therefore aren't redistributable.
 
 ## Links:
-**Official Website:** https://www.2point21.com/games/little-big-adventure-2-twinsen-odyssey
+**Official Website:** https://twinsenslittlebigadventure.com/
 
-**Discord:** https://discord.gg/wQse6WB6
+**Discord:** https://discord.gg/gfzna5SfZ5
 
 **Docs:** https://lba-classic-doc.readthedocs.io/
 
