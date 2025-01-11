@@ -8,5 +8,7 @@ Win32
 
 SOURCES/ADELINE.LOG
 GameRun/
+packages
 
 **/cfg-defines.h
+
