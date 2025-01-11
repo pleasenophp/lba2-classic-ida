@@ -11,7 +11,7 @@ BraceWrapping:
   AfterControlStatement: true
   AfterEnum:       true
   AfterFunction:   true
-  AdterConstructorInitializer: true
+  AfterConstructorInitializer: true
   AfterNamespace:  true
   AfterObjCDeclaration: true
   AfterStruct:     true
