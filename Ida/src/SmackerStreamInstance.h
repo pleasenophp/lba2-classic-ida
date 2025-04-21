@@ -4,11 +4,9 @@
 #include "SmackerStream.h"
 #include "soloud.h"
 
-using namespace SoLoud;
-
 namespace Ida
 {
-    class SmackerStreamInstance : public AudioSourceInstance
+    class SmackerStreamInstance : public SoLoud::AudioSourceInstance
     {
         SmackerStream *mParent;
         bool mHasEnded = false;
@@ -20,7 +18,7 @@ namespace Ida
         virtual ~SmackerStreamInstance() = default;
         void stop();
         virtual unsigned int getAudio(float *buffer, unsigned int samplesToRead, unsigned int bufferSize);
-        virtual result rewind();
+        virtual SoLoud::result rewind();
         virtual bool hasEnded();
     };
 }  // namespace Ida

@@ -6,19 +6,16 @@
 #include "ElasticBuffer.h"
 #include "soloud.h"
 
-using namespace SoLoud;
-using namespace std;
-
 namespace Ida
 {
-    class SmackerStream : public AudioSource
+    class SmackerStream : public SoLoud::AudioSource
     {
         unsigned char mBitDepth;
 
-        AudioSourceInstance *mInstance = nullptr;
+        SoLoud::AudioSourceInstance *mInstance = nullptr;
 
-        mutex mMutex;
-        deque<float> mBuffer;
+        std::mutex mMutex;
+        std::deque<float> mBuffer;
         ElasticBuffer<float> mSampleBuffer;
 
     public:
@@ -26,6 +23,6 @@ namespace Ida
         virtual ~SmackerStream();
         void addNextChunk(const unsigned char *buffer, unsigned int bufferSize);
         unsigned int readNext(float *buffer, unsigned int numberOfSamples);
-        virtual AudioSourceInstance *createInstance();
+        virtual SoLoud::AudioSourceInstance *createInstance();
     };
 };  // namespace Ida

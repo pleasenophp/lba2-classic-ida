@@ -3,6 +3,7 @@
 #include <assert.h>
 
 using namespace std;
+using namespace SoLoud;
 
 namespace Ida
 {
