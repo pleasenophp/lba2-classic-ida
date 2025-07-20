@@ -94,7 +94,7 @@
       <IncludePaths>$(ProjectDir)..\Lib386\H;%(IncludePaths)</IncludePaths>
     </MASM>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)Win32\Release\*.dll" "$(SolutionDir)build\" /I /Y 
+      <Command>xcopy "$(SolutionDir)Win32\Release\*.dll" "$(SolutionDir)dist\" /I /Y 
 xcopy "$(SolutionDir)Release\*.exe" "$(SolutionDir)dist\" /I /Y
 </Command>
     </PostBuildEvent>
