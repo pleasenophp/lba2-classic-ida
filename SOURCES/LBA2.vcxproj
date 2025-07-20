@@ -95,7 +95,7 @@
     </MASM>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)Win32\Release\*.dll" "$(SolutionDir)build\" /I /Y 
-xcopy "$(SolutionDir)Release\*.exe" "$(SolutionDir)build\" /I /Y
+xcopy "$(SolutionDir)Release\*.exe" "$(SolutionDir)dist\" /I /Y
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

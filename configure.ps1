@@ -102,7 +102,7 @@ if ($BuildType -eq "Debug") {
 } else {
     $pathResource = Normalize-Path "Common"
 
-    $buildFolder = Join-Path $scriptDirectory "build"
+    $buildFolder = Join-Path $scriptDirectory "dist"
     if (Test-Path $buildFolder) {
         Remove-Item -Recurse -Force -Path $buildFolder
     }

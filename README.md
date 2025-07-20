@@ -2,7 +2,8 @@
 
 This is a work on top of the **Little Big Adventure 2 - Engine source code - Community** and **yaz0r** fork, that makes the LBA2 community project buildable and fully playable on Windows.
 
-## List of fixes on top of the **yaz0r** fork 
+## List of fixes on top of the **yaz0r** fork
+
 (https://github.com/yaz0r/lba2-classic-community/)
 
 - **Added Video Playback Support**  
@@ -46,7 +47,7 @@ This is a work on top of the **Little Big Adventure 2 - Engine source code - Com
 
 1. Open the git command line in the root of your repository and run
 
-```git submodule update --init --recursive```
+`git submodule update --init --recursive`
 
 This will clone the SoLoud and SDL2. Note that the modules are configured via https, so you might need to setup github access token.
 
@@ -54,9 +55,9 @@ This will clone the SoLoud and SDL2. Note that the modules are configured via ht
 
 1. Open the PowerShell command line in the root of your repository and run:
 
-```.\configure.ps1```
+`.\configure.ps1`
 
-2. In the dialog prompt select *Common* folder from the installation of your LBA2 game. You should use either **GoG** or **Steam** purchased version of the LBA2 classic game.
+2. In the dialog prompt select _Common_ folder from the installation of your LBA2 game. You should use either **GoG** or **Steam** purchased version of the LBA2 classic game.
 
 The configure command will save paths to your game assets to read in this project. It will not modify or write anything into your installed LBA2 game folders.
 
@@ -64,19 +65,20 @@ The configure command will save paths to your game assets to read in this projec
 
 4. If the build completed successfully, you can now run the game in Visual Studio. The debug session game logs, config, and save game are put in **GameRun** folder in the root of your solution.
 
-5. By default game runs in window mode in Debug configuration. If you want to run fullscreen in Debug mode, change the *LIB386\cfg-defines.h* file and set *CFG_FULLSCREEN* to 1
+5. By default game runs in window mode in Debug configuration. If you want to run fullscreen in Debug mode, change the _LIB386\cfg-defines.h_ file and set _CFG_FULLSCREEN_ to 1
 
 ## Build and run for Release
 
-If you made some fun / mods and are ready to ship the release build, follow those steps: 
+If you made some fun / mods and are ready to ship the release build, follow those steps:
 
 1. Open the PowerShell command line in the root of your repository and run:
 
-```.\configure.ps1 -BuildType Release```
+`.\configure.ps1 -BuildType Release`
 
 2. Open the **LBA2.sln** in Visual Studio 2022 and build the solution in **Release/Win32** configuration.
 
-3. If the build completed successfully, the portable deployable files will be in the **build** folder in this solution. Those files include
+3. If the build completed successfully, the portable deployable files will be in the **dist** folder in this solution. Those files include
+
 - LBA2.exe
 - LBA2.cfg
 - SDL2.dll
@@ -99,14 +101,16 @@ Little Big Adventure 2 (aka Twinsen's Odyssey) is the sequel of Little Big Adven
 
 We are releasing this code with preservation in mind, as this piece of work was exceptional for the time and we believe it can be a valuable source of education.
 
-The engine uses Assembly code and was originally compiled with non-open source libraries which have been excluded from the project. 
+The engine uses Assembly code and was originally compiled with non-open source libraries which have been excluded from the project.
 
 ### Licence
+
 This source code is licensed under the [GNU General Public License](https://github.com/2point21/lba2-classic-community/blob/main/LICENSE).
 
 Please note this license only applies to **Little Big Adventure 2** engine source code. **Little Big Adventure 2** game assets (art, models, textures, audio, etc.) are not open-source and therefore aren't redistributable.
 
 ## Links:
+
 **Official Website:** https://twinsenslittlebigadventure.com/
 
 **Discord:** https://discord.gg/gfzna5SfZ5
@@ -114,9 +118,11 @@ Please note this license only applies to **Little Big Adventure 2** engine sourc
 **Docs:** https://lba-classic-doc.readthedocs.io/
 
 ## Buy the game:
- [[GoG]](https://www.gog.com/game/little_big_adventure_2)  [[Steam]](https://store.steampowered.com/app/398000/Little_Big_Adventure_2/)
+
+[[GoG]](https://www.gog.com/game/little_big_adventure_2) [[Steam]](https://store.steampowered.com/app/398000/Little_Big_Adventure_2/)
 
 ## Original Dev Team
+
 Direction: Frédérick Raynal
 
 Programmers: Sébastien Viannay / Laurent Salmeron / Cédric Bermond / Frantz Cournil / Marc Bureau du Colombier
@@ -140,6 +146,7 @@ Testing: Bruno Marion / Thomas Ferraz / Alexis Madinier / Christopher Horwood / 
 Quality Control: Emmanuel Oualid
 
 ## Copyright
+
 The intellectual property is currently owned by [2.21]. Copyright [2.21]
 
 Originaly developed by Adeline Software International in 1994

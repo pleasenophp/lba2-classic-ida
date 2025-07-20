@@ -2,7 +2,7 @@
 Debug/
 Release/
 SoloudRelease/
-build/
+dist/
 *.vcxproj.user
 Win32
 
